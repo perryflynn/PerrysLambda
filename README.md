@@ -58,7 +58,11 @@ $skiptake = $collection
 $skiptake->each(function(OA $r) { var_dump($r->agent); });
 ```
 
-Weitere Beispiele in [examples/usage.php](examples/usage.php)
+## Weitere Beispiele
+
+- [examples/usage.php](examples/usage.php) Grundfunktionen
+- [examples/converter.php](examples/converter.php) Datenfelder konvertieren
+- [examples/validator.php](examples/validator.php) Feldinhalte validieren
 
 ## Versuch der Typensicherheit
 

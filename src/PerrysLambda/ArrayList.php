@@ -9,6 +9,8 @@ class ArrayList extends Property implements \ArrayAccess, \SeekableIterator
     protected $__keycache = null;
     protected $__fieldtype;
     protected $__convertfield;
+    protected $__converters;
+    protected $__validators;
 
 
     /**
@@ -49,6 +51,8 @@ class ArrayList extends Property implements \ArrayAccess, \SeekableIterator
 
         $this->__convertfield = ($convertfield===true);
         $this->__fieldtype = $fieldtype;
+        $this->__converters = array();
+        $this->__validators = array();
         parent::__construct($data);
     }
 
@@ -188,6 +192,69 @@ class ArrayList extends Property implements \ArrayAccess, \SeekableIterator
     }
 
     /**
+     * Set converter for a field
+     * @param mixed $field
+     * @param \PerrysLambda\Converter\BasicConverter $converter
+     */
+    public function setFieldConverter($field, \PerrysLambda\Converter\BasicConverter $converter)
+    {
+        $this->__converters[$field] = $converter;
+    }
+
+    /**
+     * Add validator for a field
+     * @param mixed $field
+     * @param \PerrysLambda\Validator\BasicValidator $validator
+     */
+    public function addFieldValidator($field, \PerrysLambda\Validator\BasicValidator $validator)
+    {
+        if(!isset($this->__validators[$field]))
+        {
+            $this->__validators[$field] = array();
+        }
+        $this->__validators[$field][] = $validator;
+    }
+
+    /**
+     * Validate field
+     * @param mixed $field
+     * @return array
+     */
+    public function isFieldValid($field)
+    {
+        $result = array();
+        if(isset($this->__validators[$field]))
+        {
+            foreach($this->__validators[$field] as $v)
+            {
+                if(!$v->validate($field, $this->get($field), $this))
+                {
+                    $result[] = $v->getMessage();
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function isValid()
+    {
+        $result = array();
+        $keys = array_keys($this->__validators);
+        foreach($keys as $key)
+        {
+            $result[$key] = $this->isFieldValid($key);
+        }
+        foreach($this->getNames() as $key)
+        {
+            if(!isset($result[$key]))
+            {
+                $result[$key] = array();
+            }
+        }
+        return $result;
+    }
+
+    /**
      * Get field name by index
      * @param int $i
      * @param mixed $default
@@ -212,7 +279,12 @@ class ArrayList extends Property implements \ArrayAccess, \SeekableIterator
      */
     public function get($field, $default=null, $autoset=false)
     {
-        if(isset($this->__data[$field]))
+        if(isset($this->__converters[$field]))
+        {
+            $var = isset($this->__data[$field]) ? $this->__data[$field] : null;
+            return $this->__converters[$field]->convert($var, $this);
+        }
+        elseif(isset($this->__data[$field]))
         {
             return $this->__data[$field];
         }
