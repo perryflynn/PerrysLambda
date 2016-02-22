@@ -1,5 +1,6 @@
 {
     "name": "perryflynn/perrys-lambda",
+    "type": "library",
     "description": "Implementation of lambda expressions for PHP.",
     "license":"GPL-3.0+",
     "homepage":"https://github.com/perryflynn/PerrysLambda",
@@ -18,6 +19,7 @@
     "require": {
         "php": ">=5.4.0"
     },
+    "version": "0.1",
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
