@@ -9,6 +9,14 @@ Das Projekt befindet sich **noch in der Entwicklung**.
 
 Es kann jederzeit eine Änderung der API geben.
 
+## Composer
+
+[Packagegist](https://packagist.org/packages/perryflynn/perrys-lambda)
+
+```
+composer require perryflynn/perrys-lambda
+```
+
 ## Klassen
 
 - `Property` ist die Basisklasse welche genau einen Wert speichert und diesen
