@@ -93,7 +93,7 @@ class AccessLog extends OA
         $this->addFieldValidator('timestamp', new PV('Feld ist leer'));
         
         // Nur bestimmte HTTP Methoden erlauben
-        $this->addFieldValidator('timestamp', new CV("Ist keine erwartete http method", function($n, $v, OA $r)
+        $this->addFieldValidator('method', new CV("Ist keine erwartete http method", function($n, $v, OA $r)
         {
             return $v=="POST" || $v=="GET" || $v=="PUT";
         }));
