@@ -14,7 +14,7 @@ Es kann jederzeit eine Änderung der API geben.
 [Packagegist](https://packagist.org/packages/perryflynn/perrys-lambda)
 
 ```
-composer require perryflynn/perrys-lambda
+composer require perryflynn/perrys-lambda:dev-master
 ```
 
 ## Klassen
