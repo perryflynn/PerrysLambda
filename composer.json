@@ -1,6 +1,20 @@
 {
     "name": "perryflynn/perrys-lambda",
     "description": "Implementation of lambda expressions for PHP.",
+    "license":"GPL-3.0+",
+    "homepage":"https://github.com/perryflynn/PerrysLambda",
+    "keywords": [ "php", "data", "lambda", "expressions" ],
+    "authors": [
+        {
+            "name": "Christian Blechert",
+            "email": "christian@anysrc.net",
+            "homepage": "https://anysrc.net",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues":"https://github.com/perryflynn/PerrysLambda/issues"
+    },
     "require": {
         "php": ">=5.4.0"
     }
