@@ -2,7 +2,7 @@
 
 namespace PerrysLambda;
 
-class ObjectArray extends ArrayList implements \ArrayAccess, \SeekableIterator
+class ObjectArray extends ArrayBase
 {
 
     public function getIsValidKey($name)
@@ -10,11 +10,16 @@ class ObjectArray extends ArrayList implements \ArrayAccess, \SeekableIterator
         return is_string($name) || is_numeric($name) || is_null($name);
     }
 
+    public function getIsValidValue($value)
+    {
+        return true;
+    }
+
     public function __get($name)
     {
         if($this->exists($name)!==true && strlen($name)>6)
         {
-            // foobarScalar = $this->getScalar('foobar')
+            // foobarScalar => $this->getScalar('foobar')
             $scalarname = substr($name, 0, -6);
             $scalar = substr($name, -6);
             if($scalar=="Scalar" && $this->exists($scalarname))

@@ -12,7 +12,7 @@ class CallableConverter extends BasicConverter
         $this->function = $function;
     }
 
-    public function convert($in, \PerrysLambda\ArrayList $r)
+    public function convert($in, \PerrysLambda\ArrayBase $r)
     {
         return call_user_func($this->function, $in, $r);
     }

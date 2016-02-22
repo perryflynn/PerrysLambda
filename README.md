@@ -71,6 +71,7 @@ $skiptake->each(function(OA $r) { var_dump($r->agent); });
 Werte in Datenfeldern können konvertiert und validiert werden:
 
 ```php
+use PerrysLambda\ArrayList as AL;
 use PerrysLambda\ObjectArray as OA;
 use PerrysLambda\Converter\CallableConverter as CC;
 use PerrysLambda\Validator\PresenceValidator as PV;
@@ -82,24 +83,24 @@ class AccessLog extends OA
     public function __construct(array $data = null, $fieldtype = null, $convertfield = true)
     {
         parent::__construct($data, $fieldtype, $convertfield);
-        
+
         // Timestamp string in ein DateTime Objekt konvertieren
         $this->setFieldConverter('timestamp', new CC(function($in, OA $r)
         {
             // 01/Feb/2016:07:06:16 +0100
             return \DateTime::createFromFormat('d/M/Y:H:i:s O', $in);
         }));
-        
+
         // HTTP Methode aus der URI in separates Feld extrahieren
         $this->setFieldConverter('method', new CC(function($in, OA $r)
         {
             // GET /ajax/unseen-notices-count/?_=1454313293675 HTTP/1.1
             return substr($r->uri, 0, strpos($r->uri, ' '));
         }));
-        
+
         // timestamp darf nicht leer sein
         $this->addFieldValidator('timestamp', new PV('Feld ist leer'));
-        
+
         // Nur bestimmte HTTP Methoden erlauben
         $this->addFieldValidator('method', new CV("Ist keine erwartete http method", function($n, $v, OA $r)
         {
@@ -110,10 +111,11 @@ class AccessLog extends OA
 
 // Parse JSON
 $data = json_decode(file_get_contents(__DIR__."/testdata.json"), true);
-$collection = OA::asType('AccessLog', $data);
+$collection = AL::asType('AccessLog', $data);
 
 // Alle Datensätze wo Timestamp Sekunde = 3
 // Anschließend die Datensätze dumpen
+
 $collection
     ->where(function(OA $r) { return $r->timestamp->format('s')==3; })
     ->each(function(OA $r) { var_dump([ $r->timestamp->format('Y-m-d H:i:s'), $r->method, $r->version ]); });

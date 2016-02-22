@@ -13,7 +13,7 @@ class CallableValidator extends BasicValidator
         $this->function = $function;
     }
 
-    public function validate($name, $value, \PerrysLambda\ArrayList $r)
+    public function validate($name, $value, \PerrysLambda\ArrayBase $r)
     {
         return call_user_func($this->function, $name, $value, $r);
     }

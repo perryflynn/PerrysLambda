@@ -15,7 +15,7 @@ abstract class BasicValidator
         }
     }
 
-    abstract public function validate($name, $value, \PerrysLambda\ArrayList $r);
+    abstract public function validate($name, $value, \PerrysLambda\ArrayBase $r);
 
     public function getMessage()
     {

@@ -40,7 +40,7 @@ L::line("Loaded data from JSON file.", $watch->stop()->result(), ",", count($dat
 
 // Load JSON data into lambda
 $watch->start();
-$collection = AL::asObjectArray($data); // Collection<ObjectArray>
+$collection = AL::asObjectArray($data); // ArrayList<ObjectArray>
 L::line("Data imported into Lambda.", $watch->stop()->result(), ",", $collection->length(), "records");
 
 // Unset JSON Data
@@ -56,8 +56,9 @@ L::line("Where user is userfoo.", $watch->stop()->result(), ",", $subc->length()
 $watch->start();
 $grouped = $collection->groupBy(function(OA $r) { return $r->username; });
 
+var_dump(get_class($grouped));
 // count records in groups
-$temp = $grouped->select(function(AL $c, $key) {
+$temp = $grouped->select(function(OA $c, $key) {
     return array("key"=>$key, "count"=>$c->length());
 });
 
@@ -139,6 +140,9 @@ L::line("Sort by linux / not linux and useragent", $watch->stop()->result());
 echo "\n";
 
 // unset
+unset($subc);
+L::line("Unset \$subc.");
+
 unset($agents);
 L::line("Unset \$agents.");
 

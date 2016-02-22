@@ -15,12 +15,6 @@ class Property
         }
     }
 
-    protected function newInstance()
-    {
-        $class = get_called_class();
-        return new $class();
-    }
-
     /**
      * Validate data
      * @param mixed $val
