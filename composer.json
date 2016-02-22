@@ -1,5 +1,5 @@
 {
-    "name": "perryflynn/PerrysLambda",
+    "name": "perryflynn/perrys-lambda",
     "description": "Implementation of lambda expressions for PHP.",
     "require": {
         "php": ">=5.4.0"
