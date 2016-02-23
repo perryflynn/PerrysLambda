@@ -27,7 +27,7 @@ class Test extends PHPUnit_Framework_TestCase
 
         // sorting
         $sorted = $basic
-            ->order(function($v) { return ($v>5 ? 1 : 0); })
+            ->order(function($v) { return ($v>=5 ? 1 : 0); })
             ->thenByDesc(function($v) { return $v; })
             ->toList();
 
