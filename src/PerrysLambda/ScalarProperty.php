@@ -7,31 +7,31 @@ namespace PerrysLambda;
  */
 class ScalarProperty extends Property
 {
-    
+
     protected $encoding;
-    
-    
+
+
     /**
      * Constructor
      * @param mixed $data
      * @param string $encoding
      */
-    public function __construct($data = null, $encoding=null) 
+    public function __construct($data = null, $encoding='UTF-8')
     {
         $this->encoding = $encoding;
         parent::__construct($data);
     }
-   
+
     /**
      * Check for scalar or null as valid data type
      * @param mixed $val
      * @return boolean
      */
-    public function getIsValidData($val) 
+    public function getIsValidData($val)
     {
         return is_scalar($val) || is_null($val);
     }
-   
+
     /**
      * Is value numeric?
      * @return boolean
@@ -40,7 +40,7 @@ class ScalarProperty extends Property
     {
         return is_numeric($this->getData());
     }
-   
+
     /**
      * Is value a float
      * @return boolean
@@ -49,7 +49,7 @@ class ScalarProperty extends Property
     {
         return is_float($this->getData());
     }
-   
+
     /**
      * Is value an int
      * @return boolean
@@ -58,7 +58,7 @@ class ScalarProperty extends Property
     {
         return is_int($this->getData());
     }
-   
+
     /**
      * Is value a string
      * @return boolean
@@ -67,7 +67,7 @@ class ScalarProperty extends Property
     {
         return is_string($this->getData());
     }
-   
+
     /**
      * Is value an boolean
      * @return boolean
@@ -76,7 +76,7 @@ class ScalarProperty extends Property
     {
         return is_bool($this->getData());
     }
-   
+
     /**
      * Is value null
      * @return boolean
@@ -85,7 +85,7 @@ class ScalarProperty extends Property
     {
         return is_null($this->getData());
     }
-   
+
     /**
      * Cast to string
      * @return string
@@ -94,16 +94,16 @@ class ScalarProperty extends Property
     {
         return "".$this->getData();
     }
-   
+
     /**
      * Magic toString method
      * @return string
      */
-    public function __toString() 
+    public function __toString()
     {
         return $this->toString();
     }
-   
+
     /**
      * Cast to numeric
      * @return numeric
@@ -112,7 +112,7 @@ class ScalarProperty extends Property
     {
         return $this->getData()+0;
     }
-   
+
     /**
      * Cast to int
      * @return int
@@ -121,7 +121,7 @@ class ScalarProperty extends Property
     {
         return ((int)$this->getData());
     }
-   
+
     /**
      * Cast to float
      * @return float
@@ -130,7 +130,7 @@ class ScalarProperty extends Property
     {
         return ((float)$this->getData());
     }
-   
+
     /**
      * Cast to boolean
      * @return boolean
@@ -139,7 +139,7 @@ class ScalarProperty extends Property
     {
         return ($this->getData() ? true : false);
     }
-    
+
     /**
      * Helper function to set default encoding
      * @param string $encoding
@@ -157,7 +157,7 @@ class ScalarProperty extends Property
         }
         return $encoding;
     }
-   
+
     /**
      * Return the length of a string
      * @return string
@@ -166,7 +166,7 @@ class ScalarProperty extends Property
     {
         return mb_strlen($this->toString(), $this->getEncoding());
     }
-   
+
     /**
      * Return a substring of value
      * @param int $start
@@ -177,7 +177,7 @@ class ScalarProperty extends Property
     {
         return mb_substr($this->toString(), $start, $length, $this->getEncoding());
     }
-   
+
     /**
      * Split string by separator
      * @param string $separator
@@ -187,7 +187,7 @@ class ScalarProperty extends Property
     {
         return explode($separator, $this->toString());
     }
-   
+
     /**
      * The first position of a substring in this string
      * Returns -1 if substring not found
@@ -200,7 +200,7 @@ class ScalarProperty extends Property
         $r = mb_strpos($this->toString(), $needle, $offset, $this->getEncoding());
         return ($r===false ? -1 : $r);
     }
-   
+
     /**
      * This last position if a substring in this string
      * Returns -1 if substring not found
@@ -213,7 +213,7 @@ class ScalarProperty extends Property
         $r = mb_strrpos($this->toString(), $needle, $offset, $this->getEncoding());
         return ($r===false ? -1 : $r);
     }
-    
+
     /**
      * Contains this string the griven substring
      * @param string $needle
@@ -223,7 +223,7 @@ class ScalarProperty extends Property
     {
         return $this->indexOf($needle)>=0;
     }
-   
+
     /**
      * Begins this string with the given substring
      * @param string $needle
@@ -233,7 +233,7 @@ class ScalarProperty extends Property
     {
         return $this->indexOf($needle)===0;
     }
-   
+
     /**
      * Ends this string with the given substring
      * @param string $needle
@@ -244,12 +244,12 @@ class ScalarProperty extends Property
         $enc = $this->getEncoding();
         $strlen = $this->length($enc);
         $testlen = mb_strlen($needle, $enc);
-        
+
         if ($testlen <= $strlen)
         {
             return (mb_strpos($this->toString(), $needle, ($strlen-$testlen), $enc)!==false);
         }
         return false;
     }
-   
+
 }

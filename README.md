@@ -3,6 +3,8 @@ wenn man in einer anderen Sprache feststellt, dass die Lambda Expressions fehlen
 
 Dieses Projekt ist ein Versuch, genau diese Expressions in PHP umzusetzen.
 
+![Travis-CI](https://travis-ci.org/perryflynn/PerrysLambda.svg)
+
 ## Status
 
 Das Projekt befindet sich **noch in der Entwicklung**.
