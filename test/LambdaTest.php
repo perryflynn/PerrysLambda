@@ -5,7 +5,7 @@ class Test extends PHPUnit_Framework_TestCase
 
     public function testScalar()
     {
-        $s = new \PerrysLambda\ScalarProperty("Zähn € zahme Ziegen zögen zwei Zentner Zücker zum Zoö!");
+        $s = new \PerrysLambda\ScalarProperty("Zähn € zahme Ziegen zögen zwei Zentner Zücker zum Zoö!", 'UTF-8');
 
         $this->assertSame(true, $s->startsWith("Zä"));
         $this->assertSame(true, $s->endsWith(' Zoö!'));
