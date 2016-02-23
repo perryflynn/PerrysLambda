@@ -2,11 +2,23 @@
 
 namespace PerrysLambda;
 
+/**
+ * Baseclass of this project
+ */
 class Property
 {
 
+    /**
+     * Data store
+     * @var mixed
+     */
     protected $__data = null;
 
+    
+    /**
+     * Constructor
+     * @param mixed $data
+     */
     public function __construct($data=null)
     {
         if(!is_null($data))

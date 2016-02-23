@@ -47,4 +47,17 @@ class L
         self::vd($var);
         echo "\n";
     }
+    
+    public static function b($b)
+    {
+        if($b===true)
+        {
+            return "true";
+        }
+        if($b===false)
+        {
+            return "false";
+        }
+        return $b;
+    }
 }

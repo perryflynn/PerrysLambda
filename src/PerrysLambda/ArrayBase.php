@@ -2,24 +2,63 @@
 
 namespace PerrysLambda;
 
+/**
+ * Base class for array-like types
+ */
 abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIterator
 {
 
+    /**
+     * Iterator for \SeekableIterator implemtation
+     * @var int
+     */
     protected $__iterator = 0;
+    
+    /**
+     * Caches data keys
+     * @var array
+     */
     protected $__keycache = null;
+    
+    /**
+     * Class type of child items
+     * @var string
+     */
     protected $__fieldtype;
+    
+    /**
+     * Autoconvert new fields to $this->__fieldtype
+     * @var boolean
+     */
     protected $__convertfield;
+    
+    /**
+     * Fieldvalue converters
+     * @var array
+     */
     protected $__converters;
+    
+    /**
+     * Fieldvalue validators
+     * @var array
+     */
     protected $__validators;
 
 
+    /**
+     * Constructor
+     * @param array $data
+     * @param string $fieldtype
+     * @param boolean $convertfield
+     * @throws InvalidTypeException
+     */
     public function __construct(array $data = null, $fieldtype=null, $convertfield=true)
     {
         if(is_string($fieldtype))
         {
             if(!class_exists($fieldtype))
             {
-                throw new InvalidException("Invalid Itemtype: ".$fieldtype);
+                throw new InvalidTypeException("Invalid Itemtype: ".$fieldtype);
             }
         }
 
@@ -35,17 +74,32 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         parent::__construct($data);
     }
 
+    /**
+     * Get current classname as string
+     * @return string
+     */
     protected function getClassName()
     {
         return get_called_class();
     }
 
+    /**
+     * Creates new instance of current class type
+     * Expect a subclass of \PerrysLambda\ArrayBase
+     * @return \PerrysLambda\ArrayBase
+     */
     protected function newInstance()
     {
         $class = $this->getClassName();
         return new $class(array(), $this->__fieldtype, $this->__convertfield);
     }
 
+    /**
+     * Get child classname as string
+     * Used for ->groupBy()
+     * Default is \PerrysLambda\ObjectArray
+     * @return string
+     */
     protected function getItemClassName()
     {
         $type = '\PerrysLambda\ObjectArray';
@@ -56,6 +110,12 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         return $type;
     }
 
+    /**
+     * Create new instance of current child class type
+     * Used for ->groupBy()
+     * Expect a subclass of \PerrysLambda\ArrayBase
+     * @return \PerrysLambda\ArrayBase
+     */
     protected function newItemInstance()
     {
         $c = $this->getItemClassName();
@@ -531,35 +591,66 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         return $this;
     }
 
+    /**
+     * Calculates the sum of values from given expression
+     * @param callable $sum
+     * @return numeric
+     */
     public function sum(callable $sum)
     {
         $temp = $this->select($sum);
         return array_sum($temp);
     }
 
+    /**
+     * Find the lowest value from given expression
+     * @param callable $min
+     * @return numeric
+     */
     public function min(callable $min)
     {
         $temp = $this->select($min);
         return min($temp);
     }
 
+    /**
+     * Find the biggest value from given expression
+     * @param callable $max
+     * @return numeric
+     */
     public function max(callable $max)
     {
         $temp = $this->select($max);
         return max($temp);
     }
 
+    /**
+     * Find the average of the values from given expression
+     * @param callable $avg
+     * @return numeric
+     */
     public function avg(callable $avg)
     {
         return ($this->sum($avg)/$this->length());
     }
 
+    /**
+     * Join values from expression to one string
+     * @param callable $join
+     * @param string $glue
+     * @return string
+     */
     public function join(callable $join, $glue=", ")
     {
        $temp = $this->select($join);
        return implode($glue, $temp);
     }
 
+    /**
+     * Get the first row
+     * @return mixed
+     * @throws \OutOfBoundsException
+     */
     public function first()
     {
         if($this->length()>0)
@@ -569,6 +660,11 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         throw new \OutOfBoundsException();
     }
 
+    /**
+     * Get the first row or the default value
+     * @param mixed $default
+     * @return mixed
+     */
     public function firstOrDefault($default=null)
     {
         if($this->length()>0)
@@ -578,6 +674,11 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         return $default;
     }
 
+    /**
+     * Get the last row
+     * @return mixed
+     * @throws \OutOfBoundsException
+     */
     public function last()
     {
         if($this->length()>0)
@@ -587,6 +688,11 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         throw new \OutOfBoundsException();
     }
 
+    /**
+     * Get the last row or the default value
+     * @param mixed $default
+     * @return mixed
+     */
     public function lastOrDefault($default=null)
     {
         if($this->length()>0)
@@ -596,6 +702,12 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         return $default;
     }
 
+    /**
+     * Get the single row if row count=1
+     * If row count != 1 the method will throw a exception
+     * @return mixed
+     * @throws \LengthException
+     */
     public function single()
     {
         if($this->length()==1)
@@ -605,6 +717,12 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         throw new \LengthException();
     }
 
+    /**
+     * Get the single row if row count=1
+     * If row count != 1 the method will return the default value
+     * @param mixed $default
+     * @return mixed
+     */
     public function singleOrDefault($default=null)
     {
         if($this->length()==1)
@@ -689,16 +807,25 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     // ArrayAccess -------------------------------------------------------------
 
 
+    /**
+     * \ArrayAccess implementation
+     */
     public function offsetExists($offset)
     {
         return $this->exists($offset);
     }
 
+    /**
+     * \ArrayAccess implementation
+     */
     public function offsetGet($offset)
     {
         return $this->get($offset);
     }
 
+    /**
+     * \ArrayAccess implementation
+     */
     public function offsetSet($offset, $value)
     {
         if(is_null($offset))
@@ -711,6 +838,9 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         }
     }
 
+    /**
+     * \ArrayAccess implementation
+     */
     public function offsetUnset($offset)
     {
         $this->remove($offset);
@@ -720,31 +850,49 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     // SeekableIterator --------------------------------------------------------
 
 
+    /**
+     * \SeekableIterator implementation
+     */
     public function current()
     {
         return $this->getAt($this->__iterator);
     }
 
+    /**
+     * \SeekableIterator implementation
+     */
     public function key()
     {
         return $this->getNameAt($this->__iterator);
     }
 
+    /**
+     * \SeekableIterator implementation
+     */
     public function next()
     {
         $this->__iterator++;
     }
 
+    /**
+     * \SeekableIterator implementation
+     */
     public function rewind()
     {
         $this->__iterator=0;
     }
 
+    /**
+     * \SeekableIterator implementation
+     */
     public function valid()
     {
         return $this->key()!==null && $this->exists($this->key());
     }
 
+    /**
+     * \SeekableIterator implementation
+     */
     public function seek($position)
     {
         $this->__iterator = $position;

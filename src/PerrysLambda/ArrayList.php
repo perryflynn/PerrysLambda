@@ -2,6 +2,9 @@
 
 namespace PerrysLambda;
 
+/**
+ * Array-Type with numeric index
+ */
 class ArrayList extends ArrayBase
 {
 
@@ -27,7 +30,7 @@ class ArrayList extends ArrayBase
     }
 
     /**
-     * Is field key valid
+     * Is field key a valid integer
      * @param mixed $name
      * @return bool
      */

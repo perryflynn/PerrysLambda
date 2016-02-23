@@ -2,7 +2,7 @@
     "name": "perryflynn/perrys-lambda",
     "type": "library",
     "description": "Implementation of lambda expressions for PHP.",
-    "license":"GPL-3.0+",
+    "license":"MIT",
     "homepage":"https://github.com/perryflynn/PerrysLambda",
     "keywords": [ "php", "data", "lambda", "expressions" ],
     "authors": [
