@@ -13,31 +13,31 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      * @var int
      */
     protected $__iterator = 0;
-    
+
     /**
      * Caches data keys
      * @var array
      */
     protected $__keycache = null;
-    
+
     /**
      * Class type of child items
      * @var string
      */
     protected $__fieldtype;
-    
+
     /**
      * Autoconvert new fields to $this->__fieldtype
      * @var boolean
      */
     protected $__convertfield;
-    
+
     /**
      * Fieldvalue converters
      * @var array
      */
     protected $__converters;
-    
+
     /**
      * Fieldvalue validators
      * @var array

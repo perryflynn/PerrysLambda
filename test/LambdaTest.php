@@ -6,7 +6,27 @@ class Test extends PHPUnit_Framework_TestCase
     public function testScalar()
     {
         $s = new \PerrysLambda\ScalarProperty("Zähn € zahme Ziegen zögen zwei Zentner Zücker zum Zoö!");
-        $this->assertSame($s->startsWith("Zä"), true);
+
+        $this->assertSame(true, $s->startsWith("Zä"));
+        $this->assertSame(true, $s->endsWith(' Zoö!'));
+        $this->assertSame(54, $s->length());
+        $this->assertSame(3, count($s->split('ö')));
+        $this->assertSame(' Zoö!', $s->substr(-5));
+        $this->assertSame(1, $s->indexOf('ä'));
+        $this->assertSame(53, $s->lastIndexOf('!'));
+        $this->assertSame(false, $s->contains('asdf'));
+        $this->assertSame(true, $s->contains('zwei'));
+
+        $integer = new PerrysLambda\ScalarProperty('4211');
+        $this->assertSame(4211, $integer->toInt());
+        $this->assertSame(4211, $integer->toNumeric());
+
+        $float = new PerrysLambda\ScalarProperty('50.4');
+        $this->assertSame(50.4, $float->toNumeric());
+        $this->assertSame(50.4, $float->toFloat());
+
+        $string = new PerrysLambda\ScalarProperty(50.3);
+        $this->assertSame('50.3', $string->toString());
     }
 
     public function testLambda()
@@ -14,16 +34,16 @@ class Test extends PHPUnit_Framework_TestCase
         $basic = new \PerrysLambda\ArrayList(array(1,2,3,4,5,6,7,8,9));
 
         // basics
-        $this->assertEquals(1, $basic->first());
-        $this->assertEquals(9, $basic->last());
-        $this->assertEquals(2, $basic->skip(1)->first());
-        $this->assertEquals(45, $basic->sum(function($v) { return $v; }));
-        $this->assertEquals(1, $basic->min(function($v) { return $v; }));
-        $this->assertEquals(9, $basic->max(function($v) { return $v; }));
-        $this->assertEquals(5, $basic->avg(function($v) { return $v; }));
-        $this->assertEquals('1.2.3.4.5.6.7.8.9', $basic->join(function($v) { return $v; }, '.'));
-        $this->assertEquals(5, $basic->skip(1)->take(2)->sum(function($v) { return $v; }));
-        $this->assertEquals(2, $basic->skip(1)->take(1)->single());
+        $this->assertSame(1, $basic->first());
+        $this->assertSame(9, $basic->last());
+        $this->assertSame(2, $basic->skip(1)->first());
+        $this->assertSame(45, $basic->sum(function($v) { return $v; }));
+        $this->assertSame(1, $basic->min(function($v) { return $v; }));
+        $this->assertSame(9, $basic->max(function($v) { return $v; }));
+        $this->assertSame(5, $basic->avg(function($v) { return $v; }));
+        $this->assertSame('1.2.3.4.5.6.7.8.9', $basic->join(function($v) { return $v; }, '.'));
+        $this->assertSame(5, $basic->skip(1)->take(2)->sum(function($v) { return $v; }));
+        $this->assertSame(2, $basic->skip(1)->take(1)->single());
 
         // sorting
         $sorted = $basic
@@ -31,9 +51,9 @@ class Test extends PHPUnit_Framework_TestCase
             ->thenByDesc(function($v) { return $v; })
             ->toList();
 
-        $this->assertEquals(4, $sorted->first());
-        $this->assertEquals(5, $sorted->last());
-        $this->assertEquals(9, $sorted[4]);
+        $this->assertSame(4, $sorted->first());
+        $this->assertSame(5, $sorted->last());
+        $this->assertSame(9, $sorted[4]);
     }
 
 }
