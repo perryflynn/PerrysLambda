@@ -3,7 +3,7 @@ wenn man in einer anderen Sprache feststellt, dass die Lambda Expressions fehlen
 
 Dieses Projekt ist ein Versuch, genau diese Expressions in PHP umzusetzen.
 
-[![Build Status](https://travis-ci.org/perryflynn/PerrysLambda.svg)](https://travis-ci.org/perryflynn/PerrysLambda)
+[![Build Status](https://travis-ci.org/perryflynn/PerrysLambda.svg?branch=master)](https://travis-ci.org/perryflynn/PerrysLambda)
 
 ## Status
 
