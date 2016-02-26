@@ -563,6 +563,23 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     }
 
     /**
+     * Check for all fields by condition
+     * @param callable $where
+     * @return bool
+     */
+    public function all(callable $where)
+    {
+        foreach($this as $record)
+        {
+            if(!call_user_func($where, $record))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Select field
      * @param callable $select
      * @return array

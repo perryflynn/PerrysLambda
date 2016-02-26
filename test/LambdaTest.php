@@ -34,6 +34,8 @@ class Test extends PHPUnit_Framework_TestCase
         $basic = new \PerrysLambda\ArrayList(array(1,2,3,4,5,6,7,8,9));
 
         // basics
+        $this->assertSame(true, $basic->any(function($v) { return $v===1; }));
+        $this->assertSame(false, $basic->all(function($v) { return $v===1; }));
         $this->assertSame(1, $basic->first());
         $this->assertSame(9, $basic->last());
         $this->assertSame(2, $basic->skip(1)->first());
@@ -44,6 +46,10 @@ class Test extends PHPUnit_Framework_TestCase
         $this->assertSame('1.2.3.4.5.6.7.8.9', $basic->join(function($v) { return $v; }, '.'));
         $this->assertSame(5, $basic->skip(1)->take(2)->sum(function($v) { return $v; }));
         $this->assertSame(2, $basic->skip(1)->take(1)->single());
+
+        $all = new \PerrysLambda\ArrayList(array(1, 1, 1, 1, 1));
+        $this->assertSame(true, $all->any(function($v) { return $v===1; }));
+        $this->assertSame(true, $all->all(function($v) { return $v===1; }));
 
         // sorting
         $sorted = $basic
