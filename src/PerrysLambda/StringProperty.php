@@ -96,6 +96,19 @@ class StringProperty extends Property
     }
 
     /**
+     * Helper function for strpos
+     * @param string $function
+     * @param string $needle
+     * @param int $offset
+     * @return int
+     */
+    protected function indexOfDyamic($function, $needle, $offset)
+    {
+        $r = $function($this->toString(), $needle, $offset, $this->getEncoding());
+        return ($r===false ? -1 : $r);
+    }
+
+    /**
      * The first position of a substring in this string
      * Returns -1 if substring not found
      * @param string $needle
@@ -104,7 +117,31 @@ class StringProperty extends Property
      */
     public function indexOf($needle, $offset=0)
     {
-        $r = mb_strpos($this->toString(), $needle, $offset, $this->getEncoding());
+        return $this->indexOfDyamic('mb_strpos', $needle, $offset);
+    }
+
+    /**
+     * The first position of a substring in this string, case insensitive
+     * Returns -1 if substring not found
+     * @param string $needle
+     * @param int $offset
+     * @return int
+     */
+    public function indexOfI($needle, $offset=0)
+    {
+        return $this->indexOfDyamic('mb_stripos', $needle, $offset);
+    }
+
+    /**
+     * Helper function for strrpos
+     * @param string $function
+     * @param string $needle
+     * @param int $offset
+     * @return int
+     */
+    protected function lastIndexOfDynamic($function, $needle, $offset=0)
+    {
+        $r = $function($this->toString(), $needle, $offset, $this->getEncoding());
         return ($r===false ? -1 : $r);
     }
 
@@ -117,8 +154,19 @@ class StringProperty extends Property
      */
     public function lastIndexOf($needle, $offset=0)
     {
-        $r = mb_strrpos($this->toString(), $needle, $offset, $this->getEncoding());
-        return ($r===false ? -1 : $r);
+        return $this->lastIndexOfDynamic('mb_strrpos', $needle, $offset);
+    }
+
+    /**
+     * This last position if a substring in this string, case insenitive
+     * Returns -1 if substring not found
+     * @param string $needle
+     * @param int $offset
+     * @return int
+     */
+    public function lastIndexOfI($needle, $offset=0)
+    {
+        return $this->lastIndexOfDynamic('mb_strripos', $needle, $offset);
     }
 
     /**
@@ -132,6 +180,16 @@ class StringProperty extends Property
     }
 
     /**
+     * Contains this string the griven substring, case insensitive
+     * @param string $needle
+     * @return boolean
+     */
+    public function containsI($needle)
+    {
+        return $this->indexOfI($needle)>=0;
+    }
+
+    /**
      * Begins this string with the given substring
      * @param string $needle
      * @return boolean
@@ -142,11 +200,22 @@ class StringProperty extends Property
     }
 
     /**
-     * Ends this string with the given substring
+     * Begins this string with the given substring, case insensitive
      * @param string $needle
      * @return boolean
      */
-    public function endsWith($needle)
+    public function startsWithI($needle)
+    {
+        return $this->indexOfI($needle)===0;
+    }
+
+    /**
+     * Helper function for endsWith
+     * @param string $function
+     * @param string $needle
+     * @return boolean
+     */
+    protected function endsWithDynamic($function, $needle)
     {
         $enc = $this->getEncoding();
         $strlen = $this->length($enc);
@@ -154,9 +223,29 @@ class StringProperty extends Property
 
         if ($testlen <= $strlen)
         {
-            return (mb_strpos($this->toString(), $needle, ($strlen-$testlen), $enc)!==false);
+            return ($function($this->toString(), $needle, ($strlen-$testlen), $enc)!==false);
         }
         return false;
+    }
+
+    /**
+     * Ends this string with the given substring
+     * @param string $needle
+     * @return boolean
+     */
+    public function endsWith($needle)
+    {
+        return $this->endsWithDynamic('mb_strpos', $needle);
+    }
+
+    /**
+     * Ends this string with the given substring
+     * @param string $needle
+     * @return boolean
+     */
+    public function endsWithI($needle)
+    {
+        return $this->endsWithDynamic('mb_stripos', $needle);
     }
 
 }

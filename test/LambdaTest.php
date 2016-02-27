@@ -8,14 +8,22 @@ class Test extends PHPUnit_Framework_TestCase
         $s = new \PerrysLambda\ScalarProperty("Zähn € zahme Ziegen zögen zwei Zentner Zücker zum Zoö!", 'UTF-8');
 
         $this->assertSame(true, $s->startsWith("Zä"));
+        $this->assertSame(false, $s->startsWith("zä"));
+        $this->assertSame(true, $s->startsWithI("zä"));
         $this->assertSame(true, $s->endsWith(' Zoö!'));
+        $this->assertSame(false, $s->endsWith(' zoö!'));
+        $this->assertSame(true, $s->endsWithI(' zoö!'));
         $this->assertSame(54, $s->length());
         $this->assertSame(3, count($s->split('ö')));
         $this->assertSame(' Zoö!', $s->substr(-5));
         $this->assertSame(1, $s->indexOf('ä'));
+        $this->assertSame(-1, $s->indexOf('Ä'));
+        $this->assertSame(1, $s->indexOfI('Ä'));
         $this->assertSame(53, $s->lastIndexOf('!'));
         $this->assertSame(false, $s->contains('asdf'));
         $this->assertSame(true, $s->contains('zwei'));
+        $this->assertSame(false, $s->contains('ZWEI'));
+        $this->assertSame(true, $s->containsI('ZWEI'));
 
         $integer = new PerrysLambda\ScalarProperty('4211');
         $this->assertSame(4211, $integer->toInt());
