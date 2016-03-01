@@ -91,15 +91,15 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
             parent::__construct(array());
         }
     }
-    
-    public function setDataSource(\Iterator $source)
+
+    public function setDataSource(\Iterator $source=null)
     {
         $this->__datasource = $source;
     }
 
     protected function hasDataSource()
     {
-        return $this->__datasource!==null && 
+        return $this->__datasource!==null &&
                 $this->__datasource instanceof \Iterator;
     }
 
@@ -143,7 +143,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
             }
         }
     }
-    
+
     protected function dataSourceReadUtil(callable $condition)
     {
         if($this->hasDataSource())
@@ -274,7 +274,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     public function getNameAt($i)
     {
         $this->dataSourceReadUtil(function() use($i) { return $i>=$this->lengthCached(); });
-        
+
         $fields = $this->getNames();
         if($i<$this->lengthCached())
         {
@@ -341,7 +341,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         $this->dataSourceReadToEnd();
         return $this->lengthCached();
     }
-    
+
     /**
      * Check for field by its name
      * @param mixed $field
@@ -349,10 +349,10 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function exists($field)
     {
-        $this->dataSourceReadUtil(function() use($field) { 
-            return !(is_array($this->__data) && isset($this->__data[$field])); 
+        $this->dataSourceReadUtil(function() use($field) {
+            return !(is_array($this->__data) && isset($this->__data[$field]));
         });
-        
+
         return is_array($this->__data) && isset($this->__data[$field]);
     }
 
@@ -446,8 +446,8 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function get($field, $default=null, $autoset=false)
     {
-        $this->dataSourceReadUtil(function() use($field) { 
-            return (!isset($this->__converters[$field]) && !isset($this->__data[$field])); 
+        $this->dataSourceReadUtil(function() use($field) {
+            return (!isset($this->__converters[$field]) && !isset($this->__data[$field]));
         });
 
         if(isset($this->__converters[$field]))
@@ -627,7 +627,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         }
         return $collection;
     }
-    
+
     public function whereFirst(callable $where)
     {
         foreach($this as $record)
@@ -639,7 +639,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         }
         throw new \OutOfBoundsException();
     }
-    
+
     public function whereFirstOrDefault(callable $where, $default=null)
     {
         foreach($this as $record)
