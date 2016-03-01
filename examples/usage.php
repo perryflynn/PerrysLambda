@@ -56,7 +56,6 @@ L::line("Where user is userfoo.", $watch->stop()->result(), ",", $subc->length()
 $watch->start();
 $grouped = $collection->groupBy(function(OA $r) { return $r->username; });
 
-var_dump(get_class($grouped));
 // count records in groups
 $temp = $grouped->select(function(OA $c, $key) {
     return array("key"=>$key, "count"=>$c->length());

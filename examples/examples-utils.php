@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(-1);
+ini_set('display_errors', 1);
+
 // Classloader
 spl_autoload_register(function($class)
 {
@@ -47,7 +50,7 @@ class L
         self::vd($var);
         echo "\n";
     }
-    
+
     public static function b($b)
     {
         if($b===true)

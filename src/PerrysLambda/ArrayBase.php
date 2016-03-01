@@ -9,10 +9,16 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
 {
 
     /**
-     * Iterator for \SeekableIterator implemtation
+     * Iterator data source
+     * @var \Iterator
+     */
+    protected $__iterator;
+
+    /**
+     * Iternator index
      * @var int
      */
-    protected $__iterator = 0;
+    protected $__iteratorindex;
 
     /**
      * Caches data keys
@@ -47,31 +53,80 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
 
     /**
      * Constructor
-     * @param array $data
+     * @param \Iterator $iterator
      * @param string $fieldtype
      * @param boolean $convertfield
      * @throws InvalidTypeException
      */
-    public function __construct(array $data = null, $fieldtype=null, $convertfield=true)
+    public function __construct($data=array(), $fieldtype=null, $convertfield=true)
     {
-        if(is_string($fieldtype))
+        if(is_string($fieldtype) && !class_exists($fieldtype))
         {
-            if(!class_exists($fieldtype))
-            {
-                throw new InvalidTypeException("Invalid Itemtype: ".$fieldtype);
-            }
+            throw new InvalidTypeException("Invalid fieldtype: ".$fieldtype);
         }
-
-        if(!is_string($fieldtype) && !is_null($fieldtype))
+        elseif(!is_string($fieldtype))
         {
             $fieldtype=null;
         }
 
+        $this->__iteratorindex = 0;
         $this->__convertfield = ($convertfield===true);
         $this->__fieldtype = $fieldtype;
         $this->__converters = array();
         $this->__validators = array();
-        parent::__construct($data);
+
+        if($data instanceof \Iterator)
+        {
+            $this->__iterator = $data;
+            parent::__construct(array());
+        }
+        elseif(is_array($data))
+        {
+            $this->__iterator = null;
+            parent::__construct($data);
+        }
+        else
+        {
+            parent::__construct(array());
+        }
+    }
+
+    protected function hasDataSource()
+    {
+        return $this->__iterator instanceof \Iterator;
+    }
+
+    /**
+     * Check for next item from data source
+     * @return boolean
+     */
+    protected function hasNextFromSource()
+    {
+        if($this->hasDataSource())
+        {
+            return $this->__iterator->valid();
+        }
+        return false;
+    }
+
+    /**
+     * Get current item from data source
+     */
+    protected function currentFromSource()
+    {
+        if($this->hasDataSource())
+        {
+            $this->add($this->convertDataField($this->__iterator->current()));
+            $this->__iterator->next();
+        }
+    }
+
+    protected function allFromSource()
+    {
+        while($this->hasNextFromSource())
+        {
+            $this->currentFromSource();
+        }
     }
 
     /**
@@ -91,7 +146,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     protected function newInstance()
     {
         $class = $this->getClassName();
-        return new $class(array(), $this->__fieldtype, $this->__convertfield);
+        return new $class(null, $this->__fieldtype, $this->__convertfield);
     }
 
     /**
@@ -190,6 +245,14 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function getNameAt($i)
     {
+        if($this->hasDataSource())
+        {
+            while($this->hasNextFromSource() && $i>=$this->length())
+            {
+                $this->currentFromSource();
+            }
+        }
+
         $fields = $this->getNames();
         if($i<$this->length())
         {
@@ -254,6 +317,14 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function exists($field)
     {
+        if($this->hasDataSource())
+        {
+            while($this->hasNextFromSource() && !(is_array($this->__data) && isset($this->__data[$field])))
+            {
+                $this->currentFromSource();
+            }
+        }
+
         return is_array($this->__data) && isset($this->__data[$field]);
     }
 
@@ -328,6 +399,14 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function getAt($i, $default=null)
     {
+        if($this->hasDataSource())
+        {
+            while($this->hasNextFromSource() && $this->getNameAt($i)===null)
+            {
+                $this->currentFromSource();
+            }
+        }
+
         $field = $this->getNameAt($i);
         if($this->exists($field))
         {
@@ -345,6 +424,14 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function get($field, $default=null, $autoset=false)
     {
+        if($this->hasDataSource())
+        {
+            while($this->hasNextFromSource() && !isset($this->__converters[$field]) && !isset($this->__data[$field]))
+            {
+                $this->currentFromSource();
+            }
+        }
+
         if(isset($this->__converters[$field]))
         {
             $var = isset($this->__data[$field]) ? $this->__data[$field] : null;
@@ -521,6 +608,25 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
             }
         }
         return $collection;
+    }
+
+    /**
+     * Group fields by condition
+     * @param callable $group
+     * @return \PerrysLambda\ArrayList
+     */
+    public function groupBy(callable $group)
+    {
+        //$this->allFromSource();
+
+        $c = $this->getItemClassName();
+        $result = new $c(null, $c, true);
+        foreach($this as $record)
+        {
+            $key = call_user_func($group, $record);
+            $result->get($key, $this->newItemInstance(), true)->add($record);
+        }
+        return $result;
     }
 
     /**
@@ -803,23 +909,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         return Sortable::startOrderDesc($this, $order);
     }
 
-    /**
-     * Group fields by condition
-     * @param callable $group
-     * @return \PerrysLambda\ArrayList
-     */
-    public function groupBy(callable $group)
-    {
-        $c = $this->getItemClassName();
-        $result = new $c(array(), $c, true);
-        foreach($this as $record)
-        {
-            $key = call_user_func($group, $record);
-            $result->get($key, $this->newItemInstance(), true)->add($record);
-        }
-        return $result;
-    }
-
 
     // ArrayAccess -------------------------------------------------------------
 
@@ -872,7 +961,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function current()
     {
-        return $this->getAt($this->__iterator);
+        return $this->getAt($this->__iteratorindex);
     }
 
     /**
@@ -880,7 +969,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function key()
     {
-        return $this->getNameAt($this->__iterator);
+        return $this->getNameAt($this->__iteratorindex);
     }
 
     /**
@@ -888,7 +977,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function next()
     {
-        $this->__iterator++;
+        $this->__iteratorindex++;
     }
 
     /**
@@ -896,7 +985,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function rewind()
     {
-        $this->__iterator=0;
+        $this->__iteratorindex = 0;
     }
 
     /**
@@ -912,7 +1001,9 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function seek($position)
     {
-        $this->__iterator = $position;
+        $this->__iteratorindex = $position;
     }
+
+
 
 }

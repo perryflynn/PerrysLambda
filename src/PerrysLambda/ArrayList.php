@@ -14,7 +14,7 @@ class ArrayList extends ArrayBase
      * @param array $data
      * @return \PerrysLambda\ArrayList
      */
-    public static function asType($type, array $data)
+    public static function asType($type, $data)
     {
         return new static($data, $type);
     }
@@ -24,7 +24,7 @@ class ArrayList extends ArrayBase
      * @param array $data
      * @return \PerrysLambda\ArrayList
      */
-    public static function asObjectArray(array $data)
+    public static function asObjectArray($data)
     {
         return new static($data, '\PerrysLambda\ObjectArray');
     }
