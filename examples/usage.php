@@ -26,7 +26,7 @@ L::line("Begin.");
 
 // Basic example
 $watch->start();
-$test = new PerrysLambda\ArrayList(array(1, 2, 3, 4, 5, 6, 7, 8, 9));
+$test = new AL(array(1, 2, 3, 4, 5, 6, 7, 8, 9));
 L::vdl($test->where(function($v) { return $v>5; })->toArray());
 L::line("Select values greater than X from simple array", $watch->stop()->result());
 

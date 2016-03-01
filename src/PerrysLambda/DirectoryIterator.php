@@ -2,21 +2,23 @@
 
 namespace PerrysLambda;
 
-class DirectoryIterator implements \Iterator
+class DirectoryIterator implements \SeekableIterator
 {
 
-    protected $resource;
-    protected $current;
+    protected $data;
+    protected $path;
     protected $index;
 
     public function __construct($path)
     {
-        $this->resource = opendir($path);
+        $this->path = DIRECTORY_SEPARATOR.trim(realpath($path), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+        $this->data = scandir($this->path);
+        $this->index = 0;
     }
 
     public function current()
     {
-        return $this->current;
+        return $this->path.$this->data[$this->index];
     }
 
     public function key()
@@ -26,18 +28,22 @@ class DirectoryIterator implements \Iterator
 
     public function next()
     {
-        $this->current = readdir($this->resource);
         $this->index++;
     }
 
     public function rewind()
     {
-        throw new \Exception("Unsupported");
+        $this->index = 0;
     }
 
     public function valid()
     {
-        return $this->current!==false;
+        return isset($this->data[$this->index]);
+    }
+
+    public function seek($position) 
+    {
+        $this->index = $position;
     }
 
 }

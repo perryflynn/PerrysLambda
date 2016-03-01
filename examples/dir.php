@@ -10,9 +10,33 @@
 include(__DIR__."/examples-utils.php");
 
 // Lambda classes
-use PerrysLambda\DirectoryIterator as DI;
+use PerrysLambda\DirectoryIteratorNoDots as DI;
 use PerrysLambda\ArrayList as AL;
 
-$d = new AL(new DI(__DIR__."/../src/PerrysLambda/"));
+$watch = new Stopwatch();
 
+echo "\n";
+L::line("Begin");
+echo "\n";
+
+$watch->start();
+$d = new AL(new DI("/usr/bin/"));
 var_dump($d->first());
+var_dump($d->lengthCached());
+var_dump($d->whereFirst(function($v) { return strpos($v, "x")!==false; }));
+var_dump($d->lengthCached());
+L::line("First by own iterator", $watch->stop()->result());
+
+echo "\n";
+
+$watch->start();
+$d = new AL(scandir("/usr/bin/"));
+var_dump($d->first());
+var_dump($d->whereFirst(function($v) { return strpos($v, "x")!==false; }));
+L::line("First by scandir", $watch->stop()->result());
+
+$watch->start();
+var_dump($d->lengthCached());
+L::line("Cached Length", $watch->stop()->result());
+
+echo "\n";
