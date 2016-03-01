@@ -20,7 +20,7 @@ L::line("Begin");
 echo "\n";
 
 $watch->start();
-$d = new AL(new DI("/usr/bin/"));
+$d = new AL(new DI("/usr/bin"));
 var_dump($d->first());
 var_dump($d->lengthCached());
 var_dump($d->whereFirst(function($v) { return strpos($v, "x")!==false; }));
@@ -30,7 +30,7 @@ L::line("First by own iterator", $watch->stop()->result());
 echo "\n";
 
 $watch->start();
-$d = new AL(scandir("/usr/bin/"));
+$d = new AL(scandir("/usr/bin"));
 var_dump($d->first());
 var_dump($d->whereFirst(function($v) { return strpos($v, "x")!==false; }));
 L::line("First by scandir", $watch->stop()->result());
