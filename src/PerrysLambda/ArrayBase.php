@@ -333,10 +333,10 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     protected function convertDataField($field)
     {
-        if($this->__convertfield===true && !is_null($this->__fieldtype) &&
-            !is_a($field, $this->__fieldtype))
+        if($this->__convertfield===true && !is_null($this->getItemClassName()) &&
+            !is_a($field, $this->getItemClassName()))
         {
-            $class = $this->__fieldtype;
+            $class = $this->getItemClassName();
             return new $class($field);
         }
         return $field;
