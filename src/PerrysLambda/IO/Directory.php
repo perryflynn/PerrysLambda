@@ -13,7 +13,7 @@ class Directory extends \PerrysLambda\ArrayList
       $this->path = $path;
       $this->root = $root;
 
-      $this->path->setDirectory($this->getRoot());
+      $this->path->setRootDirectory($this->getRoot());
 
       if(is_null($this->root))
       {
