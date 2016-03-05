@@ -50,7 +50,7 @@ class Test extends PHPUnit_Framework_TestCase
         $this->assertSame(1, $basic->min(function($v) { return $v; }));
         $this->assertSame(9, $basic->max(function($v) { return $v; }));
         $this->assertSame(5, $basic->avg(function($v) { return $v; }));
-        $this->assertSame('1.2.3.4.5.6.7.8.9', $basic->join(function($v) { return $v; }, '.'));
+        $this->assertSame('1.2.3.4.5.6.7.8.9', $basic->joinString(function($v) { return $v; }, '.'));
         $this->assertSame(5, $basic->skip(1)->take(2)->sum(function($v) { return $v; }));
         $this->assertSame(2, $basic->skip(1)->take(1)->single());
 
