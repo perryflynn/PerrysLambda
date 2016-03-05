@@ -54,6 +54,13 @@ class Directory extends \PerrysLambda\ArrayList
       return $i;
    }
 
+   protected function convertDataField($field)
+   {
+      $i = parent::convertDataField($field);
+      $i->setRootDirectory($this->getRoot());
+      return $i;
+   }
+
    /**
     * The path
     * @return \PerrysLambda\IO\File
