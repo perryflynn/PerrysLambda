@@ -10,7 +10,7 @@
 include(__DIR__."/examples-utils.php");
 
 // Lambda classes
-use PerrysLambda\DirectoryIteratorNoDots as DI;
+use PerrysLambda\IO\DirectoryIteratorNoDots as DI;
 use PerrysLambda\ArrayList as AL;
 
 $watch = new Stopwatch();

@@ -1,6 +1,6 @@
 <?php
 
-namespace PerrysLambda;
+namespace PerrysLambda\IO;
 
 class DirectoryIterator implements \SeekableIterator
 {
@@ -41,7 +41,7 @@ class DirectoryIterator implements \SeekableIterator
         return isset($this->data[$this->index]);
     }
 
-    public function seek($position) 
+    public function seek($position)
     {
         $this->index = $position;
     }

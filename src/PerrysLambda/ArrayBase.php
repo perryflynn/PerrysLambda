@@ -167,7 +167,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         {
             while($this->hasDataSourceNextItem())
             {
-                if(call_user_func($condition)===true)
+                if(call_user_func($condition)===false)
                 {
                     $result=true;
                     break;
