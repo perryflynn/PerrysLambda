@@ -213,7 +213,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     protected function getItemClassName()
     {
-        $type = '\PerrysLambda\ObjectArray';
+        $type = null;
         if(!is_null($this->__fieldtype) && is_subclass_of($this->__fieldtype, __CLASS__))
         {
             $type = $this->__fieldtype;
