@@ -20,7 +20,7 @@ L::line("Begin");
 echo "\n";
 
 $watch->start();
-$d = new AL(new DI("/usr/bin"));
+$d = new PerrysLambda\IO\Directory(new PerrysLambda\IO\File("/usr/bin"));
 var_dump($d->first());
 var_dump($d->lengthCached());
 var_dump($d->whereFirst(function($v) { return strpos($v, "x")!==false; }));

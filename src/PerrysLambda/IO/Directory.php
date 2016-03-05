@@ -13,16 +13,16 @@ class Directory extends \PerrysLambda\ArrayList
       $this->path = $path;
       $this->root = $root;
 
-      $this->path->setRootDirectory($this->getRoot());
-
       if(is_null($this->root))
       {
          $this->root = $this->path;
       }
 
+      $this->path->setRootDirectory($this->getRoot());
+
       if(is_array($items))
       {
-         parent::__construct($items);
+         parent::__construct($items, '\PerrysLambda\IO\File');
       }
       else
       {
@@ -37,7 +37,7 @@ class Directory extends \PerrysLambda\ArrayList
          }
 
          $data = new DirectoryIteratorNoDots($this->path->toString());
-         parent::__construct($data);
+         parent::__construct($data, '\PerrysLambda\IO\File');
       }
    }
 
@@ -45,25 +45,6 @@ class Directory extends \PerrysLambda\ArrayList
    {
       $class = $this->getClassName();
       return new $class($this->path, array(), $this->root);
-   }
-
-   public function getIsValidValue($value)
-   {
-      return ($value instanceof File);
-   }
-
-   protected function convertDataField($field)
-   {
-      if($this->getIsValidValue($field))
-      {
-         return $field;
-      }
-      elseif(is_string($field))
-      {
-         return new File($field, $this->getRoot());
-      }
-
-      throw new FileTypeException("Invalid list item: ".$field);
    }
 
    /**
