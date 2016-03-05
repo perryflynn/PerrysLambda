@@ -193,19 +193,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     }
 
     /**
-     * Creates new instance of current class type
-     * Expect a subclass of \PerrysLambda\ArrayBase
-     * @return \PerrysLambda\ArrayBase
-     */
-    protected function newInstance()
-    {
-        $class = $this->getClassName();
-        $o = new $class(null, $this->__fieldtype, $this->__convertfield);
-        $o->setDataSource($this->__datasource);
-        return $o;
-    }
-
-    /**
      * Get child classname as string
      * Used for ->groupBy()
      * Default is \PerrysLambda\ObjectArray
@@ -214,11 +201,24 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     protected function getItemClassName()
     {
         $type = null;
-        if(!is_null($this->__fieldtype) && is_subclass_of($this->__fieldtype, __CLASS__))
+        if(!is_null($this->__fieldtype)/* && is_subclass_of($this->__fieldtype, __CLASS__)*/)
         {
             $type = $this->__fieldtype;
         }
         return $type;
+    }
+
+    /**
+     * Creates new instance of current class type
+     * Expect a subclass of \PerrysLambda\ArrayBase
+     * @return \PerrysLambda\ArrayBase
+     */
+    protected function newInstance()
+    {
+        $class = $this->getClassName();
+        $o = new $class(null, $this->getItemClassName(), $this->__convertfield);
+        $o->setDataSource($this->__datasource);
+        return $o;
     }
 
     /**

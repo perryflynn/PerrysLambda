@@ -47,6 +47,13 @@ class Directory extends \PerrysLambda\ArrayList
       return new $class($this->path, array(), $this->root);
    }
 
+   protected function newItemInstance()
+   {
+      $i = parent::newItemInstance();
+      $i->setRootDirectory($this->getRoot());
+      return $i;
+   }
+
    /**
     * The path
     * @return \PerrysLambda\IO\File
