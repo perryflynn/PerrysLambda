@@ -33,6 +33,17 @@ class ObjectArray extends ArrayBase
      * Magic method for object access to data
      * Do not call this method directly
      * @param mixed $name
+     * @return boolean
+     */
+    public function __isset($name)
+    {
+        return $this->exists($name);
+    }
+
+    /**
+     * Magic method for object access to data
+     * Do not call this method directly
+     * @param mixed $name
      * @return mixed
      */
     public function __get($name)
