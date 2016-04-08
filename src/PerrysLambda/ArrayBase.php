@@ -378,10 +378,10 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     public function exists($field)
     {
         $this->dataSourceReadWhile(function() use($field) {
-            return !(is_array($this->__data) && isset($this->__data[$field]));
+            return !(is_array($this->__data) && array_key_exists($field, $this->__data));
         });
 
-        return is_array($this->__data) && isset($this->__data[$field]);
+        return is_array($this->__data) && array_key_exists($field, $this->__data);
     }
 
     /**
@@ -479,15 +479,15 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     public function get($field, $default=null, $autoset=false)
     {
         $this->dataSourceReadWhile(function() use($field) {
-            return (!isset($this->__converters[$field]) && !isset($this->__data[$field]));
+            return (!isset($this->__converters[$field]) && !array_key_exists($field, $this->__data));
         });
 
         if(isset($this->__converters[$field]))
         {
-            $var = isset($this->__data[$field]) ? $this->__data[$field] : null;
+            $var = array_key_exists($field, $this->__data) ? $this->__data[$field] : null;
             return $this->__converters[$field]->convert($var, $this);
         }
-        elseif(isset($this->__data[$field]))
+        elseif(array_key_exists($field, $this->__data))
         {
             return $this->__data[$field];
         }
@@ -583,10 +583,10 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     public function remove($field)
     {
         $this->dataSourceReadWhile(function() use($field) {
-            return !isset($this->__data[$field]);
+            return !array_key_exists($field, $this->__data);
         });
 
-        if(isset($this->__data[$field]))
+        if(array_key_exists($field, $this->__data))
         {
             unset($this->__data[$field]);
         }
