@@ -29,24 +29,7 @@ class ObjectArray extends ArrayBase
         return true;
     }
 
-    /**
-     * Magic method for object access to data
-     * Do not call this method directly
-     * @param mixed $name
-     * @return boolean
-     */
-    public function __isset($name)
-    {
-        return $this->exists($name);
-    }
-
-    /**
-     * Magic method for object access to data
-     * Do not call this method directly
-     * @param mixed $name
-     * @return mixed
-     */
-    public function __get($name)
+    protected function &getFieldOrScalar($name)
     {
         if($this->exists($name)!==true && strlen($name)>6)
         {
@@ -65,11 +48,44 @@ class ObjectArray extends ArrayBase
      * Magic method for object access to data
      * Do not call this method directly
      * @param mixed $name
+     * @return boolean
+     */
+    public function __isset($name)
+    {
+        return $this->exists($name);
+    }
+
+    /**
+     * Magic method for object access to data
+     * Do not call this method directly
+     * @param mixed $name
+     * @return mixed
+     */
+    public function &__get($name)
+    {
+        return $this->getFieldOrScalar($name);
+    }
+
+    /**
+     * Magic method for method access to data
+     * Do not call this method directly
+     * @param mixed $name
+     * @return mixed
+     */
+    public function __invoke($name)
+    {
+        return $this->getFieldOrScalar($name);
+    }
+
+    /**
+     * Magic method for object access to data
+     * Do not call this method directly
+     * @param mixed $name
      * @param mixed $value
      */
     public function __set($name, $value)
     {
-        $this->set($value, $name);
+        $this->set($name, $value);
     }
 
 }

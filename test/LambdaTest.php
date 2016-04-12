@@ -72,4 +72,40 @@ class Test extends PHPUnit_Framework_TestCase
         $this->assertSame(9, $sorted[4]);
     }
 
+    public function testReferences()
+    {
+        $test = new \PerrysLambda\ObjectArray();
+
+        $test->a = 12;
+        $this->assertSame(12, $test->a);
+
+        $test->a++;
+        $this->assertSame(13, $test->a);
+        $this->assertSame(13, $test('a'));
+
+        $a = $test->a;
+        $a++;
+        $this->assertSame(13, $test->a);
+
+        $a = &$test->a;
+        $a++;
+        $this->assertSame(14, $test->a);
+
+        $test['b'] = 42;
+        $this->assertSame(42, $test['b']);
+        $this->assertSame(42, $test->b);
+        $this->assertSame(42, $test('b'));
+
+        $test['b']++;
+        $this->assertSame(43, $test['b']);
+
+        $b = $test['b'];
+        $b++;
+        $this->assertSame(43, $test['b']);
+
+        $b = &$test['b'];
+        $b++;
+        $this->assertSame(44, $test['b']);
+    }
+
 }

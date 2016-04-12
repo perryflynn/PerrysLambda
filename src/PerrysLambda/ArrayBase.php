@@ -476,7 +476,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      * @param bool $autoset
      * @return mixed
      */
-    public function get($field, $default=null, $autoset=false)
+    public function &get($field, $default=null, $autoset=false)
     {
         $this->dataSourceReadWhile(function() use($field) {
             return (!isset($this->__converters[$field]) && !array_key_exists($field, $this->__data));
@@ -1032,7 +1032,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     /**
      * \ArrayAccess implementation
      */
-    public function offsetGet($offset)
+    public function &offsetGet($offset)
     {
         return $this->get($offset);
     }
