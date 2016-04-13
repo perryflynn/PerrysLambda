@@ -106,6 +106,33 @@ class Test extends PHPUnit_Framework_TestCase
         $b = &$test['b'];
         $b++;
         $this->assertSame(44, $test['b']);
+        
+        $test->c = 34;
+        $test->d = 45;
+        $test->e = 56;
+        $test->f = 67;
+
+        $test->each(function($v) { $v++; });
+        $this->assertSame('14.44.34.45.56.67', $test->joinString(function($v) { return $v; }, '.'));
+
+        $test->each(function(&$v) { $v++; });
+        $this->assertSame('15.45.35.46.57.68', $test->joinString(function($v) { return $v; }, '.'));
+
+        foreach($test->generator() as $item) { $item++; } unset($item);
+        $this->assertSame('15.45.35.46.57.68', $test->joinString(function($v) { return $v; }, '.'));
+        
+        foreach($test->generator() as &$item) { $item++; } unset($item);
+        $this->assertSame('16.46.36.47.58.69', $test->joinString(function($v) { return $v; }, '.'));
+        
+        $temp = $test->getAt(0);
+        $this->assertSame(16, $temp);
+        $temp++;
+        $this->assertSame(16, $test->getAt(0));
+        
+        $temp = &$test->getAt(0);
+        $temp++;
+        $this->assertSame(17, $test->getAt(0));
+        
     }
 
 }

@@ -31,8 +31,8 @@ var_dump($test->a);
 
 
 echo "\n";
-L::line("b=12; b++;");
-$test['b']=12;
+L::line("b=23; b++;");
+$test['b'] = 23;
 $test['b']++;
 
 var_dump($test['b']);
@@ -48,5 +48,37 @@ L::line("ref copy b; \$b++; echo b");
 $b = &$test['b'];
 $b++;
 var_dump($b);
+
+echo "\n";
+L::line("objectfor++");
+
+$test->c = 34;
+$test->d = 45;
+$test->e = 56;
+$test->f = 67;
+
+$test->each(function($v) { $v++; });
+L::vd($test->toArray());
+
+$test->each(function(&$v) { $v++; });
+L::vd($test->toArray());
+
+echo "\n";
+L::line("foreach++");
+foreach($test->generator() as $item) { $item++; } unset($item);
+L::vd($test->toArray());
+foreach($test->generator() as &$item) { $item++; } unset($item);
+L::vd($test->toArray());
+
+echo "\n";
+
+L::line("getAt() referencing");
+$temp = $test->getAt(0);
+$temp++;
+L::vd(array($test->getAt(0), $test->a));
+
+$temp = &$test->getAt(0);
+$temp++;
+L::vd(array($test->getAt(0), $test->a));
 
 echo "\n";

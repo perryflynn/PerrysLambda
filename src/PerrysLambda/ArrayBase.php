@@ -457,7 +457,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      * @param mixed $default
      * @return mixed
      */
-    public function getAt($i, $default=null)
+    public function &getAt($i, $default=null)
     {
         // Source read at getNameAt()
 
@@ -795,10 +795,12 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function each(callable $each)
     {
-        foreach($this as $key => $record)
+        $this->dataSourceReadToEnd();
+        foreach($this->__data as $key => &$record)
         {
-            call_user_func($each, $record, $key);
+            call_user_func_array($each, array(&$record, $key));
         }
+        unset($record);
         return $this;
     }
 
@@ -1059,6 +1061,20 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     {
         $this->remove($offset);
     }
+    
+    
+    // Generator ---------------------------------------------------------------
+    
+    
+    public function &generator()
+    {
+        $this->dataSourceReadToEnd();
+        foreach($this->__data as $key => &$record)
+        {
+            yield $key => $record;
+        }
+        unset($record);
+    }
 
 
     // SeekableIterator --------------------------------------------------------
@@ -1112,6 +1128,5 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         $this->__iteratorindex = $position;
     }
 
-
-
+    
 }
