@@ -145,7 +145,6 @@ class Test extends PHPUnit_Framework_TestCase
 
         $list = \PerrysLambda\ArrayList::asObjectArray($testdata);
 
-
         $second = $list->getAt(1);
         $this->assertSame('foo2', $second->a);
         $this->assertSame(1, $list->indexOfValue($second));
@@ -162,7 +161,6 @@ class Test extends PHPUnit_Framework_TestCase
         $this->assertSame(1, $list->indexOfValue($more));
         $list->removeKey(1);
         $this->assertSame(-1, $list->indexOfValue($more));
-
     }
 
 }

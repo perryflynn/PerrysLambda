@@ -42,7 +42,7 @@ class ObjectArray extends ArrayBase
                 return $temp;
             }
         }
-        $temp = $this->get($name);
+        $temp = &$this->get($name);
         return $temp;
     }
 
