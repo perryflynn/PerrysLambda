@@ -38,10 +38,12 @@ class ObjectArray extends ArrayBase
             $scalar = substr($name, -6);
             if($scalar=="Scalar" && $this->exists($scalarname))
             {
-                return $this->getScalar($scalarname);
+                $temp = $this->getScalar($scalarname);
+                return $temp;
             }
         }
-        return $this->get($name);
+        $temp = $this->get($name);
+        return $temp;
     }
 
     /**

@@ -9,12 +9,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
 {
 
     /**
-     * Iterator data source
-     * @var \Iterator
-     */
-    protected $__datasource;
-
-    /**
      * Iternator index
      * @var int
      */
@@ -75,112 +69,14 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         $this->__converters = array();
         $this->__validators = array();
 
-        if($data instanceof \Iterator)
+        if(is_array($data))
         {
-            $this->__datasource = $data;
-            $this->__datasource->rewind();
-            parent::__construct(array());
-        }
-        elseif(is_array($data))
-        {
-            $this->__datasource = null;
             parent::__construct($data);
         }
         else
         {
             parent::__construct(array());
         }
-    }
-
-    /**
-     * Set datasource
-     * @param \Iterator $source
-     */
-    public function setDataSource(\Iterator $source=null)
-    {
-        $this->__datasource = $source;
-    }
-
-    /**
-     * Has datasource?
-     * @return boolean
-     */
-    protected function hasDataSource()
-    {
-        return $this->__datasource!==null &&
-                $this->__datasource instanceof \Iterator;
-    }
-
-    /**
-     * Check for next item from data source
-     * @return boolean
-     */
-    protected function hasDataSourceNextItem()
-    {
-        if($this->hasDataSource())
-        {
-            $b = $this->__datasource->valid();
-            if($this->__datasource!==null && $b===false)
-            {
-                $this->__datasource=null;
-            }
-            return $b;
-        }
-        return false;
-    }
-
-    /**
-     * Get current item from data source
-     */
-    protected function getDataSourceItem()
-    {
-        if($this->hasDataSource())
-        {
-            $this->add($this->convertDataField($this->__datasource->current()));
-            $this->__datasource->next();
-        }
-    }
-
-    /**
-     * Read full iterator into memory
-     */
-    protected function dataSourceReadToEnd()
-    {
-        if($this->hasDataSource())
-        {
-            while($this->hasDataSourceNextItem())
-            {
-                $this->getDataSourceItem();
-            }
-        }
-    }
-
-    /**
-     * Read util callable returns false
-     * @param callable $condition
-     * @return null=no source; true=conditional break; false=data end without conditional break
-     */
-    protected function dataSourceReadWhile(callable $condition)
-    {
-        $result=null;
-        if($this->hasDataSource())
-        {
-            while($this->hasDataSourceNextItem())
-            {
-                if(call_user_func($condition)===false)
-                {
-                    $result=true;
-                    break;
-                }
-                else
-                {
-                    $result=false;
-                }
-
-                $this->getDataSourceItem();
-            }
-        }
-        return $result;
     }
 
     /**
@@ -217,7 +113,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     {
         $class = $this->getClassName();
         $o = new $class(null, $this->getItemClassName(), $this->__convertfield);
-        $o->setDataSource($this->__datasource);
         return $o;
     }
 
@@ -301,14 +196,43 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function getNameAt($i)
     {
-        $this->dataSourceReadWhile(function() use($i) { return $i>=$this->lengthCached(); });
-
         $fields = $this->getNames();
         if($i<$this->lengthCached())
         {
             return $fields[$i];
         }
         return null;
+    }
+
+    /**
+     * Index of element
+     * -1 = element not found
+     * @param mixed $value
+     * @return int
+     */
+    public function indexOfValue($value)
+    {
+        $i = array_search($value, $this->__data, true);
+        if($i===false)
+        {
+            return -1;
+        }
+        return $i;
+    }
+
+    /**
+     * Index of key
+     * @param mixed $key
+     * @return int
+     */
+    public function indexOfKey($key)
+    {
+        $i = array_search($key, $this->getNames(), true);
+        if($i===false)
+        {
+            return -1;
+        }
+        return $i;
     }
 
     /**
@@ -366,7 +290,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function length()
     {
-        $this->dataSourceReadToEnd();
         return $this->lengthCached();
     }
 
@@ -377,10 +300,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function exists($field)
     {
-        $this->dataSourceReadWhile(function() use($field) {
-            return !(is_array($this->__data) && array_key_exists($field, $this->__data));
-        });
-
         return is_array($this->__data) && array_key_exists($field, $this->__data);
     }
 
@@ -459,8 +378,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function &getAt($i, $default=null)
     {
-        // Source read at getNameAt()
-
         $field = $this->getNameAt($i);
         if($this->exists($field))
         {
@@ -478,14 +395,11 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function &get($field, $default=null, $autoset=false)
     {
-        $this->dataSourceReadWhile(function() use($field) {
-            return (!isset($this->__converters[$field]) && !array_key_exists($field, $this->__data));
-        });
-
         if(isset($this->__converters[$field]))
         {
             $var = array_key_exists($field, $this->__data) ? $this->__data[$field] : null;
-            return $this->__converters[$field]->convert($var, $this);
+            $temp = $this->__converters[$field]->convert($var, $this);
+            return $temp;
         }
         elseif(array_key_exists($field, $this->__data))
         {
@@ -571,7 +485,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     public function removeAt($i)
     {
         $field = $this->getNameAt($i);
-        $this->remove($field);
+        $this->removeKey($field);
         return $this;
     }
 
@@ -580,15 +494,26 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      * @param mixed $field
      * @return \PerrysLambda\ArrayList
      */
-    public function remove($field)
+    public function removeKey($field)
     {
-        $this->dataSourceReadWhile(function() use($field) {
-            return !array_key_exists($field, $this->__data);
-        });
-
         if(array_key_exists($field, $this->__data))
         {
             unset($this->__data[$field]);
+        }
+        return $this;
+    }
+
+    /**
+     * Remove field by its value
+     * @param mixed $value
+     * @return \PerrysLambda\ArrayList
+     */
+    public function removeValue($value)
+    {
+        $i = $this->indexOfValue($value);
+        if($i>=0)
+        {
+            $this->removeKey($i);
         }
         return $this;
     }
@@ -795,7 +720,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function each(callable $each)
     {
-        $this->dataSourceReadToEnd();
         foreach($this->__data as $key => &$record)
         {
             call_user_func_array($each, array(&$record, $key));
@@ -866,7 +790,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function first()
     {
-        $this->dataSourceReadWhile(function() { return $this->lengthCached()<1; });
         if($this->lengthCached()>0)
         {
             return $this->getAt(0);
@@ -881,7 +804,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function firstOrDefault($default=null)
     {
-        $this->dataSourceReadWhile(function() { return $this->lengthCached()<1; });
         if($this->lengthCached()>0)
         {
             return $this->getAt(0);
@@ -896,7 +818,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function last()
     {
-        $this->dataSourceReadToEnd();
         if($this->lengthCached()>0)
         {
             return $this->getAt(($this->lengthCached()-1));
@@ -911,7 +832,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function lastOrDefault($default=null)
     {
-        $this->dataSourceReadToEnd();
         if($this->lengthCached()>0)
         {
             return $this->getAt(($this->lengthCached()-1));
@@ -927,7 +847,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function single()
     {
-        $this->dataSourceReadWhile(function() { return $this->lengthCached()<2; });
         if($this->lengthCached()==1)
         {
             return $this->getAt(0);
@@ -943,7 +862,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function singleOrDefault($default=null)
     {
-        $this->dataSourceReadWhile(function() { return $this->lengthCached()<2; });
         if($this->lengthCached()==1)
         {
             return $this->getAt(0);
@@ -962,8 +880,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         {
             throw new \InvalidArgumentException();
         }
-
-        $this->dataSourceReadWhile(function() use($length) { return $this->lengthCached()<$length; });
 
         if($length>$this->lengthCached())
         {
@@ -986,8 +902,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         {
             throw new \InvalidArgumentException();
         }
-
-        $this->dataSourceReadWhile(function() use($offset) { return $this->lengthCached()<$offset; });
 
         if($offset>=$this->lengthCached())
         {
@@ -1061,14 +975,13 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     {
         $this->remove($offset);
     }
-    
-    
+
+
     // Generator ---------------------------------------------------------------
-    
-    
+
+
     public function &generator()
     {
-        $this->dataSourceReadToEnd();
         foreach($this->__data as $key => &$record)
         {
             yield $key => $record;
@@ -1128,5 +1041,5 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         $this->__iteratorindex = $position;
     }
 
-    
+
 }

@@ -106,7 +106,7 @@ class Test extends PHPUnit_Framework_TestCase
         $b = &$test['b'];
         $b++;
         $this->assertSame(44, $test['b']);
-        
+
         $test->c = 34;
         $test->d = 45;
         $test->e = 56;
@@ -120,19 +120,49 @@ class Test extends PHPUnit_Framework_TestCase
 
         foreach($test->generator() as $item) { $item++; } unset($item);
         $this->assertSame('15.45.35.46.57.68', $test->joinString(function($v) { return $v; }, '.'));
-        
+
         foreach($test->generator() as &$item) { $item++; } unset($item);
         $this->assertSame('16.46.36.47.58.69', $test->joinString(function($v) { return $v; }, '.'));
-        
+
         $temp = $test->getAt(0);
         $this->assertSame(16, $temp);
         $temp++;
         $this->assertSame(16, $test->getAt(0));
-        
+
         $temp = &$test->getAt(0);
         $temp++;
         $this->assertSame(17, $test->getAt(0));
-        
+    }
+
+    public function testRemoving()
+    {
+        $testdata = array(
+            array('a' => 'foo', 'b'=>'bar', 'c'=>'foobar', 'd'=>'barfoo'),
+            array('a' => 'foo2', 'b'=>'bar2', 'c'=>'foobar2', 'd'=>'barfoo2'),
+            array('a' => '1', 'b'=>'2', 'c'=>'3', 'd'=>'4'),
+            array('a' => '1', 'b'=>'2', 'c'=>'3', 'd'=>'4'),
+        );
+
+        $list = \PerrysLambda\ArrayList::asObjectArray($testdata);
+
+
+        $second = $list->getAt(1);
+        $this->assertSame('foo2', $second->a);
+        $this->assertSame(1, $list->indexOfValue($second));
+        $list->removeValue($second);
+        $this->assertSame(-1, $list->indexOfValue($second));
+
+        $next = $list->getAt(1);
+        $this->assertSame('1', $next->a);
+        $this->assertSame(1, $list->indexOfValue($next));
+        $list->removeValue($next);
+        $this->assertSame(-1, $list->indexOfValue($next));
+
+        $more = $list->getAt(1);
+        $this->assertSame(1, $list->indexOfValue($more));
+        $list->removeKey(1);
+        $this->assertSame(-1, $list->indexOfValue($more));
+
     }
 
 }
