@@ -197,7 +197,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     public function getNameAt($i)
     {
         $fields = $this->getNames();
-        if($i<$this->lengthCached())
+        if($i<$this->length())
         {
             return $fields[$i];
         }
@@ -279,18 +279,9 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      * Get count of fields currently loaded from data source
      * @return int
      */
-    public function lengthCached()
-    {
-        return count($this->__data);
-    }
-
-    /**
-     * Read datasource to end and get count of fields
-     * @return int
-     */
     public function length()
     {
-        return $this->lengthCached();
+        return count($this->__data);
     }
 
     /**
@@ -769,7 +760,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function avg(callable $avg)
     {
-        return ($this->sum($avg)/$this->lengthCached());
+        return ($this->sum($avg)/$this->length());
     }
 
     /**
@@ -791,7 +782,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function first()
     {
-        if($this->lengthCached()>0)
+        if($this->length()>0)
         {
             return $this->getAt(0);
         }
@@ -805,7 +796,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function firstOrDefault($default=null)
     {
-        if($this->lengthCached()>0)
+        if($this->length()>0)
         {
             return $this->getAt(0);
         }
@@ -819,9 +810,9 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function last()
     {
-        if($this->lengthCached()>0)
+        if($this->length()>0)
         {
-            return $this->getAt(($this->lengthCached()-1));
+            return $this->getAt(($this->length()-1));
         }
         throw new \OutOfBoundsException();
     }
@@ -833,9 +824,9 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function lastOrDefault($default=null)
     {
-        if($this->lengthCached()>0)
+        if($this->length()>0)
         {
-            return $this->getAt(($this->lengthCached()-1));
+            return $this->getAt(($this->length()-1));
         }
         return $default;
     }
@@ -848,7 +839,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function single()
     {
-        if($this->lengthCached()==1)
+        if($this->length()==1)
         {
             return $this->getAt(0);
         }
@@ -863,7 +854,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function singleOrDefault($default=null)
     {
-        if($this->lengthCached()==1)
+        if($this->length()==1)
         {
             return $this->getAt(0);
         }
@@ -882,9 +873,9 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
             throw new \InvalidArgumentException();
         }
 
-        if($length>$this->lengthCached())
+        if($length>$this->length())
         {
-            $length = $this->lengthCached();
+            $length = $this->length();
         }
 
         $temp = $this->newInstance();
@@ -904,7 +895,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
             throw new \InvalidArgumentException();
         }
 
-        if($offset>=$this->lengthCached())
+        if($offset>=$this->length())
         {
             throw new \OutOfBoundsException();
         }

@@ -159,8 +159,12 @@ class Test extends PHPUnit_Framework_TestCase
 
         $more = $list->getAt(1);
         $this->assertSame(1, $list->indexOfValue($more));
-        $list->removeKey(1);
+        $list->removeKey(3);
         $this->assertSame(-1, $list->indexOfValue($more));
+
+        $list->removeAt(0);
+        $this->assertSame(0, $list->length());
+
     }
 
 }
