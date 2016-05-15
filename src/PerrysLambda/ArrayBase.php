@@ -490,20 +490,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     }
 
     /**
-     * Remove field by name
-     * @param mixed $field
-     * @return \PerrysLambda\ArrayList
-     */
-    public function removeKey($field)
-    {
-        if(array_key_exists($field, $this->__data))
-        {
-            unset($this->__data[$field]);
-        }
-        return $this;
-    }
-
-    /**
      * Remove field by its value
      * @param mixed $value
      * @return \PerrysLambda\ArrayList
@@ -515,6 +501,21 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         {
             $this->removeKey($i);
         }
+        return $this;
+    }
+
+    /**
+     * Remove field by name
+     * @param mixed $field
+     * @return \PerrysLambda\ArrayList
+     */
+    public function removeKey($field)
+    {
+        if(array_key_exists($field, $this->__data))
+        {
+            unset($this->__data[$field]);
+        }
+        $this->regenerateKeyCache();
         return $this;
     }
 
