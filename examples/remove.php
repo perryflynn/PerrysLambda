@@ -34,3 +34,5 @@ $list->removeKey(3);
 $list->removeAt(0);
 
 $list->each(function($v) { L::vd($v->toArray()); });
+
+L::vdl($list->length());

@@ -205,6 +205,22 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     }
 
     /**
+     * Get field name by its value
+     * NULL if not exist
+     * @param mixed $value
+     * @return mixed
+     */
+    public function getNameByValue($value)
+    {
+        $i = array_search($value, $this->__data, true);
+        if($i===false)
+        {
+            return null;
+        }
+        return $i;
+    }
+
+    /**
      * Index of element
      * -1 = element not found
      * @param mixed $value
@@ -212,12 +228,12 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function indexOfValue($value)
     {
-        $i = array_search($value, $this->__data, true);
-        if($i===false)
+        $name = $this->getNameByValue($value);
+        if(!is_null($name))
         {
-            return -1;
+            return array_search($name, $this->getNames(), true);
         }
-        return $i;
+        return -1;
     }
 
     /**
@@ -487,7 +503,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function removeValue($value)
     {
-        $i = $this->indexOfValue($value);
+        $i = $this->getNameByValue($value);
         if($i>=0)
         {
             $this->removeKey($i);
