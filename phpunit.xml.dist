@@ -4,5 +4,8 @@
 		<testsuite>
 			<file>test/LambdaTest.php</file>
 		</testsuite>
+		<testsuite>
+			<file>test/IOTest.php</file>
+		</testsuite>
 	</testsuites>
 </phpunit>

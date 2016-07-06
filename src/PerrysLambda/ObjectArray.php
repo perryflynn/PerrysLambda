@@ -8,6 +8,24 @@ namespace PerrysLambda;
 class ObjectArray extends ArrayBase
 {
 
+    protected function &getFieldOrScalar($name)
+    {
+        if($this->exists($name)!==true && strlen($name)>6)
+        {
+            // foobarScalar => $this->getScalar('foobar')
+            $scalarname = substr($name, 0, -6);
+            $scalar = substr($name, -6);
+            if($scalar=="Scalar" && $this->exists($scalarname))
+            {
+                $temp = $this->getScalar($scalarname);
+                return $temp;
+            }
+        }
+        $temp = &$this->get($name);
+        return $temp;
+    }
+
+
     /**
      * Check for string, numeric or null as key
      * @param mixed $name
@@ -27,23 +45,6 @@ class ObjectArray extends ArrayBase
     public function getIsValidValue($value)
     {
         return true;
-    }
-
-    protected function &getFieldOrScalar($name)
-    {
-        if($this->exists($name)!==true && strlen($name)>6)
-        {
-            // foobarScalar => $this->getScalar('foobar')
-            $scalarname = substr($name, 0, -6);
-            $scalar = substr($name, -6);
-            if($scalar=="Scalar" && $this->exists($scalarname))
-            {
-                $temp = $this->getScalar($scalarname);
-                return $temp;
-            }
-        }
-        $temp = &$this->get($name);
-        return $temp;
     }
 
     /**

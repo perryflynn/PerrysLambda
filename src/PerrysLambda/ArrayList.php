@@ -9,24 +9,28 @@ class ArrayList extends ArrayBase
 {
 
     /**
-     * New ArrayList with fixed item type
-     * @param string $type
-     * @param array $data
+     * Create arraylist of objectarray
+     * @param mixed[][] $data
      * @return \PerrysLambda\ArrayList
      */
-    public static function asType($type, $data)
+    public static function asObjectArray(array $data)
     {
-        return new static($data, $type);
+        $converter = new ObjectArrayConverter();
+        $converter->setArraySource($data);
+        return new static($converter);
     }
 
     /**
-     * New ArrayList with ObjectArrays as items
-     * @param array $data
+     * Create arraylist of class
+     * @param string $type
+     * @param mixed[] $data
      * @return \PerrysLambda\ArrayList
      */
-    public static function asObjectArray($data)
+    public static function asType($type, array $data)
     {
-        return new static($data, '\PerrysLambda\ObjectArray');
+        $converter = new TypeStringConverter($type);
+        $converter->setArraySource($data);
+        return new static($converter);
     }
 
     /**
@@ -46,11 +50,7 @@ class ArrayList extends ArrayBase
      */
     public function getIsValidValue($value)
     {
-        if(is_null($this->__fieldtype))
-        {
-            return true;
-        }
-        return is_a($value, $this->__fieldtype);
+        return true;
     }
 
 }

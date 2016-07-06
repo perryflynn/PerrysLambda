@@ -2,6 +2,12 @@
 
 namespace PerrysLambda;
 
+use PerrysLambda\Exception\InvalidDataException;
+use PerrysLambda\Exception\InvalidKeyException;
+use PerrysLambda\Exception\InvalidTypeException;
+use PerrysLambda\Exception\InvalidValueException;
+
+
 /**
  * Base class for array-like types
  */
@@ -21,55 +27,31 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     protected $__keycache = null;
 
     /**
-     * Class type of child items
-     * @var string
+     * Record and field converter
+     * @var \PerrysLambda\IConverter
      */
-    protected $__fieldtype;
-
-    /**
-     * Autoconvert new fields to $this->__fieldtype
-     * @var boolean
-     */
-    protected $__convertfield;
-
-    /**
-     * Fieldvalue converters
-     * @var array
-     */
-    protected $__converters;
-
-    /**
-     * Fieldvalue validators
-     * @var array
-     */
-    protected $__validators;
+    protected $__converter;
 
 
     /**
      * Constructor
-     * @param \Iterator $iterator
+     * @param array $data
      * @param string $fieldtype
      * @param boolean $convertfield
      * @throws InvalidTypeException
      */
-    public function __construct($data=array(), $fieldtype=null, $convertfield=true)
+    public function __construct($data=array())
     {
-        if(is_string($fieldtype) && !class_exists($fieldtype))
-        {
-            throw new InvalidTypeException("Invalid fieldtype: ".$fieldtype);
-        }
-        elseif(!is_string($fieldtype))
-        {
-            $fieldtype=null;
-        }
-
         $this->__iteratorindex = 0;
-        $this->__convertfield = ($convertfield===true);
-        $this->__fieldtype = $fieldtype;
-        $this->__converters = array();
-        $this->__validators = array();
+        $this->__converter = null;
 
-        if(is_array($data))
+        if($data instanceof IConverter)
+        {
+            parent::__construct(array());
+            $this->__converter = $data;
+            $this->__converter->importInto($this);
+        }
+        elseif(is_array($data))
         {
             parent::__construct($data);
         }
@@ -88,20 +70,13 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         return get_called_class();
     }
 
-    /**
-     * Get child classname as string
-     * Used for ->groupBy()
-     * Default is \PerrysLambda\ObjectArray
-     * @return string
-     */
-    protected function getItemClassName()
+    protected function newConverterInstance()
     {
-        $type = null;
-        if(!is_null($this->__fieldtype)/* && is_subclass_of($this->__fieldtype, __CLASS__)*/)
+        if($this->__converter!==null)
         {
-            $type = $this->__fieldtype;
+            return $this->__converter->newInstance();
         }
-        return $type;
+        return null;
     }
 
     /**
@@ -112,20 +87,15 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     protected function newInstance()
     {
         $class = $this->getClassName();
-        $o = new $class(null, $this->getItemClassName(), $this->__convertfield);
-        return $o;
-    }
+        $data = $this->newConverterInstance();
 
-    /**
-     * Create new instance of current child class type
-     * Used for ->groupBy()
-     * Expect a subclass of \PerrysLambda\ArrayBase
-     * @return \PerrysLambda\ArrayBase
-     */
-    protected function newItemInstance()
-    {
-        $c = $this->getItemClassName();
-        return new $c();
+        if($data===null)
+        {
+            $data = array();
+        }
+
+        $o = new $class($data);
+        return $o;
     }
 
     /**
@@ -141,8 +111,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         {
             throw new InvalidDataException();
         }
-
-        $data = $this->convertData($data);
 
         if(!$this->getIsAllKeysValid($data))
         {
@@ -252,43 +220,50 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     }
 
     /**
-     * Convert data
-     * @param array $data
-     * @return array
-     */
-    protected function convertData($data)
-    {
-        foreach($data as &$field)
-        {
-            $field = $this->convertDataField($field);
-        }
-        unset($field);
-        return $data;
-    }
-
-    /**
-     * Convert single data field
-     * @param mixed $field
-     * @return mixed
-     */
-    protected function convertDataField($field)
-    {
-        if($this->__convertfield===true && !is_null($this->getItemClassName()) &&
-            !is_a($field, $this->getItemClassName()))
-        {
-            $class = $this->getItemClassName();
-            return new $class($field);
-        }
-        return $field;
-    }
-
-    /**
      * Get data
      * @return array
      */
     public function toArray()
     {
         return $this->__data;
+    }
+
+    /**
+     * Serialize via converter
+     * @return mixed[]
+     */
+    public function serialize()
+    {
+        if($this->__converter===null)
+        {
+            return $this->toArray();
+        }
+        else
+        {
+            return $this->__converter->exportFromAsArray($this);
+        }
+    }
+
+    /**
+     * Serialize via converter as generator
+     * @return mixed[]
+     */
+    public function serializeGenerator()
+    {
+        if($this->__converter===null)
+        {
+            foreach($this->toArray() as $index => $row)
+            {
+                yield $index => $row;
+            }
+        }
+        else
+        {
+            foreach($this->__converter->exportFromAsGenerator($this) as $index => $row)
+            {
+                yield $index => $row;
+            }
+        }
     }
 
     /**
@@ -308,73 +283,6 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     public function exists($field)
     {
         return is_array($this->__data) && array_key_exists($field, $this->__data);
-    }
-
-    /**
-     * Set converter for a field
-     * @param mixed $field
-     * @param \PerrysLambda\Converter\BasicConverter $converter
-     */
-    public function setFieldConverter($field, \PerrysLambda\Converter\BasicConverter $converter)
-    {
-        $this->__converters[$field] = $converter;
-    }
-
-    /**
-     * Add validator for a field
-     * @param mixed $field
-     * @param \PerrysLambda\Validator\BasicValidator $validator
-     */
-    public function addFieldValidator($field, \PerrysLambda\Validator\BasicValidator $validator)
-    {
-        if(!isset($this->__validators[$field]))
-        {
-            $this->__validators[$field] = array();
-        }
-        $this->__validators[$field][] = $validator;
-    }
-
-    /**
-     * Validate field
-     * @param mixed $field
-     * @return array
-     */
-    public function isFieldValid($field)
-    {
-        $result = array();
-        if(isset($this->__validators[$field]))
-        {
-            foreach($this->__validators[$field] as $v)
-            {
-                if(!$v->validate($field, $this->get($field), $this))
-                {
-                    $result[] = $v->getMessage();
-                }
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Validate all fields
-     * @return array
-     */
-    public function isValid()
-    {
-        $result = array();
-        $keys = array_keys($this->__validators);
-        foreach($keys as $key)
-        {
-            $result[$key] = $this->isFieldValid($key);
-        }
-        foreach($this->getNames() as $key)
-        {
-            if(!isset($result[$key]))
-            {
-                $result[$key] = array();
-            }
-        }
-        return $result;
     }
 
     /**
@@ -402,13 +310,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function &get($field, $default=null, $autoset=false)
     {
-        if(isset($this->__converters[$field]))
-        {
-            $var = array_key_exists($field, $this->__data) ? $this->__data[$field] : null;
-            $temp = $this->__converters[$field]->convert($var, $this);
-            return $temp;
-        }
-        elseif(array_key_exists($field, $this->__data))
+        if(array_key_exists($field, $this->__data))
         {
             return $this->__data[$field];
         }
@@ -459,16 +361,27 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function set($field, $value)
     {
-        if(!$this->getIsValidKey($field))
+        $tempfield = $field;
+        $tempvalue = $value;
+
+        if($this->__converter !== null)
+        {
+            $this->__converter->deserializeRow($tempvalue, $tempfield);
+        }
+
+        if(!$this->getIsValidKey($tempfield))
         {
             throw new InvalidKeyException();
         }
-        if(!$this->getIsValidValue($value))
+
+        if(!$this->getIsValidValue($tempvalue))
         {
             throw new InvalidValueException();
         }
-        $this->__data[$field] = $value;
+
+        $this->__data[$tempfield] = $tempvalue;
         $this->regenerateKeyCache();
+
         return $this;
     }
 
@@ -479,7 +392,15 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function add($value)
     {
-        $this->__data[] = $value;
+        $foo = null;
+        $tempvalue = $value;
+
+        if($this->__converter !== null)
+        {
+            $this->__converter->deserializeRow($tempvalue, $foo);
+        }
+
+        $this->__data[] = $tempvalue;
         $this->regenerateKeyCache();
         return $this;
     }
@@ -636,24 +557,30 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     /**
      * Group fields by condition
      * @param callable $group
-     * @return \PerrysLambda\ArrayList
+     * @return \PerrysLambda\ArrayBase
      */
     public function groupBy(callable $group)
     {
-        $c = $this->getItemClassName();
-        $result = new $c(null, $c, true);
+        $result = new ObjectArray(array());
+        if($this instanceof ObjectArray)
+        {
+            $result = $this->newInstance();
+        }
+
         foreach($this as $record)
         {
             $key = call_user_func($group, $record);
-            $result->get($key, $this->newItemInstance(), true)->add($record);
+            $newitemtype = new ArrayList(array());
+            $result->get($key, $newitemtype, true)->add($record);
         }
+
         return $result;
     }
 
     /**
      * filter duplicate field by condition
      * @param callable $distinct
-     * @return \PerrysLambda\ArrayList
+     * @return \PerrysLambda\ArrayBase
      */
     public function distinct(callable $distinct)
     {
@@ -981,7 +908,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function offsetUnset($offset)
     {
-        $this->remove($offset);
+        $this->removeKey($offset);
     }
 
 

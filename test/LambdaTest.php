@@ -1,7 +1,8 @@
 <?php
 
-class Test extends PHPUnit_Framework_TestCase
+class LambdaTest extends PHPUnit_Framework_TestCase
 {
+
 
     public function testScalar()
     {
@@ -37,6 +38,7 @@ class Test extends PHPUnit_Framework_TestCase
         $this->assertSame('50.3', $string->toString());
     }
 
+
     public function testLambda()
     {
         $basic = new \PerrysLambda\ArrayList(array(1,2,3,4,5,6,7,8,9));
@@ -71,6 +73,7 @@ class Test extends PHPUnit_Framework_TestCase
         $this->assertSame(5, $sorted->last());
         $this->assertSame(9, $sorted[4]);
     }
+
 
     public function testReferences()
     {
@@ -134,8 +137,10 @@ class Test extends PHPUnit_Framework_TestCase
         $this->assertSame(17, $test->getAt(0));
     }
 
+
     public function testRemoving()
     {
+        // lambda functions
         $testdata = array(
             array('a' => 'foo', 'b'=>'bar', 'c'=>'foobar', 'd'=>'barfoo'),
             array('a' => 'foo2', 'b'=>'bar2', 'c'=>'foobar2', 'd'=>'barfoo2'),
@@ -165,6 +170,84 @@ class Test extends PHPUnit_Framework_TestCase
         $list->removeAt(0);
         $this->assertSame(0, $list->length());
 
+        // array access functions
+        $unsetlist = \PerrysLambda\ArrayList::asObjectArray($testdata);
+        $item = $unsetlist->first();
+
+        $this->assertSame(true, $item->exists('a'));
+        $this->assertSame(true, isset($item->a));
+        // $this->assertSame(true, array_key_exists('a', $item)); not supported by arrayaccess
+        $this->assertSame('foo', $item->a);
+
+        unset($item['a']);
+        $this->assertSame(false, $item->exists('a'));
+
+        $this->assertSame(4, $unsetlist->length());
+        unset($unsetlist[0]);
+        $this->assertSame(3, $unsetlist->length());
+
     }
+
+
+    public function testAutoconverting()
+    {
+        $testdata = array(
+            array('a' => '1', 'b'=>'2', 'c'=>'3', 'd'=>'4'),
+        );
+
+        $list = \PerrysLambda\ArrayList::asObjectArray($testdata);
+
+        $this->assertSame(true, $list->first() instanceof \PerrysLambda\ObjectArray);
+        $this->assertSame($testdata[0], $list->first()->toArray());
+        $this->assertSame('1', $list->first()->a);
+
+        $temp = array('hihi' => 'haha', 'foo' => 'bar');
+        $list->add($temp);
+
+        $this->assertSame(true, $list->last() instanceof \PerrysLambda\ObjectArray);
+        $this->assertSame($temp, $list->last()->toArray());
+        $this->assertSame('haha', $list->last()->hihi);
+    }
+
+
+    public function testSerializeDeserialize()
+    {
+        $testdata = array(
+            array('a' => '1', 'b'=>'2', 'c'=>'3', 'd'=>'4'),
+            array('e' => '1', 'f'=>'2', 'g'=>'3', 'h'=>'4'),
+        );
+
+        $list = \PerrysLambda\ArrayList::asObjectArray($testdata);
+
+        $this->assertEquals($testdata, $list->serialize());
+    }
+
+
+    public function testGroupbyAndDistinct()
+    {
+        $testdata = array(
+            array('a' => 'foo', 'b'=>'bar', 'c'=>'foobar', 'd'=>'barfoo'),
+            array('a' => 'foo2', 'b'=>'bar2', 'c'=>'foobar2', 'd'=>'barfoo2'),
+            array('a' => '1', 'b'=>'2', 'c'=>'3', 'd'=>'4'),
+            array('a' => '1', 'b'=>'2', 'c'=>'3.5', 'd'=>'4'),
+        );
+
+        $expecteddistinct = array(
+            array('a' => 'foo', 'b'=>'bar', 'c'=>'foobar', 'd'=>'barfoo'),
+            array('a' => 'foo2', 'b'=>'bar2', 'c'=>'foobar2', 'd'=>'barfoo2'),
+            array('a' => '1', 'b'=>'2', 'c'=>'3', 'd'=>'4'),
+        );
+
+        $list = \PerrysLambda\ArrayList::asObjectArray($testdata);
+
+        $distinct = $list->distinct(function($v) { return $v->a; });
+        $this->assertEquals($expecteddistinct, $distinct->serialize());
+
+        $groupby = $list->groupBy(function($v) { return $v->a; });
+        $this->assertSame(1, $groupby['foo']->length());
+        $this->assertSame(1, $groupby['foo2']->length());
+        $this->assertSame(2, $groupby['1']->length());
+    }
+
 
 }

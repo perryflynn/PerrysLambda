@@ -5,97 +5,93 @@ namespace PerrysLambda\IO;
 class Directory extends \PerrysLambda\ArrayList
 {
 
-   protected $path;
-   protected $root;
+    /**
+     * Directory from path
+     * @param \PerrysLambda\IO\File $path
+     * @return \PerrysLambda\IO\Directory
+     */
+    public static function fromPath(File $path)
+    {
+        return new static(DirectoryConverter::fromPath($path));
+    }
 
-   public function __construct(File $path, $items=null, File $root=null)
-   {
-      $this->path = $path;
-      $this->root = $root;
+    /**
+     * Constructor
+     * @param \PerrysLambda\IO\DirectoryConverter $dirconv
+     */
+    public function __construct(DirectoryConverter $dirconv)
+    {
+        $dirconv->setItemtype($this->getFileClassType());
+        parent::__construct($dirconv);
+    }
 
-      if(is_null($this->root))
-      {
-         $this->root = $this->path;
-      }
+    /**
+     * Class type of file items
+     * @return string
+     */
+    public function getFileClassType()
+    {
+        return DirectoryConverter::ITEMCLASS;
+    }
 
-      $this->path->setRootDirectory($this->getRoot());
+    /**
+     * The path
+     * @return \PerrysLambda\IO\File
+     */
+    public function getPath()
+    {
+        return $this->__converter->getPath();
+    }
 
-      if(is_array($items))
-      {
-         parent::__construct($items, '\PerrysLambda\IO\File');
-      }
-      else
-      {
-         if(!$this->path->isDir())
-         {
-            throw new NotFoundException("Path does not exist or is not a directory");
-         }
+    /**
+     * The root
+     * @return \PerrysLambda\IO\File
+     */
+    public function getRoot()
+    {
+        return $this->__converter->getRoot();
+    }
 
-         if(!$this->path->isListable())
-         {
-            throw new AccessException("Cannot list directory content");
-         }
+    /**
+     * Get all directories
+     * @return \PerrysLambda\IO\Directory
+     */
+    public function getDirectories()
+    {
+        return $this->where(function(File $f) { return ($f->isDir()===true); });
+    }
 
-         $data = new DirectoryIteratorNoDots($this->path->toString());
-         parent::__construct($data, '\PerrysLambda\IO\File');
-      }
-   }
+    /**
+     * Get all files
+     * @return \PerrysLambda\IO\Directory
+     */
+    public function getFiles()
+    {
+        return $this->where(function(File $f) { return ($f->isFile()===true); });
+    }
 
-   protected function newInstance()
-   {
-      $class = $this->getClassName();
-      return new $class($this->path, array(), $this->root);
-   }
+    /**
+     * Get single file by basename
+     * @param string $name
+     * @return \PerrysLambda\IO\File
+     */
+    public function getByBasename($name)
+    {
+        return $this->where(function(File $f) use($name) { return $f->getBasename()==$name; })->single();
+    }
 
-   protected function newItemInstance()
-   {
-      $i = parent::newItemInstance();
-      $i->setRootDirectory($this->getRoot());
-      return $i;
-   }
-
-   protected function convertDataField($field)
-   {
-      $i = parent::convertDataField($field);
-      $i->setRootDirectory($this->getRoot());
-      return $i;
-   }
-
-   /**
-    * The path
-    * @return \PerrysLambda\IO\File
-    */
-   public function getPath()
-   {
-      return $this->path;
-   }
-
-   /**
-    * The root
-    * @return \PerrysLambda\IO\File
-    */
-   public function getRoot()
-   {
-      return $this->root;
-   }
-
-   /**
-    * Get all directories
-    * @return \PerrysLambda\IO\Directory
-    */
-   public function getDirectories()
-   {
-      return $this->where(function(File $f) { return ($f->isDir()===true); });
-   }
-
-   /**
-    * Get all files
-    * @return \PerrysLambda\IO\Directory
-    */
-   public function getFiles()
-   {
-      return $this->where(function(File $f) { return ($f->isFile()===true); });
-   }
+    /**
+     * Get single file by basename
+     * @param string $name
+     * @return \PerrysLambda\IO\File
+     */
+    public function getByBasenameOrDefault($name, $default=null)
+    {
+        return $this->where(function(File $f) use($name)
+        {
+            return $f->getBasename() == $name;
+        })->singleOrDefault($default);
+    }
 
 
 }

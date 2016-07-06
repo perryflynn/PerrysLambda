@@ -1,6 +1,6 @@
 <?php
 
-namespace PerrysLambda;
+namespace PerrysLambda\Exception;
 
 /**
  * Will thrown if an invalid value given

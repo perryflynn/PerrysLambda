@@ -1,6 +1,6 @@
 <?php
 
-namespace PerrysLambda;
+namespace PerrysLambda\Exception;
 
 /**
  * Base exception type of this project

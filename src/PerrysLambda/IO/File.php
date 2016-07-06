@@ -45,7 +45,7 @@ class File extends \PerrysLambda\StringProperty
    {
       if(!$this->isExists())
       {
-         throw new NotFoundException("File not exist");
+         throw new IOException("File not exist");
       }
 
       $temp = realpath($this->toString());
@@ -122,7 +122,11 @@ class File extends \PerrysLambda\StringProperty
     */
    public function openDir()
    {
-      return new Directory($this, null, $this->getRootDirectory());
+        if(!$this->isDir())
+        {
+            throw new IOException("Not a directory");
+        }
+        return Directory::fromPath($this);
    }
 
    /**
@@ -132,6 +136,24 @@ class File extends \PerrysLambda\StringProperty
    public function isFile()
    {
       return is_file($this->toString());
+   }
+
+   /**
+    * Filesize in bytes
+    * @return int
+    */
+   public function getByteLength()
+   {
+      return filesize($this->toString());
+   }
+
+   /**
+    * sha1 Hash of file
+    * @return string
+    */
+   public function getHash()
+   {
+      return sha1_file($this->toString());
    }
 
    /**
