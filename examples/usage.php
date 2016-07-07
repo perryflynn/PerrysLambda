@@ -57,7 +57,7 @@ $watch->start();
 $grouped = $collection->groupBy(function(OA $r) { return $r->username; });
 
 // count records in groups
-$temp = $grouped->select(function(OA $c, $key) {
+$temp = $grouped->select(function(AL $c, $key) {
     return array("key"=>$key, "count"=>$c->length());
 });
 

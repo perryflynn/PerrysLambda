@@ -600,6 +600,47 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     }
 
     /**
+     * Intersection to another object
+     * @param \PerrysLambda\ArrayBase $comparedata
+     * @param bool $includekeys
+     * @return \PerrysLambda\ArrayBase
+     */
+    public function intersect(ArrayBase $comparedata)
+    {
+        $cmpvalue = function($v1, $v2) { return $v1==$v1 ? 0 : ($v1>$v2 ? 1 : -1); };
+        $collection = $this->newInstance();
+
+        $temp = array_uintersect($this->getData(), $comparedata->getData(), $cmpvalue);
+
+        $collection->setData($temp);
+        return $collection;
+    }
+
+    /**
+     * Diffrence to another object
+     * @param \PerrysLambda\ArrayBase $comparedata
+     * @param bool $includekeys
+     * @return \PerrysLambda\ArrayBase
+     */
+    public function except(ArrayBase $comparedata, $includekeys=false)
+    {
+        $collection = $this->newInstance();
+        $temp = array();
+
+        if($includekeys===true)
+        {
+            $temp = array_diff_assoc($this->getData(), $comparedata->getData());
+        }
+        else
+        {
+            $temp = array_diff($this->getData(), $comparedata->getData());
+        }
+
+        $collection->setData($temp);
+        return $collection;
+    }
+
+    /**
      * Check for any field by condition
      * @param callable $where
      * @return bool

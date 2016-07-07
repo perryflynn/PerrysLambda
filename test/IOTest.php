@@ -31,7 +31,6 @@ class IOTest extends PHPUnit_Framework_TestCase
         $this->assertSame(true, $testdir instanceof Directory);
         $this->assertSame(true, $testdir->getPath()->isChildOf($dir->getPath()));
         $this->assertSame(false, $dir->getPath()->isChildOf($testdir->getPath()));
-
     }
 
 }

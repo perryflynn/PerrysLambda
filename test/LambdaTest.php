@@ -249,5 +249,30 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(2, $groupby['1']->length());
     }
 
+    public function testDiffrence()
+    {
+        $test1 = array(
+            array("a" => "grün", "rot", "blau"),
+            array("b" => "grün", "gelb", "rot"),
+        );
+
+        $test2 = array(
+            array("a" => "blau", "rot", "blau"),
+            array("c" => "grün", "gelb", "rot"),
+        );
+
+        $expected = array(
+            array("a" => "grün", "rot", "blau"),
+            array("b" => "grün", "gelb", "rot"),
+        );
+
+        $list1 = \PerrysLambda\ArrayList::asObjectArray($test1);
+        $list2 = \PerrysLambda\ArrayList::asObjectArray($test2);
+
+        var_dump($list1->intersect($list2)->serialize());
+
+        $this->assertEquals($expected, $list1->intersect($list2)->serialize());
+    }
+
 
 }
