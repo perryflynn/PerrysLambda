@@ -248,30 +248,48 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(1, $groupby['foo2']->length());
         $this->assertSame(2, $groupby['1']->length());
     }
-
-    public function testDiffrence()
+    
+    public function testIntersectExpect()
     {
         $test1 = array(
-            array("a" => "grün", "rot", "blau"),
-            array("b" => "grün", "gelb", "rot"),
+            array("a"=>"foo", "b"=>"bar", "c"=>"foobar"),
+            array("a"=>"foo", "b"=>"bar", "c"=>"barfoo"),
         );
-
+        
         $test2 = array(
-            array("a" => "blau", "rot", "blau"),
-            array("c" => "grün", "gelb", "rot"),
+            array("a"=>"foo", "b"=>"bar", "c"=>"foobar"),
+            array("a"=>"helloworld", "b"=>"bar", "c"=>"barfoo"),
         );
 
-        $expected = array(
-            array("a" => "grün", "rot", "blau"),
-            array("b" => "grün", "gelb", "rot"),
+        $expectedin = array(
+            array("a"=>"foo", "b"=>"bar", "c"=>"foobar"),
+        );
+
+        $expectedex = array(
+            array("a"=>"foo", "b"=>"bar", "c"=>"barfoo"),
+            array("a"=>"helloworld", "b"=>"bar", "c"=>"barfoo"),
         );
 
         $list1 = \PerrysLambda\ArrayList::asObjectArray($test1);
         $list2 = \PerrysLambda\ArrayList::asObjectArray($test2);
 
-        var_dump($list1->intersect($list2)->serialize());
+        $this->assertEquals($expectedin, $list1->intersect($list2)->serialize());
+        $this->assertEquals($expectedex, $list1->except($list2)->serialize());
+    }
+    
+    public function testIntersectExpectSimple()
+    {
+        $test1 = array(1, 2, 3, 4, 5, 6, 7);
+        $test2 = array(9, 8, 7, 6, 5, 4, 3);
 
-        $this->assertEquals($expected, $list1->intersect($list2)->serialize());
+        $list1 = new \PerrysLambda\ArrayList($test1);
+        $list2 = new \PerrysLambda\ArrayList($test2);
+        
+        $expectedin = array(2=>3, 3=>4, 4=>5, 5=>6, 6=>7);
+        $expectedex = array(1, 2, 9, 8);
+
+        $this->assertEquals($expectedin, $list1->intersect($list2)->serialize());
+        $this->assertEquals($expectedex, $list1->except($list2)->serialize());
     }
 
 

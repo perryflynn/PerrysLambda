@@ -602,41 +602,37 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     /**
      * Intersection to another object
      * @param \PerrysLambda\ArrayBase $comparedata
-     * @param bool $includekeys
      * @return \PerrysLambda\ArrayBase
      */
     public function intersect(ArrayBase $comparedata)
     {
-        $cmpvalue = function($v1, $v2) { return $v1==$v1 ? 0 : ($v1>$v2 ? 1 : -1); };
+        $cmpvalue = function($v1, $v2) { return $v1==$v2 ? 0 : ($v1>$v2 ? 1 : -1); };
         $collection = $this->newInstance();
 
         $temp = array_uintersect($this->getData(), $comparedata->getData(), $cmpvalue);
 
         $collection->setData($temp);
+        unset($temp);
         return $collection;
     }
 
     /**
      * Diffrence to another object
      * @param \PerrysLambda\ArrayBase $comparedata
-     * @param bool $includekeys
      * @return \PerrysLambda\ArrayBase
      */
-    public function except(ArrayBase $comparedata, $includekeys=false)
+    public function except(ArrayBase $comparedata)
     {
+        $cmpvalue = function($v1, $v2) { return $v1==$v2 ? 0 : ($v1>$v2 ? 1 : -1); };
         $collection = $this->newInstance();
-        $temp = array();
 
-        if($includekeys===true)
-        {
-            $temp = array_diff_assoc($this->getData(), $comparedata->getData());
-        }
-        else
-        {
-            $temp = array_diff($this->getData(), $comparedata->getData());
-        }
+        $temp1 = array_udiff($this->getData(), $comparedata->getData(), $cmpvalue);
+        $temp2 = array_udiff($comparedata->getData(), $this->getData(), $cmpvalue);
+        $temp = array_merge($temp1, $temp2);
+        unset($temp1, $temp2);
 
         $collection->setData($temp);
+        unset($temp);
         return $collection;
     }
 
