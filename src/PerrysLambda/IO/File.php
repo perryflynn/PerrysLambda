@@ -5,7 +5,9 @@ namespace PerrysLambda\IO;
 class File extends \PerrysLambda\StringProperty
 {
 
-   protected $rootdir;
+    const DIRTYPE = '\PerrysLambda\IO\Directory';
+    protected $rootdir;
+
 
    public function __construct($file, File $dir=null)
    {
@@ -16,6 +18,11 @@ class File extends \PerrysLambda\StringProperty
       }
 
       parent::__construct($file);
+   }
+
+   public function getDirectoryType()
+   {
+       return self::DIRTYPE;
    }
 
    /**
@@ -126,7 +133,12 @@ class File extends \PerrysLambda\StringProperty
         {
             throw new IOException("Not a directory");
         }
-        return Directory::fromPath($this);
+
+        $dirconv = DirectoryConverter::fromPath($this);
+        $dirconv->setRoot($this->getRootDirectory());
+
+        $type = $this->getDirectoryType();
+        return new $type($dirconv);
    }
 
    /**
