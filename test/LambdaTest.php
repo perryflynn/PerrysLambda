@@ -3,7 +3,6 @@
 class LambdaTest extends PHPUnit_Framework_TestCase
 {
 
-
     public function testScalar()
     {
         $s = new \PerrysLambda\ScalarProperty("Zähn € zahme Ziegen zögen zwei Zentner Zücker zum Zoö!", 'UTF-8');
@@ -290,6 +289,40 @@ class LambdaTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($expectedin, $list1->intersect($list2)->serialize());
         $this->assertEquals($expectedex, $list1->except($list2)->serialize());
+    }
+    
+    public function testFieldConverter()
+    {
+        $data = array(
+            array("date"=>"2016-07-08T10:12:20+0000", "amount"=>"42", "important"=>"true"),
+            array("date"=>"2016-07-08T10:20:23+0000", "amount"=>"123.456", "important"=>"false"),
+            array("date"=>"2016-07-08T10:22:25+0000", "amount"=>"123", "important"=>"asdf"),
+        );
+        
+        $conv = new PerrysLambda\ObjectArrayConverter();
+        $conv->setArraySource($data);
+        $conv->setFieldConverter('date', \PerrysLambda\FieldSerializer\DateTime::fromIsoFormat());
+        $conv->setFieldConverter('amount', new \PerrysLambda\FieldSerializer\Number());
+        $conv->setFieldConverter('important', new \PerrysLambda\FieldSerializer\Boolean());
+        
+        $list = new PerrysLambda\ArrayList($conv);
+        
+        $this->assertSame(true, $list->first()->date instanceof \DateTime);
+        $this->assertSame($data[0]['date'], $list[0]->date->format(\DateTime::ISO8601));
+        
+        $this->assertSame(42, $list->first()->amount);
+        $this->assertSame(123.456, $list->getAt(1)->amount);
+        
+        $this->assertSame(true, $list->first()->important);
+        $this->assertSame(false, $list->getAt(1)->important);
+        $this->assertSame(false, $list->getAt(2)->important);
+        
+        $serialized = $list->serialize();
+        
+        $this->assertSame($data[0]['date'], $serialized[0]['date']);
+        $this->assertSame($data[0]['amount'], $serialized[0]['amount']);
+        $this->assertSame($data[0]['important'], $serialized[0]['important']);
+        $this->assertSame("false", $serialized[2]['important']);
     }
 
 

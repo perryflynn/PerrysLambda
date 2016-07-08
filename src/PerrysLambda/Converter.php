@@ -4,6 +4,8 @@ namespace PerrysLambda;
 
 class Converter implements IConverter
 {
+    
+    const ARRAYBASE='\PerrysLambda\ArrayBase';
 
     /**
      * Data iterator
@@ -118,20 +120,47 @@ class Converter implements IConverter
     {
         if($this->rowconverter instanceof ISerializer)
         {
-            $deser = $this->rowconverter->getSerializer();
-            if($deser($row, $key)===false)
+            $ser = $this->rowconverter->getSerializer();
+            if($ser($row, $key)===false)
             {
                 return false;
             }
         }
-
-        foreach($row as $fieldkey => $fielditem)
+        
+        $fieldkeys = null;
+        if(is_array($row))
         {
-            if($this->serializeField($fielditem, $fieldkey)===false)
+            $fieldkeys = array_keys($row);
+        }
+        elseif(is_subclass_of($row, self::ARRAYBASE))
+        {
+            $fieldkeys = $row->getNames();
+        }
+        else
+        {
+            $fieldkeys = array();
+        }
+        
+        foreach($fieldkeys as $fieldkey)
+        {
+            $tempkey = $fieldkey;
+            $tempvalue = $row[$fieldkey];
+            
+            $result = $this->serializeField($tempvalue, $tempkey);
+            
+            if($fieldkey!=$tempkey)
+            {
+                unset($row[$fieldkey]);
+            }
+            
+            $row[$tempkey] = $tempvalue;
+            
+            if($result===false)
             {
                 return false;
             }
         }
+        
 
         return true;
     }
@@ -140,8 +169,8 @@ class Converter implements IConverter
     {
         if(array_key_exists($fieldkey, $this->fieldconverters))
         {
-            $deser = $this->fieldconverters[$fieldkey]->getSerializer();
-            if($deser($field, $fieldkey)===false)
+            $ser = $this->fieldconverters[$fieldkey]->getSerializer();
+            if($ser($field, $fieldkey)===false)
             {
                 return false;
             }
@@ -158,10 +187,36 @@ class Converter implements IConverter
                 return false;
             }
         }
-
-        foreach($row as $fieldkey => $fielditem)
+        
+        $fieldkeys = null;
+        if(is_array($row))
         {
-            if($this->deserializeField($fielditem, $fieldkey)===false)
+            $fieldkeys = array_keys($row);
+        }
+        elseif(is_subclass_of($row, self::ARRAYBASE))
+        {
+            $fieldkeys = $row->getNames();
+        }
+        else
+        {
+            $fieldkeys = array();
+        }
+        
+        foreach($fieldkeys as $fieldkey)
+        {
+            $tempkey = $fieldkey;
+            $tempvalue = $row[$fieldkey];
+            
+            $result = $this->deserializeField($tempvalue, $tempkey);
+            
+            if($fieldkey!=$tempkey)
+            {
+                unset($row[$fieldkey]);
+            }
+            
+            $row[$tempkey] = $tempvalue;
+            
+            if($result===false)
             {
                 return false;
             }
