@@ -54,6 +54,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame('1.2.3.4.5.6.7.8.9', $basic->joinString(function($v) { return $v; }, '.'));
         $this->assertSame(5, $basic->skip(1)->take(2)->sum(function($v) { return $v; }));
         $this->assertSame(2, $basic->skip(1)->take(1)->single());
+        $this->assertEquals(array(8,9), $basic->take(-2)->toArray());
 
         // any / all
         $this->assertSame(true, $basic->any(function($v) { return $v===1; }));
@@ -247,14 +248,14 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(1, $groupby['foo2']->length());
         $this->assertSame(2, $groupby['1']->length());
     }
-    
+
     public function testIntersectExpect()
     {
         $test1 = array(
             array("a"=>"foo", "b"=>"bar", "c"=>"foobar"),
             array("a"=>"foo", "b"=>"bar", "c"=>"barfoo"),
         );
-        
+
         $test2 = array(
             array("a"=>"foo", "b"=>"bar", "c"=>"foobar"),
             array("a"=>"helloworld", "b"=>"bar", "c"=>"barfoo"),
@@ -275,7 +276,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedin, $list1->intersect($list2)->serialize());
         $this->assertEquals($expectedex, $list1->except($list2)->serialize());
     }
-    
+
     public function testIntersectExpectSimple()
     {
         $test1 = array(1, 2, 3, 4, 5, 6, 7);
@@ -283,14 +284,14 @@ class LambdaTest extends PHPUnit_Framework_TestCase
 
         $list1 = new \PerrysLambda\ArrayList($test1);
         $list2 = new \PerrysLambda\ArrayList($test2);
-        
+
         $expectedin = array(2=>3, 3=>4, 4=>5, 5=>6, 6=>7);
         $expectedex = array(1, 2, 9, 8);
 
         $this->assertEquals($expectedin, $list1->intersect($list2)->serialize());
         $this->assertEquals($expectedex, $list1->except($list2)->serialize());
     }
-    
+
     public function testFieldConverter()
     {
         $data = array(
@@ -298,27 +299,27 @@ class LambdaTest extends PHPUnit_Framework_TestCase
             array("date"=>"2016-07-08T10:20:23+0000", "amount"=>"123.456", "important"=>"false"),
             array("date"=>"2016-07-08T10:22:25+0000", "amount"=>"123", "important"=>"asdf"),
         );
-        
+
         $conv = new PerrysLambda\ObjectArrayConverter();
         $conv->setArraySource($data);
         $conv->setFieldConverter('date', \PerrysLambda\FieldSerializer\DateTime::fromIsoFormat());
         $conv->setFieldConverter('amount', new \PerrysLambda\FieldSerializer\Number());
         $conv->setFieldConverter('important', new \PerrysLambda\FieldSerializer\Boolean());
-        
+
         $list = new PerrysLambda\ArrayList($conv);
-        
+
         $this->assertSame(true, $list->first()->date instanceof \DateTime);
         $this->assertSame($data[0]['date'], $list[0]->date->format(\DateTime::ISO8601));
-        
+
         $this->assertSame(42, $list->first()->amount);
         $this->assertSame(123.456, $list->getAt(1)->amount);
-        
+
         $this->assertSame(true, $list->first()->important);
         $this->assertSame(false, $list->getAt(1)->important);
         $this->assertSame(false, $list->getAt(2)->important);
-        
+
         $serialized = $list->serialize();
-        
+
         $this->assertSame($data[0]['date'], $serialized[0]['date']);
         $this->assertSame($data[0]['amount'], $serialized[0]['amount']);
         $this->assertSame($data[0]['important'], $serialized[0]['important']);

@@ -853,13 +853,26 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
             throw new \InvalidArgumentException();
         }
 
-        if($length>$this->length())
+        if($length>=0 && $length>$this->length())
         {
             $length = $this->length();
         }
+        elseif($length<0 && $length<(0-$this->length()))
+        {
+            $length = 0-$this->length();
+        }
 
         $temp = $this->newInstance();
-        $temp->setData(array_slice($this->getData(), 0, $length));
+
+        if($length>=0)
+        {
+            $temp->setData(array_slice($this->getData(), 0, $length));
+        }
+        else
+        {
+            $temp->setData(array_slice($this->getData(), $length));
+        }
+
         return $temp;
     }
 
@@ -875,7 +888,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
             throw new \InvalidArgumentException();
         }
 
-        if($offset>=$this->length())
+        if($offset<0 || $offset>=$this->length())
         {
             throw new \OutOfBoundsException();
         }
