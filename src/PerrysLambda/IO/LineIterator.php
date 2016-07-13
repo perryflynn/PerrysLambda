@@ -5,6 +5,7 @@ namespace PerrysLambda\IO;
 class LineIterator implements \Iterator
 {
 
+    protected $filepath;
     protected $file;
     protected $index;
     protected $currentline;
@@ -17,9 +18,17 @@ class LineIterator implements \Iterator
             throw new CsvParseException("Could not open file");
         }
 
-        $this->index = 0;
+        $this->filepath = $file;
+        $this->index = -1;
         $this->currentline = null;
-        $this->file = fopen($file, 'r');
+        $this->file = null;
+    }
+
+    public function count()
+    {
+        $i = 0;
+        foreach($this as $line) { $i++; }
+        return $i;
     }
 
     public function __destruct()
@@ -71,6 +80,8 @@ class LineIterator implements \Iterator
 
     public function rewind()
     {
+        $this->dispose();
+        $this->file = fopen($this->filepath, "r");
         $this->index = -1;
         $this->next();
     }
@@ -79,6 +90,5 @@ class LineIterator implements \Iterator
     {
         return is_string($this->currentline);
     }
-
 
 }

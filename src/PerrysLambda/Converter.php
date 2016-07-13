@@ -4,7 +4,7 @@ namespace PerrysLambda;
 
 class Converter implements IConverter
 {
-    
+
     const ARRAYBASE='\PerrysLambda\ArrayBase';
 
     /**
@@ -12,6 +12,18 @@ class Converter implements IConverter
      * @var \Iterator
      */
     protected $iterator;
+
+    /**
+     * Start import at given index
+     * @var int
+     */
+    protected $iteratorstartindex;
+
+    /**
+     * End import at given index
+     * @var int
+     */
+    protected $iteratorendindex;
 
     /**
      * Converter callables for fields
@@ -32,6 +44,8 @@ class Converter implements IConverter
         $this->iterator = null;
         $this->fieldconverters = array();
         $this->rowconverter = null;
+        $this->iteratorstartindex = 0;
+        $this->iteratorendindex = -1;
     }
 
     public function newInstance()
@@ -53,8 +67,10 @@ class Converter implements IConverter
         }
     }
 
-    public function setIteratorSource(\Iterator $iterator=null)
+    public function setIteratorSource(\Iterator $iterator=null, $start=0, $end=-1)
     {
+        $this->iteratorstartindex = (int)$start;
+        $this->iteratorendindex = (int)$end;
         $this->iterator = $iterator;
     }
 
@@ -83,14 +99,30 @@ class Converter implements IConverter
     {
         if($this->iterator instanceof \Iterator)
         {
+            $i = 0;
+
             foreach($this->iterator as $key => $row)
             {
-                $tempkey = $key;
-                $temprow = $row;
+                if($this->iteratorendindex>=0 && $i>$this->iteratorendindex)
+                {
+                    break;
+                }
+                elseif($i>=$this->iteratorstartindex)
+                {
+                    $tempkey = $key;
+                    $temprow = $row;
 
-                $this->deserializeRow($temprow, $tempkey);
-                $collection->set($tempkey, $temprow);
+                    $this->deserializeRow($temprow, $tempkey);
+
+                    if($temprow!==null && $tempkey!==null)
+                    {
+                        $collection->set($tempkey, $temprow);
+                    }
+                }
+
+                $i++;
             }
+
         }
     }
 
@@ -126,7 +158,7 @@ class Converter implements IConverter
                 return false;
             }
         }
-        
+
         $fieldkeys = null;
         if(is_array($row))
         {
@@ -140,27 +172,27 @@ class Converter implements IConverter
         {
             $fieldkeys = array();
         }
-        
+
         foreach($fieldkeys as $fieldkey)
         {
             $tempkey = $fieldkey;
             $tempvalue = $row[$fieldkey];
-            
+
             $result = $this->serializeField($tempvalue, $tempkey);
-            
+
             if($fieldkey!=$tempkey)
             {
                 unset($row[$fieldkey]);
             }
-            
+
             $row[$tempkey] = $tempvalue;
-            
+
             if($result===false)
             {
                 return false;
             }
         }
-        
+
 
         return true;
     }
@@ -187,7 +219,7 @@ class Converter implements IConverter
                 return false;
             }
         }
-        
+
         $fieldkeys = null;
         if(is_array($row))
         {
@@ -201,21 +233,21 @@ class Converter implements IConverter
         {
             $fieldkeys = array();
         }
-        
+
         foreach($fieldkeys as $fieldkey)
         {
             $tempkey = $fieldkey;
             $tempvalue = $row[$fieldkey];
-            
+
             $result = $this->deserializeField($tempvalue, $tempkey);
-            
+
             if($fieldkey!=$tempkey)
             {
                 unset($row[$fieldkey]);
             }
-            
+
             $row[$tempkey] = $tempvalue;
-            
+
             if($result===false)
             {
                 return false;

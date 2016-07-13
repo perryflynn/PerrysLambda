@@ -36,7 +36,6 @@ use PerrysLambda\IO\LineIterator;
 use PerrysLambda\Converter;
 use PerrysLambda\IO\File;
 use PerrysLambda\FieldSerializer\DateTime as SerDateTime;
-use PerrysLambda\FieldSerializer\Number as SerNumber;
 
 // Timer
 $total = new Stopwatch();
@@ -69,6 +68,9 @@ $rowdeser = function(&$row, &$key)
         if(isset($json['sensordata']) && is_array($json['sensordata']))
         {
             $row = new ObjectArray($json['sensordata']);
+            $row->outdoor = new ObjectArray($json['sensordata']['outdoor']);
+            $row->brightness = new ObjectArray($json['sensordata']['brightness']);
+            $row->indoor = new ObjectArray($json['sensordata']['indoor']);
         }
         else
         {
@@ -81,13 +83,14 @@ $conv = new Converter();
 $conv->setRowConverter(new Serializer($rowser, $rowdeser));
 
 // Field converters (string to number or datetime)
-$conv->setFieldConverter('date', new SerDateTime("Y-m-d\\TH:i:s.uO", new \DateTimeZone("Europe/Berlin")));
-$conv->setFieldConverter('hudperc', new SerNumber());
-$conv->setFieldConverter('tempc', new SerNumber());
-$conv->setFieldConverter('tempf', new SerNumber());
+$conv->setFieldConverter('timestamp', new SerDateTime("Y-m-d\\TH:i:s.uO", new \DateTimeZone("Europe/Berlin")));
 
 // Read testdata line by line
-$conv->setIteratorSource(new LineIterator(new File(__DIR__."/testdata.txt")));
+$iterator = new LineIterator(new File(__DIR__."/testdata.txt"));
+
+// Load only last 500 records
+$c = $iterator->count();
+$conv->setIteratorSource($iterator, $c-500);
 
 L::line("Converter created:", $watch->stop()->result());
 
@@ -101,25 +104,27 @@ $watch->start();
 $list = new ArrayList($conv);
 L::line("Data imported:", $watch->stop()->result());
 
-// Sort by date
-$watch->start();
-$list = $list->order(function(ObjectArray $r) { return $r->date; })->toList();
-L::line("Data sorted:", $watch->stop()->result());
+// Stats
+echo "\n";
+L::line($list->length(), "records");
+L::line("First record:", $list->first()->timestamp->format('Y-m-d H:i:s'));
+L::line("Last record:", $list->last()->timestamp->format('Y-m-d H:i:s'));
+echo "\n";
 
 // Only the newest day, group by hour
 $watch->start();
 
 $dates = $list
-        ->distinct(function($v) { return $v->date->format('Y-m-d'); })
+        ->distinct(function($v) { return $v->timestamp->format('Y-m-d'); })
         ->take(-2)
-        ->select(function($v) { return $v->date->format('Y-m-d'); });
+        ->select(function($v) { return $v->timestamp->format('Y-m-d'); });
 
 $hours = $list
         ->where(function(ObjectArray $r) use($list, $dates)
         {
-            return in_array($r->date->format('Y-m-d'), $dates);
+            return in_array($r->timestamp->format('Y-m-d'), $dates);
         })
-        ->groupBy(function(ObjectArray $r) { return $r->date->format('Y-m-d H:00:00'); });
+        ->groupBy(function(ObjectArray $r) { return $r->timestamp->format('Y-m-d H:00'); });
 
 L::line("Filter for last day:", $watch->stop()->result());
 
@@ -134,11 +139,14 @@ L::line("Unset original list");
 // Table header
 echo "\n";
 echo columnline(array(
-    array(21, "Time"),
+    array(19, "Time"),
     array(8, "Records"),
-    array(10, "Min °C"),
-    array(10, "Avg °C"),
-    array(10, "Max °C"),
+    array(10, "OMin °C"),
+    array(10, "OAvg °C"),
+    array(10, "OMax °C"),
+    array(10, "IMin °C"),
+    array(10, "IAvg °C"),
+    array(10, "IMax °C"),
     array(8, "Min H%"),
     array(8, "Avg H%"),
     array(6, "Max H%"),
@@ -148,14 +156,17 @@ echo columnline(array(
 foreach($hours as $hour => $records)
 {
     $columns = array();
-    $columns[] = array(21, $hour);
+    $columns[] = array(19, $hour);
     $columns[] = array(8, $records->length());
-    $columns[] = array(10, number_format($records->min(function($v) { return $v->tempc; }), 2)."°C");
-    $columns[] = array(10, number_format($records->avg(function($v) { return $v->tempc; }), 2)."°C");
-    $columns[] = array(10, number_format($records->max(function($v) { return $v->tempc; }), 2)."°C");
-    $columns[] = array(8, number_format($records->min(function($v) { return $v->hudperc; }), 2)."%");
-    $columns[] = array(8, number_format($records->avg(function($v) { return $v->hudperc; }), 2)."%");
-    $columns[] = array(6, number_format($records->max(function($v) { return $v->hudperc; }), 2)."%");
+    $columns[] = array(10, number_format($records->min(function($v) { return $v->outdoor->tempc; }), 2)."°C");
+    $columns[] = array(10, number_format($records->avg(function($v) { return $v->outdoor->tempc; }), 2)."°C");
+    $columns[] = array(10, number_format($records->max(function($v) { return $v->outdoor->tempc; }), 2)."°C");
+    $columns[] = array(10, number_format($records->min(function($v) { return $v->indoor->tempc; }), 2)."°C");
+    $columns[] = array(10, number_format($records->avg(function($v) { return $v->indoor->tempc; }), 2)."°C");
+    $columns[] = array(10, number_format($records->max(function($v) { return $v->indoor->tempc; }), 2)."°C");
+    $columns[] = array(8, number_format($records->min(function($v) { return $v->outdoor->hudperc; }), 2)."%");
+    $columns[] = array(8, number_format($records->avg(function($v) { return $v->outdoor->hudperc; }), 2)."%");
+    $columns[] = array(6, number_format($records->max(function($v) { return $v->outdoor->hudperc; }), 2)."%");
 
     echo columnline($columns);
 }
