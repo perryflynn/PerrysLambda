@@ -36,16 +36,29 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $string = new PerrysLambda\ScalarProperty(50.3);
         $this->assertSame('50.3', $string->toString());
     }
+    
+    
+    public function testEmpty()
+    {
+        $basic = new \PerrysLambda\ArrayList();
+        $this->assertSame(0, $basic->length());
+    }
 
 
     public function testLambda()
     {
         $basic = new \PerrysLambda\ArrayList(array(1,2,3,4,5,6,7,8,9));
         $all = new \PerrysLambda\ArrayList(array(1, 1, 1, 1, 1));
+        $named = new \PerrysLambda\ObjectArray(array('foo'=>'bar', 'foo2'=>'bar2', 'foobar'=>'barfoo'));
+        $empty = new \PerrysLambda\ObjectArray();
 
         // basics
         $this->assertSame(1, $basic->first());
+        $this->assertSame(1, $basic->firstOrDefault(42));
+        $this->assertSame(42, $empty->firstOrDefault(42));
         $this->assertSame(9, $basic->last());
+        $this->assertSame(9, $basic->lastOrDefault(42));
+        $this->assertSame(42, $empty->lastOrDefault(42));
         $this->assertSame(2, $basic->skip(1)->first());
         $this->assertSame(45, $basic->sum(function($v) { return $v; }));
         $this->assertSame(1, $basic->min(function($v) { return $v; }));
@@ -54,6 +67,8 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame('1.2.3.4.5.6.7.8.9', $basic->joinString(function($v) { return $v; }, '.'));
         $this->assertSame(5, $basic->skip(1)->take(2)->sum(function($v) { return $v; }));
         $this->assertSame(2, $basic->skip(1)->take(1)->single());
+        $this->assertSame(2, $basic->skip(1)->take(1)->singleOrDefault(42));
+        $this->assertSame(42, $basic->singleOrDefault(42));
         $this->assertEquals(array(8,9), $basic->take(-2)->toArray());
 
         // any / all
@@ -62,6 +77,11 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(true, $all->all(function($v) { return $v===1; }));
         $this->assertSame(true, $all->any(function($v) { return $v===1; }));
         $this->assertSame(false, $all->any(function($v) { return $v===2; }));
+        
+        // wherefirst
+        $this->assertSame(5, $basic->whereFirst(function($v) { return $v>4; }));
+        $this->assertSame(5, $basic->whereFirstOrDefault(function($v) { return $v>4; }, 42));
+        $this->assertSame(42, $basic->whereFirstOrDefault(function($v) { return $v>99; }, 42));
 
         // sorting
         $sorted = $basic
@@ -72,6 +92,19 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(4, $sorted->first());
         $this->assertSame(5, $sorted->last());
         $this->assertSame(9, $sorted[4]);
+        
+        // Find key
+        $this->assertSame(1, $named->indexOfKey('foo2'));
+    }
+    
+    
+    public function testScalar()
+    {
+        $named = new \PerrysLambda\ObjectArray(array('foo'=>'bar', 'foo2'=>'bar2', 'foobar'=>'barfoo'));
+        
+        $this->assertSame(true, $named->fooScalar instanceof \PerrysLambda\ScalarProperty)
+        $this->assertSame(true, $named->getScalar('foo') instanceof \PerrysLambda\ScalarProperty)
+        $this->assertSame('bar', $named->getScalarAt(0)->toString());
     }
 
 
