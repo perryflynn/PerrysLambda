@@ -102,8 +102,8 @@ class LambdaTest extends PHPUnit_Framework_TestCase
     {
         $named = new \PerrysLambda\ObjectArray(array('foo'=>'bar', 'foo2'=>'bar2', 'foobar'=>'barfoo'));
         
-        $this->assertSame(true, $named->fooScalar instanceof \PerrysLambda\ScalarProperty)
-        $this->assertSame(true, $named->getScalar('foo') instanceof \PerrysLambda\ScalarProperty)
+        $this->assertSame(true, $named->fooScalar instanceof \PerrysLambda\ScalarProperty);
+        $this->assertSame(true, $named->getScalar('foo') instanceof \PerrysLambda\ScalarProperty);
         $this->assertSame('bar', $named->getScalarAt(0)->toString());
     }
 
