@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="test/bootstrap.php" colors="true">
+	<logging>
+		<log type="coverage-php" target="build/cov/coverage.cov"/>
+	</logging>
 	<testsuites>
 		<testsuite>
 			<file>test/LambdaTest.php</file>
