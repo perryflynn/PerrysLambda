@@ -98,7 +98,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
     }
     
     
-    public function testScalar()
+    public function testScalarAccess()
     {
         $named = new \PerrysLambda\ObjectArray(array('foo'=>'bar', 'foo2'=>'bar2', 'foobar'=>'barfoo'));
         
