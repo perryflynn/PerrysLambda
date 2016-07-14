@@ -1,6 +1,6 @@
 This project tries to implement C# .NET lambda expressions in PHP.
 
-[![Build Status](https://travis-ci.org/perryflynn/PerrysLambda.svg?branch=master)](https://travis-ci.org/perryflynn/PerrysLambda)
+[![Build Status](https://travis-ci.org/perryflynn/PerrysLambda.svg?branch=master)](https://travis-ci.org/perryflynn/PerrysLambda) [![Coverage Status](https://coveralls.io/repos/github/perryflynn/PerrysLambda/badge.svg?branch=master)](https://coveralls.io/github/perryflynn/PerrysLambda?branch=master)
 
 ## Status
 
