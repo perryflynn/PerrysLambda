@@ -19,6 +19,10 @@
     "require": {
         "php": ">=5.4.0"
     },
+    "require-dev": {
+        "satooshi/php-coveralls": "dev-master",
+        "phpunit/phpcov": "2.*"
+    },
     "version": "1.0.0-alpha1",
     "minimum-stability": "alpha",
     "autoload": {
