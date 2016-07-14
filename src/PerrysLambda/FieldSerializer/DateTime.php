@@ -5,34 +5,57 @@ namespace PerrysLambda\FieldSerializer;
 class DateTime extends \PerrysLambda\Serializer
 {
 
-    public static function fromIsoFormat()
-    {
-        return new static(\DateTime::ISO8601);
-    }
+    protected $format;
+    protected $timezone;
 
+    public static function fromIsoFormat(\DateTimeZone $timezone=null)
+    {
+        if(is_null($timezone))
+        {
+            return new static(\DateTime::ISO8601);
+        }
+        else
+        {
+            return new static(\DateTime::ISO8601, $timezone);
+        }
+    }
+    
     public function __construct($format, \DateTimeZone $timezone=null)
     {
-        $serializer = function(&$value, &$key) use($format)
+        $this->format = $format;
+        $this->timezone = $timezone;
+        
+        $serializer = function(&$value, &$key)
         {
             if($value instanceof \DateTime)
             {
-                $value = $value->format($format);
+                $value = $value->format($this->format);
             }
         };
 
-        $deserializer = function(&$value, &$key) use($format, $timezone)
+        $deserializer = function(&$value, &$key)
         {
             if(!($value instanceof \DateTime))
             {
-                $value = \DateTime::createFromFormat($format, $value);
-                if($timezone instanceof \DateTimeZone)
+                $value = \DateTime::createFromFormat($this->format, $value);
+                if($this->timezone instanceof \DateTimeZone)
                 {
-                    $value->setTimezone($timezone);
+                    $value->setTimezone($this->timezone);
                 }
             }
         };
 
         parent::__construct($serializer, $deserializer);
+    }
+    
+    public function setTimezone(\DateTimeZone $timezone)
+    {
+        $this->timezone = $timezone;
+    }
+    
+    public function setFormat($format)
+    {
+        $this->format = $format;
     }
 
 }

@@ -22,6 +22,16 @@ class CsvTest extends PHPUnit_Framework_TestCase
         new ArrayList($conv);
     }
 
+    /**
+     * @expectedException \PerrysLambda\IO\CsvParseException
+     */
+    public function testInvalidFile()
+    {
+        $parser = new CsvParser();
+        $parser->setValidate(true);
+        $parser->openFile(new File('kladsjshfkashfkafhfakhf.txt'));
+    }
+
     public function testCsvParser()
     {
         $file = __DIR__."/../examples/testdata.csv";
@@ -36,6 +46,8 @@ class CsvTest extends PHPUnit_Framework_TestCase
         $this->assertSame(7, $records->length());
         $this->assertSame(2, $records->where(function($v) { return $v->Col1=="Bar"; })->length());
         $this->assertSame(6, $records->max(function($v) { return $v->length(); }));
+        
+        unset($records);
     }
 
     public function testCsvParserIterSkip()

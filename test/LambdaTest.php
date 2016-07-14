@@ -20,6 +20,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(-1, $s->indexOf('Ä'));
         $this->assertSame(1, $s->indexOfI('Ä'));
         $this->assertSame(53, $s->lastIndexOf('!'));
+        $this->assertSame(50, $s->lastIndexOfI('zoö!'));
         $this->assertSame(false, $s->contains('asdf'));
         $this->assertSame(true, $s->contains('zwei'));
         $this->assertSame(false, $s->contains('ZWEI'));
@@ -36,6 +37,16 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $string = new PerrysLambda\ScalarProperty(50.3);
         $this->assertSame('50.3', $string->toString());
     }
+
+    
+    /**
+     * @expectedException \PerrysLambda\Exception\InvalidKeyException
+     */
+    public function testInvalidKey()
+    {
+        $list = new \PerrysLambda\ArrayList();
+        $list['a'] = "b";
+    }
     
     
     public function testEmpty()
@@ -50,7 +61,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $basic = new \PerrysLambda\ArrayList(array(1,2,3,4,5,6,7,8,9));
         $all = new \PerrysLambda\ArrayList(array(1, 1, 1, 1, 1));
         $named = new \PerrysLambda\ObjectArray(array('foo'=>'bar', 'foo2'=>'bar2', 'foobar'=>'barfoo'));
-        $empty = new \PerrysLambda\ObjectArray();
+        $empty = new \PerrysLambda\ObjectArray(null);
 
         // basics
         $this->assertSame(1, $basic->first());
@@ -84,14 +95,22 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(42, $basic->whereFirstOrDefault(function($v) { return $v>99; }, 42));
 
         // sorting
+        // array(1,2,3,4,5,6,7,8,9)
+        // array(4,3,2,1,9,8,7,6,5)
+        
         $sorted = $basic
             ->order(function($v) { return ($v>=5 ? 1 : 0); })
             ->thenByDesc(function($v) { return $v; })
             ->toList();
 
-        $this->assertSame(4, $sorted->first());
-        $this->assertSame(5, $sorted->last());
-        $this->assertSame(9, $sorted[4]);
+        $this->assertEquals(array(4,3,2,1,9,8,7,6,5), $sorted->toArray());
+        
+        $dsorted = $basic
+            ->orderDesc(function($v) { return ($v>=5 ? 1 : 0); })
+            ->thenBy(function($v) { return $v; })
+            ->toList();
+
+        $this->assertEquals(array(5,6,7,8,9,1,2,3,4), $dsorted->toArray());
         
         // Find key
         $this->assertSame(1, $named->indexOfKey('foo2'));
@@ -328,21 +347,24 @@ class LambdaTest extends PHPUnit_Framework_TestCase
     public function testFieldConverter()
     {
         $data = array(
-            array("date"=>"2016-07-08T10:12:20+0000", "amount"=>"42", "important"=>"true"),
+            array("date"=>"2016-07-08T10:12:20+0400", "amount"=>"42", "important"=>"true"),
             array("date"=>"2016-07-08T10:20:23+0000", "amount"=>"123.456", "important"=>"false"),
             array("date"=>"2016-07-08T10:22:25+0000", "amount"=>"123", "important"=>"asdf"),
         );
 
         $conv = new PerrysLambda\ObjectArrayConverter();
         $conv->setArraySource($data);
-        $conv->setFieldConverter('date', \PerrysLambda\FieldSerializer\DateTime::fromIsoFormat());
+        $conv->setFieldConverter('date', \PerrysLambda\FieldSerializer\DateTime::fromIsoFormat(new \DateTimeZone("Europe/Berlin")));
         $conv->setFieldConverter('amount', new \PerrysLambda\FieldSerializer\Number());
         $conv->setFieldConverter('important', new \PerrysLambda\FieldSerializer\Boolean());
 
         $list = new PerrysLambda\ArrayList($conv);
 
+        var_dump($data[0]['date']);
+        var_dump($list->first()->date->format('Y-m-d H:i:s'));
+        
         $this->assertSame(true, $list->first()->date instanceof \DateTime);
-        $this->assertSame($data[0]['date'], $list[0]->date->format(\DateTime::ISO8601));
+        $this->assertSame('2016-07-08T08:12:20+0200', $list[0]->date->format(\DateTime::ISO8601));
 
         $this->assertSame(42, $list->first()->amount);
         $this->assertSame(123.456, $list->getAt(1)->amount);
@@ -353,7 +375,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
 
         $serialized = $list->serialize();
 
-        $this->assertSame($data[0]['date'], $serialized[0]['date']);
+        $this->assertSame('2016-07-08T08:12:20+0200', $serialized[0]['date']);
         $this->assertSame($data[0]['amount'], $serialized[0]['amount']);
         $this->assertSame($data[0]['important'], $serialized[0]['important']);
         $this->assertSame("false", $serialized[2]['important']);

@@ -4,9 +4,40 @@ namespace PerrysLambda;
 
 class StringProperty extends Property
 {
+    
+    protected static $defaultencoding;
 
     protected $encoding;
-
+    
+    
+    /**
+     * Set global default encoding
+     * @param string $encoding
+     */
+    public static function setDefaultEncoding($encoding=null)
+    {
+        if(!is_null($encoding) && is_string($encoding) && !empty($encoding))
+        {
+            self::$defaultencoding = $encoding;
+        }
+        else
+        {
+            self::$defaultencoding = null;
+        }
+    }
+    
+    /**
+     * Get global default encoding
+     * @return string
+     */
+    public static function getDefaultEncoding()
+    {
+        if(!is_null(self::$defaultencoding))
+        {
+            return self::$defaultencoding;
+        }
+        return mb_internal_encoding();
+    }
 
     /**
      * Constructor
@@ -60,7 +91,7 @@ class StringProperty extends Property
             {
                 return $this->encoding;
             }
-            return mb_internal_encoding();
+            return self::getDefaultEncoding();
         }
         return $encoding;
     }
