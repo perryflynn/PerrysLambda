@@ -3,6 +3,16 @@
 	<logging>
 		<log type="coverage-clover" target="build/logs/clover.xml"/>
 	</logging>
+    
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+            <exclude>
+                <directory>./examples</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    
 	<testsuites>
 		<testsuite>
 			<file>test/LambdaTest.php</file>
