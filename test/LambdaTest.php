@@ -31,9 +31,26 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(4211, $integer->toNumeric());
 
         $float = new PerrysLambda\ScalarProperty('50.4');
+        $realfloat = new PerrysLambda\ScalarProperty(50.4);
+        $null = new PerrysLambda\ScalarProperty(null);
+        $bool = new PerrysLambda\ScalarProperty(true);
+        
+        $this->assertSame(true, $float->isNumeric());
+        $this->assertSame(true, $float->isString());
         $this->assertSame(50.4, $float->toNumeric());
         $this->assertSame(50.4, $float->toFloat());
-
+        $this->assertSame(false, $float->isFloat());
+        $this->assertSame(false, $float->isInt());
+        $this->assertSame(true, $realfloat->isFloat());
+        $this->assertSame(true, $realfloat->isNumeric());
+        $this->assertSame(false, $realfloat->isInt());
+        $this->assertSame(false, $realfloat->isString());
+        $this->assertSame(false, $realfloat->isNull());
+        $this->assertSame(true, $null->isNull());
+        $this->assertSame(false, $null->isBool());
+        $this->assertSame(true, $bool->isBool());
+        $this->assertSame(true, $float->toBool());
+        
         $string = new PerrysLambda\ScalarProperty(50.3);
         $this->assertSame('50.3', $string->toString());
     }
