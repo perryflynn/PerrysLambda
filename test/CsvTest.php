@@ -58,6 +58,10 @@ class CsvTest extends PHPUnit_Framework_TestCase
 
         $parser = new CsvParser();
 
+        $allconv = new ObjectArrayConverter();
+        $allconv->setIteratorSource($parser->openFile(new File($file)));
+        $allrecords = new ArrayList($allconv);
+
         $conv = new ObjectArrayConverter();
         $conv->setIteratorSource($parser->openFile(new File($file)), 2);
         $records = new ArrayList($conv);
@@ -70,6 +74,9 @@ class CsvTest extends PHPUnit_Framework_TestCase
         $this->assertSame('Bar', $records->last()->Col1);
         $this->assertSame('Hihi', $records2->first()->Col2);
         $this->assertSame('An', $records2->last()->Col1);
+        $this->assertSame(5, $records->length());
+        $this->assertSame(7, $allrecords->length());
+        $this->assertSame(3, $records2->length());
     }
     
     public function testLineIterator()
