@@ -16,8 +16,13 @@ class File extends \PerrysLambda\StringProperty
       {
          $this->rootdir = $this;
       }
-
+      
       parent::__construct($file);
+      
+      if($this->isDir())
+      {
+          $this->setData(rtrim($this->getData(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR);
+      }
    }
 
    public function getDirectoryType()
@@ -214,7 +219,7 @@ class File extends \PerrysLambda\StringProperty
     */
    public function getParentFolder()
    {
-      return (new static($this->getReal()->toString()."..".DIRECTORY_SEPARATOR, $this->getRootDirectory()))->getReal();
+      return (new static($this->getReal()->getFolder()->toString()."..".DIRECTORY_SEPARATOR, $this->getRootDirectory()))->getReal();
    }
 
    /**
