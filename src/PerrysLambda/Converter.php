@@ -2,6 +2,8 @@
 
 namespace PerrysLambda;
 
+use PerrysLambda\Exception\SerializerException;
+
 class Converter implements IConverter
 {
 
@@ -109,20 +111,14 @@ class Converter implements IConverter
                 }
                 elseif($i>=$this->iteratorstartindex)
                 {
-                    $tempkey = $key;
-                    $temprow = $row;
-
-                    $this->deserializeRow($temprow, $tempkey);
-
-                    if($temprow!==null && $tempkey!==null)
+                    if($row!==null && $key!==null)
                     {
-                        $collection->set($tempkey, $temprow);
+                        $collection->set($key, $row);
                     }
                 }
 
                 $i++;
             }
-
         }
     }
 
@@ -153,7 +149,13 @@ class Converter implements IConverter
         if($this->rowconverter instanceof ISerializer)
         {
             $ser = $this->rowconverter->getSerializer();
-            if($ser($row, $key)===false)
+            $rowstate = $ser($row, $key);
+
+            if(!is_bool($rowstate))
+            {
+                throw new SerializerException("Callable must return true for success and false for failure");
+            }
+            elseif($rowstate===false)
             {
                 return false;
             }
@@ -193,7 +195,6 @@ class Converter implements IConverter
             }
         }
 
-
         return true;
     }
 
@@ -202,11 +203,19 @@ class Converter implements IConverter
         if(array_key_exists($fieldkey, $this->fieldconverters))
         {
             $ser = $this->fieldconverters[$fieldkey]->getSerializer();
-            if($ser($field, $fieldkey)===false)
+            $fieldstate = $ser($field, $fieldkey);
+
+            if(!is_bool($fieldstate))
+            {
+                throw new SerializerException("Callable must return true for success and false for failure");
+            }
+            elseif($fieldstate===false)
             {
                 return false;
             }
         }
+
+        return true;
     }
 
     public function deserializeRow(&$row, &$key)
@@ -214,7 +223,13 @@ class Converter implements IConverter
         if($this->rowconverter instanceof ISerializer)
         {
             $deser = $this->rowconverter->getDeserializer();
-            if($deser($row, $key)===false)
+            $rowstate = $deser($row, $key);
+
+            if(!is_bool($rowstate))
+            {
+                throw new SerializerException("Callable must return true for success and false for failure");
+            }
+            elseif($rowstate===false)
             {
                 return false;
             }
@@ -262,11 +277,19 @@ class Converter implements IConverter
         if(array_key_exists($fieldkey, $this->fieldconverters))
         {
             $deser = $this->fieldconverters[$fieldkey]->getDeserializer();
-            if($deser($field, $fieldkey)===false)
+            $fieldstate = $deser($field, $fieldkey);
+
+            if(!is_bool($fieldstate))
+            {
+                throw new SerializerException("Callable must return true for success and false for failure");
+            }
+            elseif($fieldstate===false)
             {
                 return false;
             }
         }
+
+        return true;
     }
 
 }

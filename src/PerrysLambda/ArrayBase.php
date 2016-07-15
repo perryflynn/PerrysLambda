@@ -22,10 +22,22 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     protected $__iteratorindex;
 
     /**
+     * Is key cache invalidated
+     * @var bool
+     */
+    protected $__keycacheinvalid = false;
+
+    /**
      * Caches data keys
      * @var array
      */
     protected $__keycache = null;
+
+    /**
+     * Caches data keys by index
+     * @var array
+     */
+    protected $__keycacheindex = null;
 
     /**
      * Record and field converter
@@ -71,6 +83,10 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         return get_called_class();
     }
 
+    /**
+     * Create a new converter instance
+     * @return \PerrysLambda\IConverter
+     */
     protected function newConverterInstance()
     {
         if($this->__converter!==null)
@@ -124,7 +140,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         }
 
         $this->__data = $data;
-        $this->regenerateKeyCache();
+        $this->invalidateKeycache();
     }
 
     /**
@@ -138,11 +154,48 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     }
 
     /**
+     * Is keycache invalidated
+     * @return bool
+     */
+    protected function isKeycacheInvalid()
+    {
+        return is_null($this->__keycache) || $this->__keycacheinvalid === true;
+    }
+
+    /**
+     * Invalidate keycache
+     */
+    protected function invalidateKeycache()
+    {
+        $this->__keycacheinvalid = true;
+        $this->__keycache = null;
+        $this->__keycacheindex = null;
+    }
+
+    /**
      * Regenerate array key cache
      */
     protected function regenerateKeyCache()
     {
-        $this->__keycache = array_keys($this->__data);
+        if(is_array($this->__data))
+        {
+            $i=0;
+            $this->__keycache = array();
+            $this->__keycacheindex = array();
+            foreach($this->__data as $key => $value)
+            {
+                $this->__keycache[$key] = $i;
+                $this->__keycacheindex[$i] = $key;
+                $i++;
+            }
+        }
+        else
+        {
+            $this->__keycache = null;
+            $this->__keycacheindex = null;
+        }
+
+        $this->__keycacheinvalid = false;
     }
 
     /**
@@ -151,11 +204,15 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function getNames()
     {
-        if(is_null($this->__keycache) && is_array($this->__data))
+        if($this->isKeycacheInvalid())
         {
             $this->regenerateKeyCache();
         }
-        return $this->__keycache;
+        if(is_array($this->__keycacheindex))
+        {
+            return $this->__keycacheindex;
+        }
+        return array();
     }
 
     /**
@@ -190,6 +247,26 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
     }
 
     /**
+     * Index of key
+     * @param mixed $key
+     * @return int
+     */
+    public function indexOfKey($key)
+    {
+        if($this->isKeycacheInvalid())
+        {
+            $this->regenerateKeyCache();
+        }
+
+        if(isset($this->__keycache[$key]))
+        {
+            return $this->__keycache[$key];
+        }
+
+        return -1;
+    }
+
+    /**
      * Index of element
      * -1 = element not found
      * @param mixed $value
@@ -200,24 +277,9 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         $name = $this->getNameByValue($value);
         if(!is_null($name))
         {
-            return array_search($name, $this->getNames(), true);
+            return $this->indexOfKey($name);
         }
         return -1;
-    }
-
-    /**
-     * Index of key
-     * @param mixed $key
-     * @return int
-     */
-    public function indexOfKey($key)
-    {
-        $i = array_search($key, $this->getNames(), true);
-        if($i===false)
-        {
-            return -1;
-        }
-        return $i;
     }
 
     /**
@@ -283,7 +345,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function exists($field)
     {
-        return is_array($this->__data) && array_key_exists($field, $this->__data);
+        return $this->indexOfKey($field)>=0;
     }
 
     /**
@@ -311,7 +373,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function &get($field, $default=null, $autoset=false)
     {
-        if(array_key_exists($field, $this->__data))
+        if($this->exists($field))
         {
             return $this->__data[$field];
         }
@@ -365,9 +427,10 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         $tempfield = $field;
         $tempvalue = $value;
 
+        $insert = true;
         if($this->__converter !== null)
         {
-            $this->__converter->deserializeRow($tempvalue, $tempfield);
+            $insert = $this->__converter->deserializeRow($tempvalue, $tempfield);
         }
 
         if(!$this->getIsValidKey($tempfield))
@@ -380,8 +443,11 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
             throw new InvalidValueException();
         }
 
-        $this->__data[$tempfield] = $tempvalue;
-        $this->regenerateKeyCache();
+        if($insert===true)
+        {
+            $this->__data[$tempfield] = $tempvalue;
+            $this->invalidateKeycache();
+        }
 
         return $this;
     }
@@ -396,13 +462,18 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         $foo = null;
         $tempvalue = $value;
 
+        $insert = true;
         if($this->__converter !== null)
         {
-            $this->__converter->deserializeRow($tempvalue, $foo);
+            $insert = $this->__converter->deserializeRow($tempvalue, $foo);
         }
 
-        $this->__data[] = $tempvalue;
-        $this->regenerateKeyCache();
+        if($insert===true)
+        {
+            $this->__data[] = $tempvalue;
+            $this->invalidateKeycache();
+        }
+
         return $this;
     }
 
@@ -440,11 +511,11 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function removeKey($field)
     {
-        if(array_key_exists($field, $this->__data))
+        if($this->exists($field))
         {
             unset($this->__data[$field]);
         }
-        $this->regenerateKeyCache();
+        $this->invalidateKeycache();
         return $this;
     }
 
@@ -455,7 +526,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function getIsAllKeysValid($data)
     {
-        $keys = array_keys($data);
+        $keys = $this->getNames();
         foreach($keys as $key)
         {
             if(!$this->getIsValidKey($key))

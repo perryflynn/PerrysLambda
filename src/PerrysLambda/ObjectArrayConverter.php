@@ -19,6 +19,7 @@ class ObjectArrayConverter extends Converter
             {
                 $row = $row->toArray();
             }
+            return true;
         };
 
         $deserializer = function(&$row, &$key)
@@ -27,6 +28,7 @@ class ObjectArrayConverter extends Converter
             {
                 $row = new OA($row);
             }
+            return true;
         };
 
         $this->setRowConverter(new Ser($serializer, $deserializer));

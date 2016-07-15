@@ -57,6 +57,7 @@ $watch->start();
 $rowser = function(&$row, &$key)
 {
     $row = json_encode(array("sensordata" => $row));
+    return true;
 };
 
 // Deserialize JSON String to ObjectArray
@@ -71,12 +72,15 @@ $rowdeser = function(&$row, &$key)
             $row->outdoor = new ObjectArray($json['sensordata']['outdoor']);
             $row->brightness = new ObjectArray($json['sensordata']['brightness']);
             $row->indoor = new ObjectArray($json['sensordata']['indoor']);
+            return true;
         }
         else
         {
             $row = null;
         }
+        return false;
     }
+    return true;
 };
 
 $conv = new Converter();
@@ -90,7 +94,7 @@ $iterator = new LineIterator(new File(__DIR__."/testdata.txt"));
 
 // Load only last 500 records
 $c = $iterator->count();
-$conv->setIteratorSource($iterator, $c-500);
+$conv->setIteratorSource($iterator/*, $c-500*/);
 
 L::line("Converter created:", $watch->stop()->result());
 

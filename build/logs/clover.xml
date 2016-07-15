@@ -1,0 +1,1432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1468618924">
+  <project timestamp="1468618924">
+    <package name="PerrysLambda">
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/ArrayBase.php">
+        <class name="ArrayBase" namespace="PerrysLambda">
+          <metrics methods="66" coveredmethods="49" conditionals="0" coveredconditionals="0" statements="346" coveredstatements="317" elements="412" coveredelements="366"/>
+        </class>
+        <line num="56" type="method" name="__construct" crap="3" count="18"/>
+        <line num="58" type="stmt" count="18"/>
+        <line num="59" type="stmt" count="18"/>
+        <line num="61" type="stmt" count="18"/>
+        <line num="62" type="stmt" count="18"/>
+        <line num="63" type="stmt" count="12"/>
+        <line num="64" type="stmt" count="12"/>
+        <line num="65" type="stmt" count="12"/>
+        <line num="66" type="stmt" count="11"/>
+        <line num="67" type="stmt" count="16"/>
+        <line num="69" type="stmt" count="16"/>
+        <line num="70" type="stmt" count="16"/>
+        <line num="73" type="stmt" count="1"/>
+        <line num="75" type="stmt" count="18"/>
+        <line num="81" type="method" name="getClassName" crap="1" count="6"/>
+        <line num="83" type="stmt" count="6"/>
+        <line num="90" type="method" name="newConverterInstance" crap="2" count="6"/>
+        <line num="92" type="stmt" count="6"/>
+        <line num="93" type="stmt" count="6"/>
+        <line num="94" type="stmt" count="4"/>
+        <line num="96" type="stmt" count="2"/>
+        <line num="104" type="method" name="newInstance" crap="2" count="9"/>
+        <line num="106" type="stmt" count="9"/>
+        <line num="107" type="stmt" count="6"/>
+        <line num="109" type="stmt" count="6"/>
+        <line num="110" type="stmt" count="6"/>
+        <line num="111" type="stmt" count="2"/>
+        <line num="112" type="stmt" count="2"/>
+        <line num="114" type="stmt" count="6"/>
+        <line num="115" type="stmt" count="6"/>
+        <line num="125" type="method" name="setData" crap="4.20" count="18"/>
+        <line num="127" type="stmt" count="18"/>
+        <line num="128" type="stmt" count="18"/>
+        <line num="129" type="stmt" count="0"/>
+        <line num="132" type="stmt" count="18"/>
+        <line num="133" type="stmt" count="18"/>
+        <line num="134" type="stmt" count="0"/>
+        <line num="137" type="stmt" count="18"/>
+        <line num="138" type="stmt" count="18"/>
+        <line num="139" type="stmt" count="0"/>
+        <line num="140" type="stmt" count="5"/>
+        <line num="142" type="stmt" count="18"/>
+        <line num="143" type="stmt" count="18"/>
+        <line num="144" type="stmt" count="18"/>
+        <line num="151" type="method" name="getIsValidData" crap="1" count="18"/>
+        <line num="153" type="stmt" count="18"/>
+        <line num="160" type="method" name="isKeycacheInvalid" crap="2" count="18"/>
+        <line num="162" type="stmt" count="18"/>
+        <line num="168" type="method" name="invalidateKeycache" crap="1" count="18"/>
+        <line num="170" type="stmt" count="18"/>
+        <line num="171" type="stmt" count="18"/>
+        <line num="172" type="stmt" count="18"/>
+        <line num="173" type="stmt" count="18"/>
+        <line num="178" type="method" name="regenerateKeyCache" crap="3" count="18"/>
+        <line num="180" type="stmt" count="18"/>
+        <line num="181" type="stmt" count="18"/>
+        <line num="182" type="stmt" count="15"/>
+        <line num="183" type="stmt" count="15"/>
+        <line num="184" type="stmt" count="15"/>
+        <line num="185" type="stmt" count="15"/>
+        <line num="187" type="stmt" count="14"/>
+        <line num="188" type="stmt" count="14"/>
+        <line num="189" type="stmt" count="14"/>
+        <line num="190" type="stmt" count="15"/>
+        <line num="191" type="stmt" count="15"/>
+        <line num="194" type="stmt" count="18"/>
+        <line num="195" type="stmt" count="18"/>
+        <line num="198" type="stmt" count="18"/>
+        <line num="199" type="stmt" count="18"/>
+        <line num="205" type="method" name="getNames" crap="3" count="18"/>
+        <line num="207" type="stmt" count="18"/>
+        <line num="208" type="stmt" count="18"/>
+        <line num="209" type="stmt" count="18"/>
+        <line num="210" type="stmt" count="18"/>
+        <line num="211" type="stmt" count="18"/>
+        <line num="212" type="stmt" count="18"/>
+        <line num="213" type="stmt" count="15"/>
+        <line num="215" type="stmt" count="18"/>
+        <line num="223" type="method" name="getNameAt" crap="2" count="13"/>
+        <line num="225" type="stmt" count="13"/>
+        <line num="226" type="stmt" count="13"/>
+        <line num="227" type="stmt" count="13"/>
+        <line num="228" type="stmt" count="13"/>
+        <line num="230" type="stmt" count="9"/>
+        <line num="239" type="method" name="getNameByValue" crap="2" count="1"/>
+        <line num="241" type="stmt" count="1"/>
+        <line num="242" type="stmt" count="1"/>
+        <line num="243" type="stmt" count="1"/>
+        <line num="244" type="stmt" count="1"/>
+        <line num="246" type="stmt" count="1"/>
+        <line num="254" type="method" name="indexOfKey" crap="3" count="14"/>
+        <line num="255" type="stmt" count="10"/>
+        <line num="256" type="stmt" count="14"/>
+        <line num="257" type="stmt" count="14"/>
+        <line num="258" type="stmt" count="13"/>
+        <line num="259" type="stmt" count="13"/>
+        <line num="261" type="stmt" count="14"/>
+        <line num="262" type="stmt" count="14"/>
+        <line num="263" type="stmt" count="14"/>
+        <line num="264" type="stmt" count="10"/>
+        <line num="266" type="stmt" count="4"/>
+        <line num="275" type="method" name="indexOfValue" crap="2" count="1"/>
+        <line num="277" type="stmt" count="1"/>
+        <line num="278" type="stmt" count="1"/>
+        <line num="279" type="stmt" count="1"/>
+        <line num="280" type="stmt" count="1"/>
+        <line num="282" type="stmt" count="1"/>
+        <line num="289" type="method" name="toArray" crap="1" count="8"/>
+        <line num="291" type="stmt" count="8"/>
+        <line num="298" type="method" name="serialize" crap="2" count="7"/>
+        <line num="300" type="stmt" count="7"/>
+        <line num="301" type="stmt" count="7"/>
+        <line num="302" type="stmt" count="2"/>
+        <line num="306" type="stmt" count="5"/>
+        <line num="314" type="method" name="serializeGenerator" crap="4" count="2"/>
+        <line num="316" type="stmt" count="2"/>
+        <line num="317" type="stmt" count="2"/>
+        <line num="318" type="stmt" count="1"/>
+        <line num="320" type="stmt" count="1"/>
+        <line num="321" type="stmt" count="2"/>
+        <line num="322" type="stmt" count="1"/>
+        <line num="324" type="stmt" count="1"/>
+        <line num="325" type="stmt" count="1"/>
+        <line num="327" type="stmt" count="1"/>
+        <line num="328" type="stmt" count="1"/>
+        <line num="330" type="stmt" count="2"/>
+        <line num="336" type="method" name="length" crap="1" count="15"/>
+        <line num="338" type="stmt" count="15"/>
+        <line num="346" type="method" name="exists" crap="1" count="14"/>
+        <line num="348" type="stmt" count="14"/>
+        <line num="357" type="method" name="getAt" crap="2.03" count="12"/>
+        <line num="359" type="stmt" count="12"/>
+        <line num="360" type="stmt" count="12"/>
+        <line num="361" type="stmt" count="12"/>
+        <line num="362" type="stmt" count="12"/>
+        <line num="364" type="stmt" count="0"/>
+        <line num="374" type="method" name="get" crap="3.02" count="14"/>
+        <line num="376" type="stmt" count="14"/>
+        <line num="377" type="stmt" count="14"/>
+        <line num="378" type="stmt" count="14"/>
+        <line num="380" type="stmt" count="1"/>
+        <line num="381" type="stmt" count="1"/>
+        <line num="382" type="stmt" count="1"/>
+        <line num="383" type="stmt" count="1"/>
+        <line num="385" type="stmt" count="0"/>
+        <line num="394" type="method" name="getScalarAt" crap="2.03" count="1"/>
+        <line num="396" type="stmt" count="1"/>
+        <line num="397" type="stmt" count="1"/>
+        <line num="398" type="stmt" count="1"/>
+        <line num="399" type="stmt" count="1"/>
+        <line num="401" type="stmt" count="0"/>
+        <line num="411" type="method" name="getScalar" crap="1" count="1"/>
+        <line num="413" type="stmt" count="1"/>
+        <line num="414" type="stmt" count="1"/>
+        <line num="425" type="method" name="set" crap="5.00" count="14"/>
+        <line num="427" type="stmt" count="14"/>
+        <line num="428" type="stmt" count="14"/>
+        <line num="430" type="stmt" count="14"/>
+        <line num="431" type="stmt" count="14"/>
+        <line num="432" type="stmt" count="14"/>
+        <line num="433" type="stmt" count="12"/>
+        <line num="434" type="stmt" count="12"/>
+        <line num="436" type="stmt" count="14"/>
+        <line num="437" type="stmt" count="14"/>
+        <line num="438" type="stmt" count="1"/>
+        <line num="441" type="stmt" count="13"/>
+        <line num="442" type="stmt" count="13"/>
+        <line num="443" type="stmt" count="0"/>
+        <line num="446" type="stmt" count="13"/>
+        <line num="447" type="stmt" count="13"/>
+        <line num="448" type="stmt" count="13"/>
+        <line num="449" type="stmt" count="13"/>
+        <line num="450" type="stmt" count="13"/>
+        <line num="452" type="stmt" count="13"/>
+        <line num="460" type="method" name="add" crap="3" count="4"/>
+        <line num="462" type="stmt" count="4"/>
+        <line num="463" type="stmt" count="4"/>
+        <line num="465" type="stmt" count="4"/>
+        <line num="466" type="stmt" count="4"/>
+        <line num="467" type="stmt" count="4"/>
+        <line num="468" type="stmt" count="4"/>
+        <line num="469" type="stmt" count="4"/>
+        <line num="471" type="stmt" count="4"/>
+        <line num="472" type="stmt" count="4"/>
+        <line num="473" type="stmt" count="4"/>
+        <line num="474" type="stmt" count="4"/>
+        <line num="475" type="stmt" count="4"/>
+        <line num="477" type="stmt" count="4"/>
+        <line num="485" type="method" name="removeAt" crap="1" count="1"/>
+        <line num="487" type="stmt" count="1"/>
+        <line num="488" type="stmt" count="1"/>
+        <line num="489" type="stmt" count="1"/>
+        <line num="497" type="method" name="removeValue" crap="2" count="1"/>
+        <line num="499" type="stmt" count="1"/>
+        <line num="500" type="stmt" count="1"/>
+        <line num="501" type="stmt" count="1"/>
+        <line num="502" type="stmt" count="1"/>
+        <line num="503" type="stmt" count="1"/>
+        <line num="504" type="stmt" count="1"/>
+        <line num="512" type="method" name="removeKey" crap="2" count="1"/>
+        <line num="514" type="stmt" count="1"/>
+        <line num="515" type="stmt" count="1"/>
+        <line num="516" type="stmt" count="1"/>
+        <line num="517" type="stmt" count="1"/>
+        <line num="518" type="stmt" count="1"/>
+        <line num="519" type="stmt" count="1"/>
+        <line num="527" type="method" name="getIsAllKeysValid" crap="3.71" count="18"/>
+        <line num="529" type="stmt" count="18"/>
+        <line num="530" type="stmt" count="18"/>
+        <line num="532" type="stmt" count="0"/>
+        <line num="533" type="stmt" count="0"/>
+        <line num="534" type="stmt" count="0"/>
+        <line num="536" type="stmt" count="18"/>
+        <line num="537" type="stmt" count="18"/>
+        <line num="545" type="method" name="getIsAllValuesValid" crap="3.04" count="18"/>
+        <line num="547" type="stmt" count="18"/>
+        <line num="549" type="stmt" count="13"/>
+        <line num="550" type="stmt" count="13"/>
+        <line num="551" type="stmt" count="0"/>
+        <line num="553" type="stmt" count="18"/>
+        <line num="554" type="stmt" count="18"/>
+        <line num="580" type="method" name="where" crap="3" count="2"/>
+        <line num="582" type="stmt" count="2"/>
+        <line num="583" type="stmt" count="2"/>
+        <line num="585" type="stmt" count="2"/>
+        <line num="586" type="stmt" count="2"/>
+        <line num="587" type="stmt" count="2"/>
+        <line num="588" type="stmt" count="2"/>
+        <line num="589" type="stmt" count="2"/>
+        <line num="590" type="stmt" count="2"/>
+        <line num="599" type="method" name="whereFirst" crap="3.04" count="1"/>
+        <line num="601" type="stmt" count="1"/>
+        <line num="603" type="stmt" count="1"/>
+        <line num="604" type="stmt" count="1"/>
+        <line num="605" type="stmt" count="1"/>
+        <line num="607" type="stmt" count="1"/>
+        <line num="608" type="stmt" count="0"/>
+        <line num="617" type="method" name="whereFirstOrDefault" crap="3" count="1"/>
+        <line num="619" type="stmt" count="1"/>
+        <line num="621" type="stmt" count="1"/>
+        <line num="622" type="stmt" count="1"/>
+        <line num="623" type="stmt" count="1"/>
+        <line num="625" type="stmt" count="1"/>
+        <line num="626" type="stmt" count="1"/>
+        <line num="634" type="method" name="groupBy" crap="3.05" count="1"/>
+        <line num="636" type="stmt" count="1"/>
+        <line num="637" type="stmt" count="1"/>
+        <line num="638" type="stmt" count="1"/>
+        <line num="639" type="stmt" count="0"/>
+        <line num="640" type="stmt" count="0"/>
+        <line num="642" type="stmt" count="1"/>
+        <line num="644" type="stmt" count="1"/>
+        <line num="645" type="stmt" count="1"/>
+        <line num="646" type="stmt" count="1"/>
+        <line num="647" type="stmt" count="1"/>
+        <line num="649" type="stmt" count="1"/>
+        <line num="657" type="method" name="distinct" crap="3" count="1"/>
+        <line num="659" type="stmt" count="1"/>
+        <line num="660" type="stmt" count="1"/>
+        <line num="661" type="stmt" count="1"/>
+        <line num="663" type="stmt" count="1"/>
+        <line num="664" type="stmt" count="1"/>
+        <line num="665" type="stmt" count="1"/>
+        <line num="666" type="stmt" count="1"/>
+        <line num="667" type="stmt" count="1"/>
+        <line num="668" type="stmt" count="1"/>
+        <line num="669" type="stmt" count="1"/>
+        <line num="670" type="stmt" count="1"/>
+        <line num="671" type="stmt" count="1"/>
+        <line num="679" type="method" name="intersect" crap="3" count="2"/>
+        <line num="682" type="stmt" count="2"/>
+        <line num="684" type="stmt" count="2"/>
+        <line num="686" type="stmt" count="2"/>
+        <line num="687" type="stmt" count="2"/>
+        <line num="688" type="stmt" count="2"/>
+        <line num="699" type="stmt" count="2"/>
+        <line num="701" type="stmt" count="2"/>
+        <line num="702" type="stmt" count="2"/>
+        <line num="703" type="stmt" count="2"/>
+        <line num="704" type="stmt" count="2"/>
+        <line num="706" type="stmt" count="2"/>
+        <line num="707" type="stmt" count="2"/>
+        <line num="708" type="stmt" count="2"/>
+        <line num="716" type="method" name="any" crap="3" count="1"/>
+        <line num="718" type="stmt" count="1"/>
+        <line num="720" type="stmt" count="1"/>
+        <line num="721" type="stmt" count="1"/>
+        <line num="722" type="stmt" count="1"/>
+        <line num="724" type="stmt" count="1"/>
+        <line num="725" type="stmt" count="1"/>
+        <line num="733" type="method" name="all" crap="3" count="1"/>
+        <line num="735" type="stmt" count="1"/>
+        <line num="737" type="stmt" count="1"/>
+        <line num="738" type="stmt" count="1"/>
+        <line num="739" type="stmt" count="1"/>
+        <line num="741" type="stmt" count="1"/>
+        <line num="742" type="stmt" count="1"/>
+        <line num="750" type="method" name="select" crap="2" count="3"/>
+        <line num="752" type="stmt" count="3"/>
+        <line num="753" type="stmt" count="3"/>
+        <line num="755" type="stmt" count="3"/>
+        <line num="756" type="stmt" count="3"/>
+        <line num="757" type="stmt" count="3"/>
+        <line num="765" type="method" name="each" crap="2" count="1"/>
+        <line num="767" type="stmt" count="1"/>
+        <line num="769" type="stmt" count="1"/>
+        <line num="770" type="stmt" count="1"/>
+        <line num="771" type="stmt" count="1"/>
+        <line num="772" type="stmt" count="1"/>
+        <line num="780" type="method" name="sum" crap="1" count="1"/>
+        <line num="782" type="stmt" count="1"/>
+        <line num="783" type="stmt" count="1"/>
+        <line num="791" type="method" name="min" crap="1" count="1"/>
+        <line num="793" type="stmt" count="1"/>
+        <line num="794" type="stmt" count="1"/>
+        <line num="802" type="method" name="max" crap="1" count="2"/>
+        <line num="804" type="stmt" count="2"/>
+        <line num="805" type="stmt" count="2"/>
+        <line num="813" type="method" name="avg" crap="1" count="1"/>
+        <line num="815" type="stmt" count="1"/>
+        <line num="824" type="method" name="joinString" crap="1" count="2"/>
+        <line num="826" type="stmt" count="2"/>
+        <line num="827" type="stmt" count="2"/>
+        <line num="835" type="method" name="first" crap="2.06" count="6"/>
+        <line num="837" type="stmt" count="6"/>
+        <line num="838" type="stmt" count="6"/>
+        <line num="839" type="stmt" count="6"/>
+        <line num="841" type="stmt" count="0"/>
+        <line num="849" type="method" name="firstOrDefault" crap="2" count="1"/>
+        <line num="851" type="stmt" count="1"/>
+        <line num="852" type="stmt" count="1"/>
+        <line num="853" type="stmt" count="1"/>
+        <line num="855" type="stmt" count="1"/>
+        <line num="863" type="method" name="last" crap="2.06" count="3"/>
+        <line num="865" type="stmt" count="3"/>
+        <line num="866" type="stmt" count="3"/>
+        <line num="867" type="stmt" count="3"/>
+        <line num="869" type="stmt" count="0"/>
+        <line num="877" type="method" name="lastOrDefault" crap="2" count="1"/>
+        <line num="879" type="stmt" count="1"/>
+        <line num="880" type="stmt" count="1"/>
+        <line num="881" type="stmt" count="1"/>
+        <line num="883" type="stmt" count="1"/>
+        <line num="892" type="method" name="single" crap="2.06" count="2"/>
+        <line num="894" type="stmt" count="2"/>
+        <line num="895" type="stmt" count="2"/>
+        <line num="896" type="stmt" count="2"/>
+        <line num="898" type="stmt" count="0"/>
+        <line num="907" type="method" name="singleOrDefault" crap="2" count="1"/>
+        <line num="909" type="stmt" count="1"/>
+        <line num="910" type="stmt" count="1"/>
+        <line num="911" type="stmt" count="1"/>
+        <line num="913" type="stmt" count="1"/>
+        <line num="921" type="method" name="take" crap="8.25" count="1"/>
+        <line num="923" type="stmt" count="1"/>
+        <line num="924" type="stmt" count="1"/>
+        <line num="925" type="stmt" count="0"/>
+        <line num="928" type="stmt" count="1"/>
+        <line num="929" type="stmt" count="1"/>
+        <line num="930" type="stmt" count="0"/>
+        <line num="931" type="stmt" count="0"/>
+        <line num="932" type="stmt" count="1"/>
+        <line num="934" type="stmt" count="0"/>
+        <line num="935" type="stmt" count="0"/>
+        <line num="937" type="stmt" count="1"/>
+        <line num="939" type="stmt" count="1"/>
+        <line num="940" type="stmt" count="1"/>
+        <line num="941" type="stmt" count="1"/>
+        <line num="942" type="stmt" count="1"/>
+        <line num="945" type="stmt" count="1"/>
+        <line num="948" type="stmt" count="1"/>
+        <line num="956" type="method" name="skip" crap="4.18" count="1"/>
+        <line num="958" type="stmt" count="1"/>
+        <line num="959" type="stmt" count="1"/>
+        <line num="960" type="stmt" count="0"/>
+        <line num="963" type="stmt" count="1"/>
+        <line num="964" type="stmt" count="1"/>
+        <line num="965" type="stmt" count="0"/>
+        <line num="968" type="stmt" count="1"/>
+        <line num="969" type="stmt" count="1"/>
+        <line num="970" type="stmt" count="1"/>
+        <line num="978" type="method" name="order" crap="1" count="1"/>
+        <line num="980" type="stmt" count="1"/>
+        <line num="988" type="method" name="orderDesc" crap="1" count="1"/>
+        <line num="990" type="stmt" count="1"/>
+        <line num="1000" type="method" name="offsetExists" crap="2" count="0"/>
+        <line num="1002" type="stmt" count="0"/>
+        <line num="1008" type="method" name="offsetGet" crap="1" count="11"/>
+        <line num="1010" type="stmt" count="11"/>
+        <line num="1016" type="method" name="offsetSet" crap="2.15" count="12"/>
+        <line num="1018" type="stmt" count="12"/>
+        <line num="1019" type="stmt" count="12"/>
+        <line num="1020" type="stmt" count="0"/>
+        <line num="1021" type="stmt" count="0"/>
+        <line num="1024" type="stmt" count="12"/>
+        <line num="1026" type="stmt" count="11"/>
+        <line num="1031" type="method" name="offsetUnset" crap="1" count="1"/>
+        <line num="1033" type="stmt" count="1"/>
+        <line num="1034" type="stmt" count="1"/>
+        <line num="1040" type="method" name="generator" crap="2" count="1"/>
+        <line num="1042" type="stmt" count="1"/>
+        <line num="1044" type="stmt" count="1"/>
+        <line num="1045" type="stmt" count="1"/>
+        <line num="1046" type="stmt" count="1"/>
+        <line num="1047" type="stmt" count="1"/>
+        <line num="1056" type="method" name="current" crap="1" count="9"/>
+        <line num="1058" type="stmt" count="9"/>
+        <line num="1064" type="method" name="key" crap="1" count="9"/>
+        <line num="1066" type="stmt" count="9"/>
+        <line num="1072" type="method" name="next" crap="1" count="9"/>
+        <line num="1074" type="stmt" count="9"/>
+        <line num="1075" type="stmt" count="9"/>
+        <line num="1080" type="method" name="rewind" crap="1" count="9"/>
+        <line num="1082" type="stmt" count="9"/>
+        <line num="1083" type="stmt" count="9"/>
+        <line num="1088" type="method" name="valid" crap="2" count="9"/>
+        <line num="1090" type="stmt" count="9"/>
+        <line num="1096" type="method" name="seek" crap="2" count="0"/>
+        <line num="1098" type="stmt" count="0"/>
+        <line num="1099" type="stmt" count="0"/>
+        <metrics loc="1102" ncloc="743" classes="1" methods="66" coveredmethods="49" conditionals="0" coveredconditionals="0" statements="354" coveredstatements="325" elements="420" coveredelements="374"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/ArrayList.php">
+        <class name="ArrayList" namespace="PerrysLambda">
+          <metrics methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="12" coveredelements="12"/>
+        </class>
+        <line num="16" type="method" name="asObjectArray" crap="1" count="5"/>
+        <line num="18" type="stmt" count="5"/>
+        <line num="19" type="stmt" count="5"/>
+        <line num="20" type="stmt" count="5"/>
+        <line num="29" type="method" name="asType" crap="1" count="1"/>
+        <line num="31" type="stmt" count="1"/>
+        <line num="32" type="stmt" count="1"/>
+        <line num="33" type="stmt" count="1"/>
+        <line num="41" type="method" name="getIsValidKey" crap="1" count="13"/>
+        <line num="43" type="stmt" count="13"/>
+        <line num="51" type="method" name="getIsValidValue" crap="1" count="14"/>
+        <line num="53" type="stmt" count="14"/>
+        <metrics loc="56" ncloc="32" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="12" coveredelements="12"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/Converter.php">
+        <class name="Converter" namespace="PerrysLambda">
+          <metrics methods="14" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="147" coveredstatements="125" elements="161" coveredelements="134"/>
+        </class>
+        <line num="44" type="method" name="__construct" crap="1" count="13"/>
+        <line num="46" type="stmt" count="13"/>
+        <line num="47" type="stmt" count="13"/>
+        <line num="48" type="stmt" count="13"/>
+        <line num="49" type="stmt" count="13"/>
+        <line num="50" type="stmt" count="13"/>
+        <line num="51" type="stmt" count="13"/>
+        <line num="53" type="method" name="newInstance" crap="1" count="4"/>
+        <line num="55" type="stmt" count="4"/>
+        <line num="56" type="stmt" count="4"/>
+        <line num="57" type="stmt" count="4"/>
+        <line num="60" type="method" name="setArraySource" crap="2.15" count="7"/>
+        <line num="62" type="stmt" count="7"/>
+        <line num="63" type="stmt" count="7"/>
+        <line num="64" type="stmt" count="0"/>
+        <line num="65" type="stmt" count="0"/>
+        <line num="68" type="stmt" count="7"/>
+        <line num="70" type="stmt" count="7"/>
+        <line num="72" type="method" name="setIteratorSource" crap="1" count="7"/>
+        <line num="74" type="stmt" count="7"/>
+        <line num="75" type="stmt" count="7"/>
+        <line num="76" type="stmt" count="7"/>
+        <line num="77" type="stmt" count="7"/>
+        <line num="79" type="method" name="setRowConverter" crap="1" count="12"/>
+        <line num="81" type="stmt" count="12"/>
+        <line num="82" type="stmt" count="12"/>
+        <line num="84" type="method" name="setFieldConverters" crap="2" count="1"/>
+        <line num="86" type="stmt" count="1"/>
+        <line num="88" type="stmt" count="1"/>
+        <line num="89" type="stmt" count="1"/>
+        <line num="90" type="stmt" count="1"/>
+        <line num="92" type="method" name="setFieldConverter" crap="2" count="1"/>
+        <line num="94" type="stmt" count="1"/>
+        <line num="95" type="stmt" count="1"/>
+        <line num="96" type="stmt" count="1"/>
+        <line num="97" type="stmt" count="1"/>
+        <line num="98" type="stmt" count="1"/>
+        <line num="100" type="method" name="importInto" crap="8" count="12"/>
+        <line num="102" type="stmt" count="12"/>
+        <line num="103" type="stmt" count="12"/>
+        <line num="104" type="stmt" count="12"/>
+        <line num="106" type="stmt" count="12"/>
+        <line num="108" type="stmt" count="12"/>
+        <line num="109" type="stmt" count="12"/>
+        <line num="110" type="stmt" count="2"/>
+        <line num="112" type="stmt" count="12"/>
+        <line num="114" type="stmt" count="12"/>
+        <line num="115" type="stmt" count="12"/>
+        <line num="116" type="stmt" count="12"/>
+        <line num="117" type="stmt" count="12"/>
+        <line num="118" type="stmt" count="12"/>
+        <line num="120" type="stmt" count="12"/>
+        <line num="121" type="stmt" count="12"/>
+        <line num="122" type="stmt" count="11"/>
+        <line num="123" type="stmt" count="11"/>
+        <line num="125" type="method" name="exportFromAsGenerator" crap="2" count="5"/>
+        <line num="127" type="stmt" count="5"/>
+        <line num="129" type="stmt" count="5"/>
+        <line num="130" type="stmt" count="5"/>
+        <line num="132" type="stmt" count="5"/>
+        <line num="133" type="stmt" count="5"/>
+        <line num="134" type="stmt" count="5"/>
+        <line num="135" type="stmt" count="5"/>
+        <line num="137" type="method" name="exportFromAsArray" crap="2" count="5"/>
+        <line num="139" type="stmt" count="5"/>
+        <line num="140" type="stmt" count="5"/>
+        <line num="142" type="stmt" count="5"/>
+        <line num="143" type="stmt" count="5"/>
+        <line num="144" type="stmt" count="5"/>
+        <line num="147" type="method" name="serializeRow" crap="10.64" count="5"/>
+        <line num="149" type="stmt" count="5"/>
+        <line num="150" type="stmt" count="5"/>
+        <line num="151" type="stmt" count="5"/>
+        <line num="152" type="stmt" count="5"/>
+        <line num="154" type="stmt" count="5"/>
+        <line num="155" type="stmt" count="5"/>
+        <line num="156" type="stmt" count="0"/>
+        <line num="158" type="stmt" count="5"/>
+        <line num="160" type="stmt" count="0"/>
+        <line num="162" type="stmt" count="5"/>
+        <line num="164" type="stmt" count="5"/>
+        <line num="165" type="stmt" count="5"/>
+        <line num="166" type="stmt" count="5"/>
+        <line num="167" type="stmt" count="5"/>
+        <line num="168" type="stmt" count="5"/>
+        <line num="169" type="stmt" count="0"/>
+        <line num="171" type="stmt" count="0"/>
+        <line num="172" type="stmt" count="0"/>
+        <line num="175" type="stmt" count="0"/>
+        <line num="178" type="stmt" count="5"/>
+        <line num="180" type="stmt" count="5"/>
+        <line num="181" type="stmt" count="5"/>
+        <line num="183" type="stmt" count="5"/>
+        <line num="185" type="stmt" count="5"/>
+        <line num="186" type="stmt" count="5"/>
+        <line num="187" type="stmt" count="0"/>
+        <line num="188" type="stmt" count="0"/>
+        <line num="190" type="stmt" count="5"/>
+        <line num="192" type="stmt" count="5"/>
+        <line num="193" type="stmt" count="5"/>
+        <line num="194" type="stmt" count="0"/>
+        <line num="196" type="stmt" count="5"/>
+        <line num="198" type="stmt" count="5"/>
+        <line num="201" type="method" name="serializeField" crap="4.10" count="5"/>
+        <line num="203" type="stmt" count="5"/>
+        <line num="204" type="stmt" count="5"/>
+        <line num="205" type="stmt" count="1"/>
+        <line num="206" type="stmt" count="1"/>
+        <line num="208" type="stmt" count="1"/>
+        <line num="209" type="stmt" count="1"/>
+        <line num="210" type="stmt" count="0"/>
+        <line num="212" type="stmt" count="1"/>
+        <line num="214" type="stmt" count="0"/>
+        <line num="216" type="stmt" count="1"/>
+        <line num="218" type="stmt" count="5"/>
+        <line num="221" type="method" name="deserializeRow" crap="9.77" count="12"/>
+        <line num="223" type="stmt" count="12"/>
+        <line num="224" type="stmt" count="12"/>
+        <line num="225" type="stmt" count="11"/>
+        <line num="226" type="stmt" count="11"/>
+        <line num="228" type="stmt" count="11"/>
+        <line num="229" type="stmt" count="11"/>
+        <line num="230" type="stmt" count="0"/>
+        <line num="232" type="stmt" count="11"/>
+        <line num="234" type="stmt" count="0"/>
+        <line num="236" type="stmt" count="11"/>
+        <line num="238" type="stmt" count="12"/>
+        <line num="239" type="stmt" count="12"/>
+        <line num="240" type="stmt" count="12"/>
+        <line num="241" type="stmt" count="0"/>
+        <line num="242" type="stmt" count="0"/>
+        <line num="243" type="stmt" count="12"/>
+        <line num="245" type="stmt" count="10"/>
+        <line num="246" type="stmt" count="10"/>
+        <line num="249" type="stmt" count="2"/>
+        <line num="252" type="stmt" count="12"/>
+        <line num="254" type="stmt" count="10"/>
+        <line num="255" type="stmt" count="10"/>
+        <line num="257" type="stmt" count="10"/>
+        <line num="259" type="stmt" count="10"/>
+        <line num="260" type="stmt" count="10"/>
+        <line num="261" type="stmt" count="0"/>
+        <line num="262" type="stmt" count="0"/>
+        <line num="264" type="stmt" count="10"/>
+        <line num="266" type="stmt" count="10"/>
+        <line num="267" type="stmt" count="10"/>
+        <line num="268" type="stmt" count="0"/>
+        <line num="270" type="stmt" count="12"/>
+        <line num="272" type="stmt" count="12"/>
+        <line num="275" type="method" name="deserializeField" crap="4.10" count="10"/>
+        <line num="277" type="stmt" count="10"/>
+        <line num="278" type="stmt" count="10"/>
+        <line num="279" type="stmt" count="1"/>
+        <line num="280" type="stmt" count="1"/>
+        <line num="282" type="stmt" count="1"/>
+        <line num="283" type="stmt" count="1"/>
+        <line num="284" type="stmt" count="0"/>
+        <line num="286" type="stmt" count="1"/>
+        <line num="288" type="stmt" count="0"/>
+        <line num="290" type="stmt" count="1"/>
+        <line num="292" type="stmt" count="10"/>
+        <metrics loc="295" ncloc="275" classes="1" methods="14" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="147" coveredstatements="125" elements="161" coveredelements="134"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/ObjectArray.php">
+        <class name="ObjectArray" namespace="PerrysLambda">
+          <metrics methods="7" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="18" coveredstatements="17" elements="25" coveredelements="23"/>
+        </class>
+        <line num="11" type="method" name="getFieldOrScalar" crap="5.02" count="9"/>
+        <line num="13" type="stmt" count="9"/>
+        <line num="14" type="stmt" count="9"/>
+        <line num="16" type="stmt" count="1"/>
+        <line num="17" type="stmt" count="1"/>
+        <line num="18" type="stmt" count="1"/>
+        <line num="19" type="stmt" count="1"/>
+        <line num="20" type="stmt" count="1"/>
+        <line num="21" type="stmt" count="1"/>
+        <line num="23" type="stmt" count="0"/>
+        <line num="24" type="stmt" count="8"/>
+        <line num="25" type="stmt" count="8"/>
+        <line num="34" type="method" name="getIsValidKey" crap="3" count="11"/>
+        <line num="36" type="stmt" count="11"/>
+        <line num="45" type="method" name="getIsValidValue" crap="1" count="13"/>
+        <line num="47" type="stmt" count="13"/>
+        <line num="56" type="method" name="__isset" crap="1" count="1"/>
+        <line num="58" type="stmt" count="1"/>
+        <line num="67" type="method" name="__get" crap="1" count="9"/>
+        <line num="69" type="stmt" count="9"/>
+        <line num="78" type="method" name="__invoke" crap="1" count="1"/>
+        <line num="80" type="stmt" count="1"/>
+        <line num="89" type="method" name="__set" crap="1" count="1"/>
+        <line num="91" type="stmt" count="1"/>
+        <line num="92" type="stmt" count="1"/>
+        <metrics loc="94" ncloc="54" classes="1" methods="7" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="18" coveredstatements="17" elements="25" coveredelements="23"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/ObjectArrayConverter.php">
+        <class name="ObjectArrayConverter" namespace="PerrysLambda">
+          <metrics methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="13" elements="15" coveredelements="15"/>
+        </class>
+        <line num="12" type="method" name="__construct" crap="3" count="9"/>
+        <line num="14" type="stmt" count="9"/>
+        <line num="18" type="stmt" count="4"/>
+        <line num="19" type="stmt" count="4"/>
+        <line num="20" type="stmt" count="4"/>
+        <line num="21" type="stmt" count="4"/>
+        <line num="22" type="stmt" count="4"/>
+        <line num="23" type="stmt" count="9"/>
+        <line num="25" type="method" name="anonymous function" crap="2" count="9"/>
+        <line num="27" type="stmt" count="9"/>
+        <line num="28" type="stmt" count="9"/>
+        <line num="29" type="stmt" count="9"/>
+        <line num="30" type="stmt" count="9"/>
+        <line num="31" type="stmt" count="9"/>
+        <line num="32" type="stmt" count="9"/>
+        <line num="34" type="stmt" count="9"/>
+        <line num="35" type="stmt" count="9"/>
+        <metrics loc="37" ncloc="37" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="15" elements="17" coveredelements="17"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/Property.php">
+        <class name="Property" namespace="PerrysLambda">
+          <metrics methods="4" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="10" elements="16" coveredelements="12"/>
+        </class>
+        <line num="22" type="method" name="__construct" crap="2" count="21"/>
+        <line num="24" type="stmt" count="21"/>
+        <line num="25" type="stmt" count="21"/>
+        <line num="26" type="stmt" count="21"/>
+        <line num="27" type="stmt" count="21"/>
+        <line num="28" type="stmt" count="21"/>
+        <line num="35" type="method" name="getIsValidData" crap="2" count="0"/>
+        <line num="37" type="stmt" count="0"/>
+        <line num="45" type="method" name="setData" crap="2.03" count="9"/>
+        <line num="47" type="stmt" count="9"/>
+        <line num="48" type="stmt" count="9"/>
+        <line num="49" type="stmt" count="0"/>
+        <line num="51" type="stmt" count="9"/>
+        <line num="52" type="stmt" count="9"/>
+        <line num="58" type="method" name="getData" crap="1" count="12"/>
+        <line num="60" type="stmt" count="12"/>
+        <metrics loc="63" ncloc="38" classes="1" methods="4" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="10" elements="16" coveredelements="12"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/ScalarProperty.php">
+        <class name="ScalarProperty" namespace="PerrysLambda">
+          <metrics methods="11" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="11" elements="22" coveredelements="22"/>
+        </class>
+        <line num="16" type="method" name="getIsValidData" crap="2" count="2"/>
+        <line num="18" type="stmt" count="2"/>
+        <line num="25" type="method" name="isNumeric" crap="1" count="1"/>
+        <line num="27" type="stmt" count="1"/>
+        <line num="34" type="method" name="isFloat" crap="1" count="1"/>
+        <line num="36" type="stmt" count="1"/>
+        <line num="43" type="method" name="isInt" crap="1" count="1"/>
+        <line num="45" type="stmt" count="1"/>
+        <line num="52" type="method" name="isString" crap="1" count="1"/>
+        <line num="54" type="stmt" count="1"/>
+        <line num="61" type="method" name="isBool" crap="1" count="1"/>
+        <line num="63" type="stmt" count="1"/>
+        <line num="70" type="method" name="isNull" crap="1" count="1"/>
+        <line num="72" type="stmt" count="1"/>
+        <line num="79" type="method" name="toNumeric" crap="1" count="1"/>
+        <line num="81" type="stmt" count="1"/>
+        <line num="88" type="method" name="toInt" crap="1" count="1"/>
+        <line num="90" type="stmt" count="1"/>
+        <line num="97" type="method" name="toFloat" crap="1" count="1"/>
+        <line num="99" type="stmt" count="1"/>
+        <line num="106" type="method" name="toBool" crap="2" count="1"/>
+        <line num="108" type="stmt" count="1"/>
+        <metrics loc="111" ncloc="63" classes="1" methods="11" coveredmethods="11" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="11" elements="22" coveredelements="22"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/Serializer.php">
+        <class name="Serializer" namespace="PerrysLambda">
+          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="8" coveredelements="8"/>
+        </class>
+        <line num="11" type="method" name="__construct" crap="1" count="12"/>
+        <line num="13" type="stmt" count="12"/>
+        <line num="14" type="stmt" count="12"/>
+        <line num="15" type="stmt" count="12"/>
+        <line num="21" type="method" name="getSerializer" crap="1" count="5"/>
+        <line num="23" type="stmt" count="5"/>
+        <line num="30" type="method" name="getDeserializer" crap="1" count="11"/>
+        <line num="32" type="stmt" count="11"/>
+        <metrics loc="35" ncloc="27" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="5" elements="8" coveredelements="8"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/Sortable.php">
+        <class name="Sortable" namespace="PerrysLambda">
+          <metrics methods="9" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="43" coveredstatements="40" elements="52" coveredelements="48"/>
+        </class>
+        <line num="21" type="method" name="startOrder" crap="1" count="1"/>
+        <line num="23" type="stmt" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="34" type="method" name="startOrderDesc" crap="1" count="1"/>
+        <line num="36" type="stmt" count="1"/>
+        <line num="37" type="stmt" count="1"/>
+        <line num="38" type="stmt" count="1"/>
+        <line num="41" type="method" name="__construct" crap="1" count="1"/>
+        <line num="43" type="stmt" count="1"/>
+        <line num="44" type="stmt" count="1"/>
+        <line num="45" type="stmt" count="1"/>
+        <line num="46" type="stmt" count="1"/>
+        <line num="53" type="method" name="thenBy" crap="1" count="1"/>
+        <line num="55" type="stmt" count="1"/>
+        <line num="56" type="stmt" count="1"/>
+        <line num="64" type="method" name="thenByDesc" crap="1" count="1"/>
+        <line num="66" type="stmt" count="1"/>
+        <line num="67" type="stmt" count="1"/>
+        <line num="75" type="method" name="setComparator" crap="1" count="1"/>
+        <line num="77" type="stmt" count="1"/>
+        <line num="78" type="stmt" count="1"/>
+        <line num="85" type="method" name="getComparator" crap="1" count="1"/>
+        <line num="87" type="stmt" count="1"/>
+        <line num="95" type="method" name="anonymous function" crap="12.42" count="1"/>
+        <line num="97" type="stmt" count="1"/>
+        <line num="98" type="stmt" count="1"/>
+        <line num="100" type="stmt" count="1"/>
+        <line num="101" type="stmt" count="1"/>
+        <line num="103" type="stmt" count="1"/>
+        <line num="104" type="stmt" count="1"/>
+        <line num="105" type="stmt" count="1"/>
+        <line num="106" type="stmt" count="1"/>
+        <line num="107" type="stmt" count="1"/>
+        <line num="108" type="stmt" count="1"/>
+        <line num="109" type="stmt" count="1"/>
+        <line num="110" type="stmt" count="1"/>
+        <line num="111" type="stmt" count="1"/>
+        <line num="112" type="stmt" count="1"/>
+        <line num="115" type="stmt" count="0"/>
+        <line num="118" type="stmt" count="1"/>
+        <line num="119" type="stmt" count="1"/>
+        <line num="120" type="stmt" count="1"/>
+        <line num="121" type="stmt" count="0"/>
+        <line num="122" type="stmt" count="0"/>
+        <line num="123" type="stmt" count="1"/>
+        <line num="125" type="stmt" count="1"/>
+        <line num="126" type="stmt" count="1"/>
+        <line num="132" type="method" name="toList" crap="1" count="1"/>
+        <line num="134" type="stmt" count="1"/>
+        <line num="135" type="stmt" count="1"/>
+        <line num="137" type="stmt" count="1"/>
+        <line num="138" type="stmt" count="1"/>
+        <line num="140" type="stmt" count="1"/>
+        <metrics loc="143" ncloc="105" classes="1" methods="9" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="45" coveredstatements="42" elements="54" coveredelements="50"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/StringProperty.php">
+        <class name="StringProperty" namespace="PerrysLambda">
+          <metrics methods="23" coveredmethods="19" conditionals="0" coveredconditionals="0" statements="47" coveredstatements="34" elements="70" coveredelements="53"/>
+        </class>
+        <line num="17" type="method" name="setDefaultEncoding" crap="20" count="0"/>
+        <line num="19" type="stmt" count="0"/>
+        <line num="20" type="stmt" count="0"/>
+        <line num="21" type="stmt" count="0"/>
+        <line num="22" type="stmt" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="27" type="stmt" count="0"/>
+        <line num="33" type="method" name="getDefaultEncoding" crap="6" count="0"/>
+        <line num="35" type="stmt" count="0"/>
+        <line num="36" type="stmt" count="0"/>
+        <line num="37" type="stmt" count="0"/>
+        <line num="39" type="stmt" count="0"/>
+        <line num="47" type="method" name="__construct" crap="1" count="9"/>
+        <line num="49" type="stmt" count="9"/>
+        <line num="50" type="stmt" count="9"/>
+        <line num="51" type="stmt" count="9"/>
+        <line num="58" type="method" name="getIsValidData" crap="1" count="7"/>
+        <line num="60" type="stmt" count="7"/>
+        <line num="67" type="method" name="toString" crap="1" count="9"/>
+        <line num="69" type="stmt" count="9"/>
+        <line num="76" type="method" name="__toString" crap="1" count="4"/>
+        <line num="78" type="stmt" count="4"/>
+        <line num="86" type="method" name="getEncoding" crap="3.21" count="2"/>
+        <line num="88" type="stmt" count="2"/>
+        <line num="89" type="stmt" count="2"/>
+        <line num="90" type="stmt" count="2"/>
+        <line num="91" type="stmt" count="2"/>
+        <line num="92" type="stmt" count="2"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="96" type="stmt" count="0"/>
+        <line num="103" type="method" name="length" crap="1" count="2"/>
+        <line num="105" type="stmt" count="2"/>
+        <line num="114" type="method" name="substr" crap="1" count="2"/>
+        <line num="116" type="stmt" count="2"/>
+        <line num="124" type="method" name="split" crap="1" count="1"/>
+        <line num="126" type="stmt" count="1"/>
+        <line num="136" type="method" name="indexOfDyamic" crap="2" count="2"/>
+        <line num="138" type="stmt" count="2"/>
+        <line num="139" type="stmt" count="2"/>
+        <line num="149" type="method" name="indexOf" crap="1" count="2"/>
+        <line num="151" type="stmt" count="2"/>
+        <line num="161" type="method" name="indexOfI" crap="1" count="1"/>
+        <line num="163" type="stmt" count="1"/>
+        <line num="173" type="method" name="lastIndexOfDynamic" crap="2" count="1"/>
+        <line num="175" type="stmt" count="1"/>
+        <line num="176" type="stmt" count="1"/>
+        <line num="186" type="method" name="lastIndexOf" crap="1" count="1"/>
+        <line num="188" type="stmt" count="1"/>
+        <line num="198" type="method" name="lastIndexOfI" crap="1" count="1"/>
+        <line num="200" type="stmt" count="1"/>
+        <line num="208" type="method" name="contains" crap="1" count="1"/>
+        <line num="210" type="stmt" count="1"/>
+        <line num="218" type="method" name="containsI" crap="1" count="1"/>
+        <line num="220" type="stmt" count="1"/>
+        <line num="228" type="method" name="startsWith" crap="1" count="2"/>
+        <line num="230" type="stmt" count="2"/>
+        <line num="238" type="method" name="startsWithI" crap="1" count="1"/>
+        <line num="240" type="stmt" count="1"/>
+        <line num="249" type="method" name="endsWithDynamic" crap="2.01" count="1"/>
+        <line num="251" type="stmt" count="1"/>
+        <line num="252" type="stmt" count="1"/>
+        <line num="253" type="stmt" count="1"/>
+        <line num="255" type="stmt" count="1"/>
+        <line num="256" type="stmt" count="1"/>
+        <line num="257" type="stmt" count="1"/>
+        <line num="259" type="stmt" count="0"/>
+        <line num="267" type="method" name="endsWith" crap="1" count="1"/>
+        <line num="269" type="stmt" count="1"/>
+        <line num="277" type="method" name="endsWithI" crap="1" count="1"/>
+        <line num="279" type="stmt" count="1"/>
+        <metrics loc="282" ncloc="158" classes="1" methods="23" coveredmethods="19" conditionals="0" coveredconditionals="0" statements="47" coveredstatements="34" elements="70" coveredelements="53"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/TypeStringConverter.php">
+        <class name="TypeStringConverter" namespace="PerrysLambda">
+          <metrics methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="15" elements="23" coveredelements="16"/>
+        </class>
+        <line num="9" type="method" name="__construct" crap="10.14" count="1"/>
+        <line num="11" type="stmt" count="1"/>
+        <line num="13" type="stmt" count="1"/>
+        <line num="14" type="stmt" count="1"/>
+        <line num="15" type="stmt" count="0"/>
+        <line num="20" type="stmt" count="1"/>
+        <line num="21" type="stmt" count="1"/>
+        <line num="22" type="stmt" count="1"/>
+        <line num="23" type="stmt" count="1"/>
+        <line num="24" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="0"/>
+        <line num="28" type="stmt" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <line num="31" type="stmt" count="0"/>
+        <line num="32" type="stmt" count="1"/>
+        <line num="33" type="stmt" count="1"/>
+        <line num="35" type="method" name="anonymous function" crap="2" count="1"/>
+        <line num="37" type="stmt" count="1"/>
+        <line num="38" type="stmt" count="1"/>
+        <line num="39" type="stmt" count="1"/>
+        <line num="40" type="stmt" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="42" type="stmt" count="1"/>
+        <line num="44" type="stmt" count="1"/>
+        <line num="45" type="stmt" count="1"/>
+        <metrics loc="47" ncloc="47" classes="1" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="23" coveredstatements="17" elements="25" coveredelements="18"/>
+      </file>
+    </package>
+    <package name="PerrysLambda\Exception">
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/Exception/InvalidDataException.php">
+        <class name="InvalidDataException" namespace="PerrysLambda\Exception">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="8" ncloc="5" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/Exception/InvalidException.php">
+        <class name="InvalidException" namespace="PerrysLambda\Exception">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="8" ncloc="5" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/Exception/InvalidKeyException.php">
+        <class name="InvalidKeyException" namespace="PerrysLambda\Exception">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="8" ncloc="5" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/Exception/InvalidTypeException.php">
+        <class name="InvalidTypeException" namespace="PerrysLambda\Exception">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="8" ncloc="5" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/Exception/InvalidValueException.php">
+        <class name="InvalidValueException" namespace="PerrysLambda\Exception">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="8" ncloc="5" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/Exception/PerrysLambdaException.php">
+        <class name="PerrysLambdaException" namespace="PerrysLambda\Exception">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="8" ncloc="5" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/Exception/SerializerException.php">
+        <class name="SerializerException" namespace="PerrysLambda\Exception">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="5" ncloc="5" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+    </package>
+    <package name="PerrysLambda\FieldSerializer">
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/FieldSerializer/Boolean.php">
+        <class name="Boolean" namespace="PerrysLambda\FieldSerializer">
+          <metrics methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="6" coveredstatements="6" elements="8" coveredelements="8"/>
+        </class>
+        <line num="8" type="method" name="__construct" crap="2" count="1"/>
+        <line num="12" type="stmt" count="1"/>
+        <line num="13" type="stmt" count="1"/>
+        <line num="14" type="stmt" count="1"/>
+        <line num="16" type="method" name="anonymous function" crap="1" count="1"/>
+        <line num="18" type="stmt" count="1"/>
+        <line num="19" type="stmt" count="1"/>
+        <line num="20" type="stmt" count="1"/>
+        <line num="22" type="stmt" count="1"/>
+        <line num="23" type="stmt" count="1"/>
+        <metrics loc="25" ncloc="25" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="10" coveredelements="10"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/FieldSerializer/DateTime.php">
+        <class name="DateTime" namespace="PerrysLambda\FieldSerializer">
+          <metrics methods="5" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="21" elements="31" coveredelements="23"/>
+        </class>
+        <line num="11" type="method" name="fromIsoFormat" crap="2.06" count="1"/>
+        <line num="13" type="stmt" count="1"/>
+        <line num="14" type="stmt" count="1"/>
+        <line num="15" type="stmt" count="0"/>
+        <line num="19" type="stmt" count="1"/>
+        <line num="23" type="method" name="__construct" crap="4" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="26" type="stmt" count="1"/>
+        <line num="30" type="stmt" count="1"/>
+        <line num="31" type="stmt" count="1"/>
+        <line num="32" type="stmt" count="1"/>
+        <line num="33" type="stmt" count="1"/>
+        <line num="34" type="stmt" count="1"/>
+        <line num="35" type="stmt" count="1"/>
+        <line num="37" type="method" name="anonymous function" crap="3" count="1"/>
+        <line num="39" type="stmt" count="1"/>
+        <line num="40" type="stmt" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="42" type="stmt" count="1"/>
+        <line num="43" type="stmt" count="1"/>
+        <line num="44" type="stmt" count="1"/>
+        <line num="45" type="stmt" count="1"/>
+        <line num="46" type="stmt" count="1"/>
+        <line num="47" type="stmt" count="1"/>
+        <line num="48" type="stmt" count="1"/>
+        <line num="50" type="stmt" count="1"/>
+        <line num="51" type="stmt" count="1"/>
+        <line num="53" type="method" name="setTimezone" crap="2" count="0"/>
+        <line num="55" type="stmt" count="0"/>
+        <line num="56" type="stmt" count="0"/>
+        <line num="58" type="method" name="setFormat" crap="2" count="0"/>
+        <line num="60" type="stmt" count="0"/>
+        <line num="61" type="stmt" count="0"/>
+        <metrics loc="63" ncloc="63" classes="1" methods="5" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="28" coveredstatements="23" elements="33" coveredelements="25"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/FieldSerializer/Number.php">
+        <class name="Number" namespace="PerrysLambda\FieldSerializer">
+          <metrics methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="10" coveredstatements="10" elements="12" coveredelements="12"/>
+        </class>
+        <line num="8" type="method" name="__construct" crap="2" count="1"/>
+        <line num="12" type="stmt" count="1"/>
+        <line num="13" type="stmt" count="1"/>
+        <line num="14" type="stmt" count="1"/>
+        <line num="16" type="method" name="anonymous function" crap="2" count="1"/>
+        <line num="18" type="stmt" count="1"/>
+        <line num="19" type="stmt" count="1"/>
+        <line num="20" type="stmt" count="1"/>
+        <line num="21" type="stmt" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="26" type="stmt" count="1"/>
+        <line num="27" type="stmt" count="1"/>
+        <line num="29" type="stmt" count="1"/>
+        <line num="30" type="stmt" count="1"/>
+        <metrics loc="32" ncloc="32" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="12" coveredstatements="12" elements="14" coveredelements="14"/>
+      </file>
+    </package>
+    <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/IArrayable.php">
+      <metrics loc="10" ncloc="10" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/IConverter.php">
+      <metrics loc="17" ncloc="17" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <package name="PerrysLambda\IO">
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/IO/CsvIterator.php">
+        <class name="CsvIterator" namespace="PerrysLambda\IO">
+          <metrics methods="10" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="72" coveredstatements="63" elements="82" coveredelements="70"/>
+        </class>
+        <line num="16" type="method" name="__construct" crap="4.00" count="4"/>
+        <line num="18" type="stmt" count="4"/>
+        <line num="19" type="stmt" count="4"/>
+        <line num="20" type="stmt" count="1"/>
+        <line num="23" type="stmt" count="3"/>
+        <line num="24" type="stmt" count="3"/>
+        <line num="25" type="stmt" count="3"/>
+        <line num="26" type="stmt" count="3"/>
+        <line num="27" type="stmt" count="3"/>
+        <line num="28" type="stmt" count="3"/>
+        <line num="30" type="stmt" count="3"/>
+        <line num="31" type="stmt" count="3"/>
+        <line num="32" type="stmt" count="3"/>
+        <line num="33" type="stmt" count="3"/>
+        <line num="34" type="stmt" count="3"/>
+        <line num="35" type="stmt" count="0"/>
+        <line num="37" type="stmt" count="3"/>
+        <line num="38" type="stmt" count="3"/>
+        <line num="39" type="stmt" count="3"/>
+        <line num="41" type="method" name="__destruct" crap="2" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="44" type="stmt" count="0"/>
+        <line num="46" type="method" name="dispose" crap="6" count="0"/>
+        <line num="48" type="stmt" count="0"/>
+        <line num="49" type="stmt" count="0"/>
+        <line num="50" type="stmt" count="0"/>
+        <line num="51" type="stmt" count="0"/>
+        <line num="52" type="stmt" count="0"/>
+        <line num="53" type="stmt" count="0"/>
+        <line num="55" type="method" name="parseLine" crap="3" count="3"/>
+        <line num="57" type="stmt" count="3"/>
+        <line num="58" type="stmt" count="3"/>
+        <line num="59" type="stmt" count="3"/>
+        <line num="61" type="stmt" count="3"/>
+        <line num="62" type="stmt" count="3"/>
+        <line num="63" type="stmt" count="3"/>
+        <line num="64" type="stmt" count="3"/>
+        <line num="65" type="stmt" count="3"/>
+        <line num="66" type="stmt" count="3"/>
+        <line num="67" type="stmt" count="3"/>
+        <line num="71" type="stmt" count="2"/>
+        <line num="75" type="method" name="nextLine" crap="11" count="3"/>
+        <line num="77" type="stmt" count="3"/>
+        <line num="79" type="stmt" count="3"/>
+        <line num="80" type="stmt" count="3"/>
+        <line num="81" type="stmt" count="3"/>
+        <line num="82" type="stmt" count="1"/>
+        <line num="83" type="stmt" count="1"/>
+        <line num="86" type="stmt" count="3"/>
+        <line num="87" type="stmt" count="3"/>
+        <line num="88" type="stmt" count="3"/>
+        <line num="89" type="stmt" count="3"/>
+        <line num="90" type="stmt" count="3"/>
+        <line num="92" type="stmt" count="3"/>
+        <line num="93" type="stmt" count="3"/>
+        <line num="94" type="stmt" count="2"/>
+        <line num="95" type="stmt" count="2"/>
+        <line num="96" type="stmt" count="3"/>
+        <line num="97" type="stmt" count="3"/>
+        <line num="98" type="stmt" count="3"/>
+        <line num="99" type="stmt" count="3"/>
+        <line num="102" type="stmt" count="2"/>
+        <line num="104" type="stmt" count="3"/>
+        <line num="105" type="stmt" count="3"/>
+        <line num="108" type="stmt" count="2"/>
+        <line num="111" type="method" name="current" crap="1" count="3"/>
+        <line num="113" type="stmt" count="3"/>
+        <line num="116" type="method" name="key" crap="1" count="3"/>
+        <line num="118" type="stmt" count="3"/>
+        <line num="121" type="method" name="next" crap="2" count="3"/>
+        <line num="123" type="stmt" count="3"/>
+        <line num="124" type="stmt" count="3"/>
+        <line num="125" type="stmt" count="3"/>
+        <line num="126" type="stmt" count="3"/>
+        <line num="127" type="stmt" count="3"/>
+        <line num="128" type="stmt" count="3"/>
+        <line num="130" type="method" name="rewind" crap="1" count="3"/>
+        <line num="132" type="stmt" count="3"/>
+        <line num="133" type="stmt" count="3"/>
+        <line num="134" type="stmt" count="3"/>
+        <line num="136" type="method" name="valid" crap="1" count="3"/>
+        <line num="138" type="stmt" count="3"/>
+        <metrics loc="142" ncloc="142" classes="1" methods="10" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="72" coveredstatements="63" elements="82" coveredelements="70"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/IO/CsvParseException.php">
+        <class name="CsvParseException" namespace="PerrysLambda\IO">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="5" ncloc="5" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/IO/CsvParser.php">
+        <class name="CsvParser" namespace="PerrysLambda\IO">
+          <metrics methods="8" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="16" elements="28" coveredelements="22"/>
+        </class>
+        <line num="13" type="method" name="__construct" crap="5.15" count="4"/>
+        <line num="15" type="stmt" count="4"/>
+        <line num="16" type="stmt" count="4"/>
+        <line num="17" type="stmt" count="4"/>
+        <line num="18" type="stmt" count="4"/>
+        <line num="20" type="stmt" count="4"/>
+        <line num="21" type="stmt" count="4"/>
+        <line num="22" type="stmt" count="0"/>
+        <line num="25" type="stmt" count="4"/>
+        <line num="26" type="stmt" count="4"/>
+        <line num="27" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="4"/>
+        <line num="31" type="method" name="hasHeader" crap="1" count="3"/>
+        <line num="33" type="stmt" count="3"/>
+        <line num="36" type="method" name="setHasHeader" crap="2" count="0"/>
+        <line num="38" type="stmt" count="0"/>
+        <line num="39" type="stmt" count="0"/>
+        <line num="41" type="method" name="isValidate" crap="1" count="3"/>
+        <line num="43" type="stmt" count="3"/>
+        <line num="46" type="method" name="setValidate" crap="1" count="2"/>
+        <line num="48" type="stmt" count="2"/>
+        <line num="49" type="stmt" count="2"/>
+        <line num="51" type="method" name="getSeparator" crap="1" count="3"/>
+        <line num="53" type="stmt" count="3"/>
+        <line num="56" type="method" name="getQualifier" crap="1" count="3"/>
+        <line num="58" type="stmt" count="3"/>
+        <line num="61" type="method" name="openFile" crap="1" count="4"/>
+        <line num="63" type="stmt" count="4"/>
+        <metrics loc="67" ncloc="67" classes="1" methods="8" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="16" elements="28" coveredelements="22"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/IO/Directory.php">
+        <class name="Directory" namespace="PerrysLambda\IO">
+          <metrics methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="7" elements="15" coveredelements="12"/>
+        </class>
+        <line num="13" type="method" name="fromPath" crap="1" count="2"/>
+        <line num="15" type="stmt" count="2"/>
+        <line num="22" type="method" name="__construct" crap="1" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="26" type="stmt" count="1"/>
+        <line num="32" type="method" name="getFileClassType" crap="1" count="1"/>
+        <line num="34" type="stmt" count="1"/>
+        <line num="41" type="method" name="getPath" crap="1" count="1"/>
+        <line num="43" type="stmt" count="1"/>
+        <line num="50" type="method" name="getRoot" crap="1" count="1"/>
+        <line num="52" type="stmt" count="1"/>
+        <line num="90" type="method" name="anonymous function" crap="2" count="0"/>
+        <line num="92" type="stmt" count="0"/>
+        <line num="93" type="stmt" count="0"/>
+        <metrics loc="97" ncloc="58" classes="1" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="9" coveredstatements="7" elements="15" coveredelements="12"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/IO/DirectoryConverter.php">
+        <class name="DirectoryConverter" namespace="PerrysLambda\IO">
+          <metrics methods="8" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="57" coveredstatements="42" elements="65" coveredelements="46"/>
+        </class>
+        <line num="19" type="method" name="fromPath" crap="1" count="2"/>
+        <line num="21" type="stmt" count="2"/>
+        <line num="22" type="stmt" count="2"/>
+        <line num="23" type="stmt" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="27" type="method" name="__construct" crap="5.20" count="2"/>
+        <line num="29" type="stmt" count="2"/>
+        <line num="30" type="stmt" count="2"/>
+        <line num="34" type="stmt" count="0"/>
+        <line num="35" type="stmt" count="0"/>
+        <line num="36" type="stmt" count="0"/>
+        <line num="37" type="stmt" count="0"/>
+        <line num="38" type="stmt" count="0"/>
+        <line num="39" type="stmt" count="2"/>
+        <line num="41" type="method" name="anonymous function" crap="2" count="2"/>
+        <line num="43" type="stmt" count="1"/>
+        <line num="44" type="stmt" count="1"/>
+        <line num="45" type="stmt" count="1"/>
+        <line num="46" type="stmt" count="1"/>
+        <line num="47" type="stmt" count="1"/>
+        <line num="48" type="stmt" count="1"/>
+        <line num="49" type="stmt" count="2"/>
+        <line num="51" type="stmt" count="2"/>
+        <line num="52" type="stmt" count="2"/>
+        <line num="54" type="method" name="setPath" crap="4.47" count="1"/>
+        <line num="56" type="stmt" count="1"/>
+        <line num="57" type="stmt" count="1"/>
+        <line num="58" type="stmt" count="0"/>
+        <line num="61" type="stmt" count="1"/>
+        <line num="62" type="stmt" count="1"/>
+        <line num="63" type="stmt" count="0"/>
+        <line num="66" type="stmt" count="1"/>
+        <line num="68" type="stmt" count="1"/>
+        <line num="69" type="stmt" count="1"/>
+        <line num="70" type="stmt" count="0"/>
+        <line num="71" type="stmt" count="0"/>
+        <line num="73" type="stmt" count="1"/>
+        <line num="74" type="stmt" count="1"/>
+        <line num="76" type="method" name="getPath" crap="1" count="1"/>
+        <line num="78" type="stmt" count="1"/>
+        <line num="81" type="method" name="setRoot" crap="4.10" count="2"/>
+        <line num="83" type="stmt" count="2"/>
+        <line num="84" type="stmt" count="2"/>
+        <line num="85" type="stmt" count="1"/>
+        <line num="88" type="stmt" count="1"/>
+        <line num="89" type="stmt" count="1"/>
+        <line num="90" type="stmt" count="0"/>
+        <line num="93" type="stmt" count="1"/>
+        <line num="94" type="stmt" count="1"/>
+        <line num="95" type="stmt" count="0"/>
+        <line num="98" type="stmt" count="1"/>
+        <line num="99" type="stmt" count="1"/>
+        <line num="101" type="method" name="getRoot" crap="1" count="1"/>
+        <line num="103" type="stmt" count="1"/>
+        <line num="106" type="method" name="setItemtype" crap="5.93" count="1"/>
+        <line num="108" type="stmt" count="1"/>
+        <line num="109" type="stmt" count="1"/>
+        <line num="110" type="stmt" count="0"/>
+        <line num="111" type="stmt" count="0"/>
+        <line num="113" type="stmt" count="1"/>
+        <line num="114" type="stmt" count="1"/>
+        <line num="115" type="stmt" count="0"/>
+        <line num="118" type="stmt" count="1"/>
+        <line num="119" type="stmt" count="1"/>
+        <line num="120" type="stmt" count="0"/>
+        <line num="123" type="stmt" count="1"/>
+        <line num="124" type="stmt" count="1"/>
+        <metrics loc="126" ncloc="126" classes="1" methods="8" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="59" coveredstatements="44" elements="67" coveredelements="48"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/IO/DirectoryIterator.php">
+        <class name="DirectoryIterator" namespace="PerrysLambda\IO">
+          <metrics methods="7" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="11" elements="20" coveredelements="17"/>
+        </class>
+        <line num="12" type="method" name="__construct" crap="1" count="1"/>
+        <line num="14" type="stmt" count="1"/>
+        <line num="15" type="stmt" count="1"/>
+        <line num="16" type="stmt" count="1"/>
+        <line num="17" type="stmt" count="1"/>
+        <line num="19" type="method" name="current" crap="1" count="1"/>
+        <line num="21" type="stmt" count="1"/>
+        <line num="24" type="method" name="key" crap="1" count="1"/>
+        <line num="26" type="stmt" count="1"/>
+        <line num="29" type="method" name="next" crap="1" count="1"/>
+        <line num="31" type="stmt" count="1"/>
+        <line num="32" type="stmt" count="1"/>
+        <line num="34" type="method" name="rewind" crap="1" count="1"/>
+        <line num="36" type="stmt" count="1"/>
+        <line num="37" type="stmt" count="1"/>
+        <line num="39" type="method" name="valid" crap="1" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="44" type="method" name="seek" crap="2" count="0"/>
+        <line num="46" type="stmt" count="0"/>
+        <line num="47" type="stmt" count="0"/>
+        <metrics loc="49" ncloc="49" classes="1" methods="7" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="13" coveredstatements="11" elements="20" coveredelements="17"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/IO/DirectoryIteratorNoDots.php">
+        <class name="DirectoryIteratorNoDots" namespace="PerrysLambda\IO">
+          <metrics methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="6" coveredelements="6"/>
+        </class>
+        <line num="8" type="method" name="__construct" crap="1" count="1"/>
+        <line num="10" type="stmt" count="1"/>
+        <line num="11" type="stmt" count="1"/>
+        <line num="13" type="method" name="accept" crap="2" count="1"/>
+        <line num="15" type="stmt" count="1"/>
+        <line num="16" type="stmt" count="1"/>
+        <metrics loc="19" ncloc="19" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="4" elements="6" coveredelements="6"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/IO/File.php">
+        <class name="File" namespace="PerrysLambda\IO">
+          <metrics methods="21" coveredmethods="13" conditionals="0" coveredconditionals="0" statements="49" coveredstatements="41" elements="70" coveredelements="54"/>
+        </class>
+        <line num="12" type="method" name="__construct" crap="3" count="7"/>
+        <line num="14" type="stmt" count="7"/>
+        <line num="15" type="stmt" count="7"/>
+        <line num="16" type="stmt" count="7"/>
+        <line num="17" type="stmt" count="7"/>
+        <line num="18" type="stmt" count="7"/>
+        <line num="20" type="stmt" count="7"/>
+        <line num="22" type="stmt" count="7"/>
+        <line num="23" type="stmt" count="7"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="26" type="stmt" count="7"/>
+        <line num="28" type="method" name="getDirectoryType" crap="1" count="1"/>
+        <line num="30" type="stmt" count="1"/>
+        <line num="37" type="method" name="getRootDirectory" crap="1" count="1"/>
+        <line num="39" type="stmt" count="1"/>
+        <line num="46" type="method" name="setRootDirectory" crap="1" count="1"/>
+        <line num="48" type="stmt" count="1"/>
+        <line num="49" type="stmt" count="1"/>
+        <line num="56" type="method" name="getReal" crap="3.01" count="1"/>
+        <line num="58" type="stmt" count="1"/>
+        <line num="59" type="stmt" count="1"/>
+        <line num="60" type="stmt" count="0"/>
+        <line num="63" type="stmt" count="1"/>
+        <line num="65" type="stmt" count="1"/>
+        <line num="66" type="stmt" count="1"/>
+        <line num="67" type="stmt" count="1"/>
+        <line num="68" type="stmt" count="1"/>
+        <line num="70" type="stmt" count="1"/>
+        <line num="77" type="method" name="isExists" crap="1" count="2"/>
+        <line num="79" type="stmt" count="2"/>
+        <line num="86" type="method" name="isReadable" crap="2" count="0"/>
+        <line num="88" type="stmt" count="0"/>
+        <line num="95" type="method" name="isExecutable" crap="2" count="0"/>
+        <line num="97" type="stmt" count="0"/>
+        <line num="104" type="method" name="isWritable" crap="2" count="0"/>
+        <line num="106" type="stmt" count="0"/>
+        <line num="113" type="method" name="isDir" crap="1" count="7"/>
+        <line num="115" type="stmt" count="7"/>
+        <line num="122" type="method" name="isListable" crap="6" count="0"/>
+        <line num="124" type="stmt" count="0"/>
+        <line num="131" type="method" name="openDir" crap="2.01" count="1"/>
+        <line num="133" type="stmt" count="1"/>
+        <line num="134" type="stmt" count="1"/>
+        <line num="135" type="stmt" count="0"/>
+        <line num="138" type="stmt" count="1"/>
+        <line num="139" type="stmt" count="1"/>
+        <line num="141" type="stmt" count="1"/>
+        <line num="142" type="stmt" count="1"/>
+        <line num="149" type="method" name="isFile" crap="1" count="6"/>
+        <line num="151" type="stmt" count="6"/>
+        <line num="158" type="method" name="getByteLength" crap="2" count="0"/>
+        <line num="160" type="stmt" count="0"/>
+        <line num="167" type="method" name="getHash" crap="2" count="0"/>
+        <line num="169" type="stmt" count="0"/>
+        <line num="176" type="method" name="getBasename" crap="1" count="1"/>
+        <line num="178" type="stmt" count="1"/>
+        <line num="185" type="method" name="getDirname" crap="1" count="1"/>
+        <line num="187" type="stmt" count="1"/>
+        <line num="195" type="method" name="isChildOf" crap="1" count="1"/>
+        <line num="197" type="stmt" count="1"/>
+        <line num="204" type="method" name="getFolder" crap="2" count="1"/>
+        <line num="206" type="stmt" count="1"/>
+        <line num="207" type="stmt" count="1"/>
+        <line num="208" type="stmt" count="1"/>
+        <line num="212" type="stmt" count="1"/>
+        <line num="220" type="method" name="getParentFolder" crap="1" count="1"/>
+        <line num="222" type="stmt" count="1"/>
+        <line num="229" type="method" name="getRootRelativePath" crap="1" count="1"/>
+        <line num="231" type="stmt" count="1"/>
+        <metrics loc="234" ncloc="156" classes="1" methods="21" coveredmethods="13" conditionals="0" coveredconditionals="0" statements="49" coveredstatements="41" elements="70" coveredelements="54"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/IO/IOException.php">
+        <class name="IOException" namespace="PerrysLambda\IO">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="5" ncloc="5" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/IO/LineIterator.php">
+        <class name="LineIterator" namespace="PerrysLambda\IO">
+          <metrics methods="10" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="38" coveredstatements="37" elements="48" coveredelements="46"/>
+        </class>
+        <line num="14" type="method" name="__construct" crap="2.01" count="1"/>
+        <line num="16" type="stmt" count="1"/>
+        <line num="17" type="stmt" count="1"/>
+        <line num="18" type="stmt" count="0"/>
+        <line num="21" type="stmt" count="1"/>
+        <line num="22" type="stmt" count="1"/>
+        <line num="23" type="stmt" count="1"/>
+        <line num="24" type="stmt" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="27" type="method" name="count" crap="2" count="1"/>
+        <line num="29" type="stmt" count="1"/>
+        <line num="30" type="stmt" count="1"/>
+        <line num="31" type="stmt" count="1"/>
+        <line num="34" type="method" name="__destruct" crap="1" count="1"/>
+        <line num="36" type="stmt" count="1"/>
+        <line num="37" type="stmt" count="1"/>
+        <line num="39" type="method" name="dispose" crap="2" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="42" type="stmt" count="1"/>
+        <line num="43" type="stmt" count="1"/>
+        <line num="44" type="stmt" count="1"/>
+        <line num="45" type="stmt" count="1"/>
+        <line num="46" type="stmt" count="1"/>
+        <line num="48" type="method" name="nextLine" crap="2" count="1"/>
+        <line num="50" type="stmt" count="1"/>
+        <line num="52" type="stmt" count="1"/>
+        <line num="53" type="stmt" count="1"/>
+        <line num="54" type="stmt" count="1"/>
+        <line num="58" type="stmt" count="1"/>
+        <line num="62" type="method" name="current" crap="1" count="1"/>
+        <line num="64" type="stmt" count="1"/>
+        <line num="67" type="method" name="key" crap="1" count="1"/>
+        <line num="69" type="stmt" count="1"/>
+        <line num="72" type="method" name="next" crap="2" count="1"/>
+        <line num="74" type="stmt" count="1"/>
+        <line num="75" type="stmt" count="1"/>
+        <line num="76" type="stmt" count="1"/>
+        <line num="77" type="stmt" count="1"/>
+        <line num="78" type="stmt" count="1"/>
+        <line num="79" type="stmt" count="1"/>
+        <line num="81" type="method" name="rewind" crap="1" count="1"/>
+        <line num="83" type="stmt" count="1"/>
+        <line num="84" type="stmt" count="1"/>
+        <line num="85" type="stmt" count="1"/>
+        <line num="86" type="stmt" count="1"/>
+        <line num="87" type="stmt" count="1"/>
+        <line num="89" type="method" name="valid" crap="1" count="1"/>
+        <line num="91" type="stmt" count="1"/>
+        <metrics loc="94" ncloc="94" classes="1" methods="10" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="38" coveredstatements="37" elements="48" coveredelements="46"/>
+      </file>
+    </package>
+    <file name="/home/sim/gitweb-repos/PerrysLambda/src/PerrysLambda/ISerializer.php">
+      <metrics loc="11" ncloc="11" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <metrics files="34" loc="3314" ncloc="2493" classes="31" methods="226" coveredmethods="172" conditionals="0" coveredconditionals="0" statements="997" coveredstatements="875" elements="1223" coveredelements="1047"/>
+  </project>
+</coverage>

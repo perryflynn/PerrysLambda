@@ -35,6 +35,7 @@ class DirectoryConverter extends \PerrysLambda\Converter
             {
                 $row = $row->toString();
             }
+            return true;
         };
 
         $deserializer = function(&$row, &$key)
@@ -44,6 +45,7 @@ class DirectoryConverter extends \PerrysLambda\Converter
                 $temp = $this->itemtype;
                 $row = new $temp($row, $this->root);
             }
+            return true;
         };
 
         $this->setRowConverter(new Serializer($serializer, $deserializer));

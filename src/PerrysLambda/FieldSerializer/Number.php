@@ -10,8 +10,9 @@ class Number extends \PerrysLambda\Serializer
         $serializer = function(&$value, &$key)
         {
             $value = "".$value;
+            return true;
         };
-        
+
         $deserializer = function(&$value, &$key)
         {
             if(strpos($value, "."))
@@ -22,9 +23,10 @@ class Number extends \PerrysLambda\Serializer
             {
                 $value = (int)$value;
             }
+            return true;
         };
-        
+
         parent::__construct($serializer, $deserializer);
     }
-    
+
 }

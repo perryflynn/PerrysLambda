@@ -19,18 +19,19 @@ class DateTime extends \PerrysLambda\Serializer
             return new static(\DateTime::ISO8601, $timezone);
         }
     }
-    
+
     public function __construct($format, \DateTimeZone $timezone=null)
     {
         $this->format = $format;
         $this->timezone = $timezone;
-        
+
         $serializer = function(&$value, &$key)
         {
             if($value instanceof \DateTime)
             {
                 $value = $value->format($this->format);
             }
+            return true;
         };
 
         $deserializer = function(&$value, &$key)
@@ -43,16 +44,17 @@ class DateTime extends \PerrysLambda\Serializer
                     $value->setTimezone($this->timezone);
                 }
             }
+            return true;
         };
 
         parent::__construct($serializer, $deserializer);
     }
-    
+
     public function setTimezone(\DateTimeZone $timezone)
     {
         $this->timezone = $timezone;
     }
-    
+
     public function setFormat($format)
     {
         $this->format = $format;

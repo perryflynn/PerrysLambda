@@ -29,6 +29,7 @@ class TypeStringConverter extends Converter
             {
                 $row = array('row'=>$row);
             }
+            return true;
         };
 
         $deserializer = function(&$row, &$key) use($type)
@@ -37,6 +38,7 @@ class TypeStringConverter extends Converter
             {
                 $row = new $type($row);
             }
+            return true;
         };
 
         $this->setRowConverter(new Ser($serializer, $deserializer));
