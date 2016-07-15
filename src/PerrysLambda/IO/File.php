@@ -59,11 +59,7 @@ class File extends \PerrysLambda\StringProperty
 
       if($this->isDir())
       {
-         $temp = DIRECTORY_SEPARATOR.trim($temp, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
-      }
-      else
-      {
-         $temp = DIRECTORY_SEPARATOR.ltrim($temp, DIRECTORY_SEPARATOR);
+         $temp = rtrim($temp, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
       }
 
       return new static($temp, $this->getRootDirectory());
@@ -218,7 +214,7 @@ class File extends \PerrysLambda\StringProperty
     */
    public function getParentFolder()
    {
-      return (new static($this->getReal()->toString()."../", $this->getRootDirectory()))->getReal();
+      return (new static($this->getReal()->toString()."..".DIRECTORY_SEPARATOR, $this->getRootDirectory()))->getReal();
    }
 
    /**

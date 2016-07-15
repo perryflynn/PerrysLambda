@@ -11,7 +11,7 @@ class DirectoryIterator implements \SeekableIterator
 
     public function __construct($path)
     {
-        $this->path = DIRECTORY_SEPARATOR.trim(realpath($path), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+        $this->path = rtrim(realpath($path), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
         $this->data = scandir($this->path);
         $this->index = 0;
     }

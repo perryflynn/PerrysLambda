@@ -133,8 +133,11 @@ class Sortable
     {
         $data = $this->list->getData();
         usort($data, $this->getComparator());
-        $this->list->setData($data);
-        return $this->list;
+        
+        $newlist = $this->list->newInstance();
+        $newlist->setData($data);
+        
+        return $newlist;
     }
 
 }

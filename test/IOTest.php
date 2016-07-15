@@ -23,7 +23,7 @@ class IOTest extends PHPUnit_Framework_TestCase
         $this->assertSame(true, $test instanceof File);
         $this->assertSame(true, $test->isDir());
         $this->assertSame(false, $test->isFile());
-        $this->assertSame('test/', $test->getRootRelativePath());
+        $this->assertSame('test'.DIRECTORY_SEPARATOR, $test->getRootRelativePath());
         $this->assertSame('test', $test->getBasename());
 
         $testdir = $test->openDir();

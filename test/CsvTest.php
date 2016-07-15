@@ -4,6 +4,8 @@ use PerrysLambda\IO\File;
 use PerrysLambda\IO\CsvParser;
 use PerrysLambda\ObjectArrayConverter;
 use PerrysLambda\ArrayList;
+use PerrysLambda\Converter;
+use PerrysLambda\IO\LineIterator;
 
 class CsvTest extends PHPUnit_Framework_TestCase
 {
@@ -68,6 +70,24 @@ class CsvTest extends PHPUnit_Framework_TestCase
         $this->assertSame('Bar', $records->last()->Col1);
         $this->assertSame('Hihi', $records2->first()->Col2);
         $this->assertSame('An', $records2->last()->Col1);
+    }
+    
+    public function testLineIterator()
+    {
+        $iterator = new LineIterator(new File(__DIR__."/../examples/testdata.txt"));
+        $c = $iterator->count();
+        
+        $conv = new Converter();
+        $conv->setIteratorSource($iterator, $c-500);
+        $list = new ArrayList($conv);
+        
+        $this->assertSame(500, $list->length());
+        
+        $conv2 = new Converter();
+        $conv2->setIteratorSource($iterator, 0, 499);
+        $list2 = new ArrayList($conv2);
+        
+        $this->assertSame(500, $list2->length());
     }
 
 }

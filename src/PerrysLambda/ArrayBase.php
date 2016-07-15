@@ -6,12 +6,13 @@ use PerrysLambda\Exception\InvalidDataException;
 use PerrysLambda\Exception\InvalidKeyException;
 use PerrysLambda\Exception\InvalidTypeException;
 use PerrysLambda\Exception\InvalidValueException;
+use PerrysLambda\IArrayable;
 
 
 /**
  * Base class for array-like types
  */
-abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIterator
+abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIterator, IArrayable
 {
 
     /**
@@ -84,7 +85,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      * Expect a subclass of \PerrysLambda\ArrayBase
      * @return \PerrysLambda\ArrayBase
      */
-    protected function newInstance()
+    public function newInstance()
     {
         $class = $this->getClassName();
         $data = $this->newConverterInstance();

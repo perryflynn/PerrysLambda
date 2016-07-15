@@ -75,7 +75,8 @@ class LambdaTest extends PHPUnit_Framework_TestCase
 
     public function testLambda()
     {
-        $basic = new \PerrysLambda\ArrayList(array(1,2,3,4,5,6,7,8,9));
+        $basicdata = array(1,2,3,4,5,6,7,8,9);
+        $basic = new \PerrysLambda\ArrayList($basicdata);
         $all = new \PerrysLambda\ArrayList(array(1, 1, 1, 1, 1));
         $named = new \PerrysLambda\ObjectArray(array('foo'=>'bar', 'foo2'=>'bar2', 'foobar'=>'barfoo'));
         $empty = new \PerrysLambda\ObjectArray(null);
@@ -131,6 +132,15 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         
         // Find key
         $this->assertSame(1, $named->indexOfKey('foo2'));
+        $this->assertSame(-1, $named->indexOfKey('4211'));
+        
+        // serialize without converter
+        $this->assertEquals($basicdata, $basic->serialize());
+        
+        foreach($basic->serializeGenerator() as $key => $row)
+        {
+            $this->assertEquals($basicdata[$key], $row);
+        }
     }
     
     
@@ -287,7 +297,6 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         );
 
         $list = \PerrysLambda\ArrayList::asObjectArray($testdata);
-
         $this->assertEquals($testdata, $list->serialize());
     }
 
@@ -372,14 +381,13 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $conv = new PerrysLambda\ObjectArrayConverter();
         $conv->setArraySource($data);
         $conv->setFieldConverter('date', \PerrysLambda\FieldSerializer\DateTime::fromIsoFormat(new \DateTimeZone("Europe/Berlin")));
-        $conv->setFieldConverter('amount', new \PerrysLambda\FieldSerializer\Number());
-        $conv->setFieldConverter('important', new \PerrysLambda\FieldSerializer\Boolean());
+        $conv->setFieldConverters(array(
+            'amount' => new \PerrysLambda\FieldSerializer\Number(),
+            'important' => new \PerrysLambda\FieldSerializer\Boolean(),
+        ));
 
         $list = new PerrysLambda\ArrayList($conv);
 
-        var_dump($data[0]['date']);
-        var_dump($list->first()->date->format('Y-m-d H:i:s'));
-        
         $this->assertSame(true, $list->first()->date instanceof \DateTime);
         $this->assertSame('2016-07-08T08:12:20+0200', $list[0]->date->format(\DateTime::ISO8601));
 
@@ -396,6 +404,27 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame($data[0]['amount'], $serialized[0]['amount']);
         $this->assertSame($data[0]['important'], $serialized[0]['important']);
         $this->assertSame("false", $serialized[2]['important']);
+    }
+    
+    public function testCustomTypeConverter()
+    {
+        $data = array(
+            array("date"=>"2016-07-08T10:12:20+0400", "amount"=>"42", "important"=>"true"),
+            array("date"=>"2016-07-08T10:20:23+0000", "amount"=>"123.456", "important"=>"false"),
+            array("date"=>"2016-07-08T10:22:25+0000", "amount"=>"123", "important"=>"asdf"),
+        );
+        
+        $list = PerrysLambda\ArrayList::asType('\PerrysLambda\ObjectArray', $data);
+        
+        $this->assertSame(true, $list->first() instanceof \PerrysLambda\ObjectArray);
+        $this->assertSame($data[1]['amount'], $list->getAt(1)->amount);
+        $this->assertEquals($data, $list->serialize());
+        
+        foreach($list->serializeGenerator() as $key => $row)
+        {
+            $this->assertEquals($data[$key], $row);
+        }
+        
     }
 
 
