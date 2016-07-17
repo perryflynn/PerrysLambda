@@ -132,10 +132,6 @@ $hours = $list
 
 L::line("Filter for last day:", $watch->stop()->result());
 
-unset($list);
-L::line("Unset original list");
-
-
 /**
  * Print results
  */
@@ -175,6 +171,25 @@ foreach($hours as $hour => $records)
     echo columnline($columns);
 }
 
+
+// Last 15 minutes
+$date = clone $list->last()->timestamp;
+$date->modify("-15 minutes");
+
+$lastminutes = $list->where(function(ObjectArray $o) use($date) { return $o->timestamp >= $date; });
+
+// Create JSON
+$avg = array(
+   "date" => date('c'),
+   "indoortemp" => $lastminutes->avg(function(ObjectArray $o) { return $o->indoor->tempc; }),
+   "outdoortemp" => $lastminutes->avg(function(ObjectArray $o) { return $o->outdoor->tempc; }),
+   "airhumidity" => $lastminutes->avg(function(ObjectArray $o) { return $o->outdoor->hudperc; }),
+   "pressure" => $lastminutes->avg(function(ObjectArray $o) { return $o->indoor->pressurehpa; }),
+   "brightness" => $lastminutes->avg(function(ObjectArray $o) { return $o->brightness->lux; }),
+);
+
+echo "\n";
+L::vdl($avg);
 
 echo "\n";
 L::line("Finished. Total time:", $total->stop()->result());
