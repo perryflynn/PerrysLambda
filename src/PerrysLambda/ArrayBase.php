@@ -4,7 +4,6 @@ namespace PerrysLambda;
 
 use PerrysLambda\Exception\InvalidDataException;
 use PerrysLambda\Exception\InvalidKeyException;
-use PerrysLambda\Exception\InvalidTypeException;
 use PerrysLambda\Exception\InvalidValueException;
 use PerrysLambda\IArrayable;
 
@@ -48,10 +47,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
 
     /**
      * Constructor
-     * @param array $data
-     * @param string $fieldtype
-     * @param boolean $convertfield
-     * @throws InvalidTypeException
+     * @param array/IConverter $data
      */
     public function __construct($data=array())
     {
@@ -70,7 +66,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         }
         else
         {
-            parent::__construct(array());
+            throw new InvalidValueException("Parameter 1 must be a IConverter or array");
         }
     }
 
@@ -141,6 +137,21 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
 
         $this->__data = $data;
         $this->invalidateKeycache();
+    }
+
+    /**
+     * Applies given fields to this object if field does not exist
+     * @param array $defaults
+     */
+    public function applyDefaults(array $defaults)
+    {
+        foreach($defaults as $dkey => $dvalue)
+        {
+            if(!$this->exists($dkey))
+            {
+                $this[$dkey] = $dvalue;
+            }
+        }
     }
 
     /**

@@ -39,6 +39,12 @@ class Converter implements IConverter
      */
     protected $rowconverter;
 
+    /**
+     *Default values for one single row
+     * @var array
+     */
+    protected $defaults;
+
 
 
     public function __construct()
@@ -48,6 +54,7 @@ class Converter implements IConverter
         $this->rowconverter = null;
         $this->iteratorstartindex = 0;
         $this->iteratorendindex = -1;
+        $this->defaults = null;
     }
 
     public function newInstance()
@@ -55,6 +62,18 @@ class Converter implements IConverter
         $temp = clone $this;
         $temp->setIteratorSource(null);
         return $temp;
+    }
+
+    public function setDefaults($defaults)
+    {
+        if(is_array($defaults))
+        {
+            $this->defaults = $defaults;
+        }
+        else
+        {
+            $this->defaults = null;
+        }
     }
 
     public function setArraySource(array $data=null)
@@ -266,6 +285,18 @@ class Converter implements IConverter
             if($result===false)
             {
                 return false;
+            }
+        }
+
+        if(is_array($this->defaults))
+        {
+            if(is_subclass_of($row, self::ARRAYBASE))
+            {
+                $row->applyDefaults($this->defaults);
+            }
+            else
+            {
+                throw new Exception\InvalidValueException("To apply defaults the row must be a subclass of ".self::ARRAYBASE);
             }
         }
 
