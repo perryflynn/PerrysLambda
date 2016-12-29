@@ -1,12 +1,12 @@
 <?php
 
-namespace PerrysLambda;
+namespace PerrysLambda\Serializer;
 
-use \PerrysLambda\Serializer as Ser;
+use PerrysLambda\Serializer\Serializer;
 use \PerrysLambda\ObjectArray as OA;
 
 
-class ObjectArraySerializer extends Ser
+class ObjectArraySerializer extends Serializer
 {
 
     public function __construct()

@@ -2,7 +2,7 @@
 
 namespace PerrysLambda\Converter;
 
-use PerrysLambda\ObjectArraySerializer;
+use PerrysLambda\Serializer\ObjectArraySerializer;
 
 
 class ObjectArrayListConverter extends ListConverter

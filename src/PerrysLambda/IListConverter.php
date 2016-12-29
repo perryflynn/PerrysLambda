@@ -1,6 +1,6 @@
 <?php
 
-namespace PerrysLambda\Converter;
+namespace PerrysLambda;
 
 use PerrysLambda\ArrayBase;
 

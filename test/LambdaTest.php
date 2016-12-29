@@ -397,10 +397,10 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $conv->setArraySource($data);
         
         $fcon = new \PerrysLambda\Converter\FieldConverter();
-        $fcon->setSerializer('date', \PerrysLambda\FieldSerializer\DateTime::fromIsoFormat(new \DateTimeZone("Europe/Berlin")));
+        $fcon->setSerializer('date', \PerrysLambda\Serializer\DateTimeSerializer::fromIsoFormat(new \DateTimeZone("Europe/Berlin")));
         $fcon->setSerializers(array(
-            'amount' => new \PerrysLambda\FieldSerializer\Number(),
-            'important' => new \PerrysLambda\FieldSerializer\Boolean(),
+            'amount' => new \PerrysLambda\Serializer\NumberSerializer(),
+            'important' => new \PerrysLambda\Serializer\BooleanSerializer(),
         ));
         
         $conv->setFieldConverter($fcon);

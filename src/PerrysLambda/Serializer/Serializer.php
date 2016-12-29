@@ -1,6 +1,7 @@
 <?php
 
-namespace PerrysLambda;
+namespace PerrysLambda\Serializer;
+use PerrysLambda\ISerializer;
 
 class Serializer implements ISerializer
 {

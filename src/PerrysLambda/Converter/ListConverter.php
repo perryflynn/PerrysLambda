@@ -6,7 +6,8 @@ use PerrysLambda\ArrayBase;
 use PerrysLambda\Exception\SerializerException;
 use PerrysLambda\Exception\InvalidValueException;
 use PerrysLambda\ISerializer;
-use PerrysLambda\Converter\IFieldConverter;
+use PerrysLambda\IFieldConverter;
+use PerrysLambda\IListConverter;
 
 
 class ListConverter implements IListConverter

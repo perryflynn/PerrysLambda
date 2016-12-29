@@ -1,8 +1,8 @@
 <?php
 
-namespace PerrysLambda\FieldSerializer;
+namespace PerrysLambda\Serializer;
 
-class DateTime extends \PerrysLambda\Serializer
+class DateTimeSerializer extends Serializer
 {
 
     protected $format;

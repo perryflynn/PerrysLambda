@@ -1,8 +1,8 @@
 <?php
 
-namespace PerrysLambda\FieldSerializer;
+namespace PerrysLambda\Serializer;
 
-class Boolean extends \PerrysLambda\Serializer
+class BooleanSerializer extends Serializer
 {
 
     public function __construct()

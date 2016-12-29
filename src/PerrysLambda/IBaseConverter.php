@@ -1,8 +1,8 @@
 <?php
 
-namespace PerrysLambda\Converter;
+namespace PerrysLambda;
 
-interface IBaseConverter extends \PerrysLambda\ICloneable
+interface IBaseConverter extends ICloneable
 {
 
     public function serialize(&$row, &$key);

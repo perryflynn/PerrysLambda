@@ -2,7 +2,7 @@
 
 namespace PerrysLambda\Converter;
 
-use PerrysLambda\Serializer;
+use PerrysLambda\Serializer\Serializer;
 use PerrysLambda\Converter\ListConverter;
 use PerrysLambda\Exception\InvalidTypeException;
 use PerrysLambda\IArrayable;

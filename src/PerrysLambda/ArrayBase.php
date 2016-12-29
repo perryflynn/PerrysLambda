@@ -6,9 +6,9 @@ use PerrysLambda\Exception\InvalidDataException;
 use PerrysLambda\Exception\InvalidKeyException;
 use PerrysLambda\Exception\InvalidValueException;
 use PerrysLambda\IArrayable;
-use PerrysLambda\Converter\IBaseConverter;
-use PerrysLambda\Converter\IListConverter;
-use PerrysLambda\Converter\IFieldConverter;
+use PerrysLambda\IBaseConverter;
+use PerrysLambda\IListConverter;
+use PerrysLambda\IFieldConverter;
 
 
 /**

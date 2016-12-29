@@ -4,6 +4,7 @@ namespace PerrysLambda\Converter;
 
 use PerrysLambda\ISerializer;
 use PerrysLambda\Exception\SerializerException;
+use PerrysLambda\IFieldConverter;
 
 class FieldConverter implements IFieldConverter
 {
