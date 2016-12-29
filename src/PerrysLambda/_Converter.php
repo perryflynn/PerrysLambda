@@ -49,9 +49,9 @@ class Converter implements IConverter
 
     public function __construct()
     {
-        $this->iterator = null;
         $this->fieldconverters = array();
         $this->rowconverter = null;
+        $this->iterator = null;
         $this->iteratorstartindex = 0;
         $this->iteratorendindex = -1;
         $this->defaults = null;

@@ -6,12 +6,16 @@ use PerrysLambda\Exception\InvalidDataException;
 use PerrysLambda\Exception\InvalidKeyException;
 use PerrysLambda\Exception\InvalidValueException;
 use PerrysLambda\IArrayable;
+use PerrysLambda\Converter\IBaseConverter;
+use PerrysLambda\Converter\IListConverter;
+use PerrysLambda\Converter\IFieldConverter;
 
 
 /**
  * Base class for array-like types
  */
-abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIterator, IArrayable
+abstract class ArrayBase extends Property 
+        implements \ArrayAccess, \SeekableIterator, IArrayable, ICloneable
 {
 
     /**
@@ -40,21 +44,21 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
 
     /**
      * Record and field converter
-     * @var \PerrysLambda\IConverter
+     * @var \PerrysLambda\Converter\IBaseConverter
      */
     protected $__converter;
 
 
     /**
      * Constructor
-     * @param array/IConverter $data
+     * @param array/IBaseConverter $data
      */
     public function __construct($data=array())
     {
         $this->__iteratorindex = 0;
         $this->__converter = null;
 
-        if($data instanceof IConverter)
+        if($data instanceof IListConverter)
         {
             parent::__construct(array());
             $this->__converter = $data;
@@ -66,7 +70,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         }
         else
         {
-            throw new InvalidValueException("Parameter 1 must be a IConverter or array");
+            throw new InvalidValueException("Parameter 1 must be a IListConverter or array");
         }
     }
 
@@ -81,11 +85,11 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
 
     /**
      * Create a new converter instance
-     * @return \PerrysLambda\IConverter
+     * @return \PerrysLambda\Converter\IBaseConverter
      */
     protected function newConverterInstance()
     {
-        if($this->__converter!==null)
+        if($this->__converter instanceof IBaseConverter && $this->__converter instanceof ICloneable)
         {
             return $this->__converter->newInstance();
         }
@@ -152,6 +156,22 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
                 $this[$dkey] = $dvalue;
             }
         }
+    }
+    
+    public function applyFieldConverter(IFieldConverter $fieldconverter)
+    {
+        $this->__converter = $fieldconverter;
+        $result = array();
+
+        foreach($this as $key => $value)
+        {
+            $tempkey = $key;
+            $tempvalue = $value;
+            $this->__converter->deserialize($tempvalue, $tempkey);
+            $result[$tempkey] = $tempvalue;
+        }
+        
+        $this->setData($result);
     }
 
     /**
@@ -308,13 +328,26 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function serialize()
     {
-        if($this->__converter===null)
+        if($this->__converter instanceof IListConverter)
         {
-            return $this->toArray();
+            return $this->__converter->toArray($this);
+        }
+        elseif($this->__converter instanceof IFieldConverter)
+        {
+            $result = array();
+            foreach($this as $key => $value)
+            {
+                $tempkey = $key;
+                $tempvalue = $value;
+                $this->__converter->serialize($tempvalue, $tempkey);
+                $result[$tempkey] = $tempvalue;
+            }
+            
+            return $result;
         }
         else
         {
-            return $this->__converter->exportFromAsArray($this);
+            return $this->toArray();
         }
     }
 
@@ -324,16 +357,16 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
      */
     public function serializeGenerator()
     {
-        if($this->__converter===null)
+        if($this->__converter instanceof IListConverter)
         {
-            foreach($this->toArray() as $index => $row)
+            foreach($this->__converter->toGenerator($this) as $index => $row)
             {
                 yield $index => $row;
             }
         }
         else
         {
-            foreach($this->__converter->exportFromAsGenerator($this) as $index => $row)
+            foreach($this->toArray() as $index => $row)
             {
                 yield $index => $row;
             }
@@ -441,7 +474,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         $insert = true;
         if($this->__converter !== null)
         {
-            $insert = $this->__converter->deserializeRow($tempvalue, $tempfield);
+            $insert = $this->__converter->deserialize($tempvalue, $tempfield);
         }
 
         if(!$this->getIsValidKey($tempfield))
@@ -476,7 +509,7 @@ abstract class ArrayBase extends Property implements \ArrayAccess, \SeekableIter
         $insert = true;
         if($this->__converter !== null)
         {
-            $insert = $this->__converter->deserializeRow($tempvalue, $foo);
+            $insert = $this->__converter->deserialize($tempvalue, $foo);
         }
 
         if($insert===true)

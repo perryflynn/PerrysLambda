@@ -1,11 +1,17 @@
 <?php
 
+use PerrysLambda\ScalarProperty;
+use PerrysLambda\ArrayList;
+use PerrysLambda\ObjectArray;
+use PerrysLambda\Converter\ObjectArrayListConverter;
+use PerrysLambda\Converter\TypeStringListConverter;
+
 class LambdaTest extends PHPUnit_Framework_TestCase
 {
 
     public function testScalar()
     {
-        $s = new \PerrysLambda\ScalarProperty("Zähn € zahme Ziegen zögen zwei Zentner Zücker zum Zoö!", 'UTF-8');
+        $s = new ScalarProperty("Zähn € zahme Ziegen zögen zwei Zentner Zücker zum Zoö!", 'UTF-8');
 
         $this->assertSame(true, $s->startsWith("Zä"));
         $this->assertSame(false, $s->startsWith("zä"));
@@ -26,14 +32,14 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(false, $s->contains('ZWEI'));
         $this->assertSame(true, $s->containsI('ZWEI'));
 
-        $integer = new PerrysLambda\ScalarProperty('4211');
+        $integer = new ScalarProperty('4211');
         $this->assertSame(4211, $integer->toInt());
         $this->assertSame(4211, $integer->toNumeric());
 
-        $float = new PerrysLambda\ScalarProperty('50.4');
-        $realfloat = new PerrysLambda\ScalarProperty(50.4);
-        $null = new PerrysLambda\ScalarProperty(null);
-        $bool = new PerrysLambda\ScalarProperty(true);
+        $float = new ScalarProperty('50.4');
+        $realfloat = new ScalarProperty(50.4);
+        $null = new ScalarProperty(null);
+        $bool = new ScalarProperty(true);
 
         $this->assertSame(true, $float->isNumeric());
         $this->assertSame(true, $float->isString());
@@ -51,7 +57,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(true, $bool->isBool());
         $this->assertSame(true, $float->toBool());
 
-        $string = new PerrysLambda\ScalarProperty(50.3);
+        $string = new ScalarProperty(50.3);
         $this->assertSame('50.3', $string->toString());
     }
 
@@ -61,7 +67,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidKey()
     {
-        $list = new \PerrysLambda\ArrayList();
+        $list = new ArrayList();
         $list['a'] = "b";
     }
 
@@ -71,13 +77,13 @@ class LambdaTest extends PHPUnit_Framework_TestCase
      */
     public function testInvalidData()
     {
-        new \PerrysLambda\ObjectArray(null);
+        new ObjectArray(null);
     }
 
 
     public function testEmpty()
     {
-        $basic = new \PerrysLambda\ArrayList();
+        $basic = new ArrayList();
         $this->assertSame(0, $basic->length());
     }
 
@@ -85,10 +91,10 @@ class LambdaTest extends PHPUnit_Framework_TestCase
     public function testLambda()
     {
         $basicdata = array(1,2,3,4,5,6,7,8,9);
-        $basic = new \PerrysLambda\ArrayList($basicdata);
-        $all = new \PerrysLambda\ArrayList(array(1, 1, 1, 1, 1));
-        $named = new \PerrysLambda\ObjectArray(array('foo'=>'bar', 'foo2'=>'bar2', 'foobar'=>'barfoo'));
-        $empty = new \PerrysLambda\ObjectArray();
+        $basic = new ArrayList($basicdata);
+        $all = new ArrayList(array(1, 1, 1, 1, 1));
+        $named = new ObjectArray(array('foo'=>'bar', 'foo2'=>'bar2', 'foobar'=>'barfoo'));
+        $empty = new ObjectArray();
 
         // basics
         $this->assertSame(1, $basic->first());
@@ -155,17 +161,17 @@ class LambdaTest extends PHPUnit_Framework_TestCase
 
     public function testScalarAccess()
     {
-        $named = new \PerrysLambda\ObjectArray(array('foo'=>'bar', 'foo2'=>'bar2', 'foobar'=>'barfoo'));
+        $named = new ObjectArray(array('foo'=>'bar', 'foo2'=>'bar2', 'foobar'=>'barfoo'));
 
-        $this->assertSame(true, $named->fooScalar instanceof \PerrysLambda\ScalarProperty);
-        $this->assertSame(true, $named->getScalar('foo') instanceof \PerrysLambda\ScalarProperty);
+        $this->assertSame(true, $named->fooScalar instanceof ScalarProperty);
+        $this->assertSame(true, $named->getScalar('foo') instanceof ScalarProperty);
         $this->assertSame('bar', $named->getScalarAt(0)->toString());
     }
 
 
     public function testReferences()
     {
-        $test = new \PerrysLambda\ObjectArray();
+        $test = new ObjectArray();
 
         $test->a = 12;
         $this->assertSame(12, $test->a);
@@ -236,7 +242,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
             array('a' => '1', 'b'=>'2', 'c'=>'3', 'd'=>'4'),
         );
 
-        $list = \PerrysLambda\ArrayList::asObjectArray($testdata);
+        $list = ArrayList::asObjectArray($testdata);
 
         $second = $list->getAt(1);
         $this->assertSame('foo2', $second->a);
@@ -259,7 +265,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(0, $list->length());
 
         // array access functions
-        $unsetlist = \PerrysLambda\ArrayList::asObjectArray($testdata);
+        $unsetlist = ArrayList::asObjectArray($testdata);
         $item = $unsetlist->first();
 
         $this->assertSame(true, $item->exists('a'));
@@ -283,16 +289,16 @@ class LambdaTest extends PHPUnit_Framework_TestCase
             array('a' => '1', 'b'=>'2', 'c'=>'3', 'd'=>'4'),
         );
 
-        $list = \PerrysLambda\ArrayList::asObjectArray($testdata);
+        $list = ArrayList::asObjectArray($testdata);
 
-        $this->assertSame(true, $list->first() instanceof \PerrysLambda\ObjectArray);
+        $this->assertSame(true, $list->first() instanceof ObjectArray);
         $this->assertSame($testdata[0], $list->first()->toArray());
         $this->assertSame('1', $list->first()->a);
 
         $temp = array('hihi' => 'haha', 'foo' => 'bar');
         $list->add($temp);
 
-        $this->assertSame(true, $list->last() instanceof \PerrysLambda\ObjectArray);
+        $this->assertSame(true, $list->last() instanceof ObjectArray);
         $this->assertSame($temp, $list->last()->toArray());
         $this->assertSame('haha', $list->last()->hihi);
     }
@@ -305,7 +311,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
             array('e' => '1', 'f'=>'2', 'g'=>'3', 'h'=>'4'),
         );
 
-        $list = \PerrysLambda\ArrayList::asObjectArray($testdata);
+        $list = ArrayList::asObjectArray($testdata);
         $this->assertEquals($testdata, $list->serialize());
     }
 
@@ -325,7 +331,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
             array('a' => '1', 'b'=>'2', 'c'=>'3', 'd'=>'4'),
         );
 
-        $list = \PerrysLambda\ArrayList::asObjectArray($testdata);
+        $list = ArrayList::asObjectArray($testdata);
 
         $distinct = $list->distinct(function($v) { return $v->a; });
         $this->assertEquals($expecteddistinct, $distinct->serialize());
@@ -357,8 +363,8 @@ class LambdaTest extends PHPUnit_Framework_TestCase
             array("a"=>"helloworld", "b"=>"bar", "c"=>"barfoo"),
         );
 
-        $list1 = \PerrysLambda\ArrayList::asObjectArray($test1);
-        $list2 = \PerrysLambda\ArrayList::asObjectArray($test2);
+        $list1 = ArrayList::asObjectArray($test1);
+        $list2 = ArrayList::asObjectArray($test2);
 
         $this->assertEquals($expectedin, $list1->intersect($list2)->serialize());
         $this->assertEquals($expectedex, $list1->except($list2)->serialize());
@@ -369,8 +375,8 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $test1 = array(1, 2, 3, 4, 5, 6, 7);
         $test2 = array(9, 8, 7, 6, 5, 4, 3);
 
-        $list1 = new \PerrysLambda\ArrayList($test1);
-        $list2 = new \PerrysLambda\ArrayList($test2);
+        $list1 = new ArrayList($test1);
+        $list2 = new ArrayList($test2);
 
         $expectedin = array(2=>3, 3=>4, 4=>5, 5=>6, 6=>7);
         $expectedex = array(1, 2, 9, 8);
@@ -387,15 +393,19 @@ class LambdaTest extends PHPUnit_Framework_TestCase
             array("date"=>"2016-07-08T10:22:25+0000", "amount"=>"123", "important"=>"asdf"),
         );
 
-        $conv = new PerrysLambda\ObjectArrayConverter();
+        $conv = new ObjectArrayListConverter();
         $conv->setArraySource($data);
-        $conv->setFieldConverter('date', \PerrysLambda\FieldSerializer\DateTime::fromIsoFormat(new \DateTimeZone("Europe/Berlin")));
-        $conv->setFieldConverters(array(
+        
+        $fcon = new \PerrysLambda\Converter\FieldConverter();
+        $fcon->setSerializer('date', \PerrysLambda\FieldSerializer\DateTime::fromIsoFormat(new \DateTimeZone("Europe/Berlin")));
+        $fcon->setSerializers(array(
             'amount' => new \PerrysLambda\FieldSerializer\Number(),
             'important' => new \PerrysLambda\FieldSerializer\Boolean(),
         ));
+        
+        $conv->setFieldConverter($fcon);
 
-        $list = new PerrysLambda\ArrayList($conv);
+        $list = new ArrayList($conv);
 
         $this->assertSame(true, $list->first()->date instanceof \DateTime);
         $this->assertSame('2016-07-08T08:12:20+0200', $list[0]->date->format(\DateTime::ISO8601));
@@ -413,8 +423,15 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame($data[0]['amount'], $serialized[0]['amount']);
         $this->assertSame($data[0]['important'], $serialized[0]['important']);
         $this->assertSame("false", $serialized[2]['important']);
+        
+        $filterserialized = $list
+            ->where(function($r) { return $r->amount===42; })
+            ->serialize();
+            
+        $this->assertSame(true, is_array($filterserialized) && count($filterserialized)===1);
+        $this->assertSame('2016-07-08T08:12:20+0200', $filterserialized[0]['date']);
     }
-
+    
     public function testCustomTypeConverter()
     {
         $data = array(
@@ -423,9 +440,9 @@ class LambdaTest extends PHPUnit_Framework_TestCase
             array("date"=>"2016-07-08T10:22:25+0000", "amount"=>"123", "important"=>"asdf"),
         );
 
-        $list = PerrysLambda\ArrayList::asType('\PerrysLambda\ObjectArray', $data);
+        $list = ArrayList::asType('\PerrysLambda\ObjectArray', $data);
 
-        $this->assertSame(true, $list->first() instanceof \PerrysLambda\ObjectArray);
+        $this->assertSame(true, $list->first() instanceof ObjectArray);
         $this->assertSame($data[1]['amount'], $list->getAt(1)->amount);
         $this->assertEquals($data, $list->serialize());
 
@@ -444,14 +461,14 @@ class LambdaTest extends PHPUnit_Framework_TestCase
             array("date"=>"2016-07-08T10:22:25+0000", "amount"=>"123", "important"=>"asdf"),
         );
 
-        $conv = new \PerrysLambda\ObjectArrayConverter();
+        $conv = new ObjectArrayListConverter();
         $conv->setArraySource($data);
 
         $conv->setDefaults(array(
             'foo' => 'bar',
         ));
 
-        $list = new \PerrysLambda\ObjectArray($conv);
+        $list = new ObjectArray($conv);
 
         $this->assertSame('fooo', $list->first()->foo);
         $this->assertSame('bar', $list->getAt(1)->foo);

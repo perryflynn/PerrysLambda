@@ -2,6 +2,9 @@
 
 namespace PerrysLambda;
 
+use PerrysLambda\Converter\ObjectArrayListConverter;
+use PerrysLambda\Converter\TypeStringListConverter;
+
 /**
  * Array-Type with numeric index
  */
@@ -15,7 +18,7 @@ class ArrayList extends ArrayBase
      */
     public static function asObjectArray(array $data)
     {
-        $converter = new ObjectArrayConverter();
+        $converter = new ObjectArrayListConverter();
         $converter->setArraySource($data);
         return new static($converter);
     }
@@ -28,7 +31,7 @@ class ArrayList extends ArrayBase
      */
     public static function asType($type, array $data)
     {
-        $converter = new TypeStringConverter($type);
+        $converter = new TypeStringListConverter($type);
         $converter->setArraySource($data);
         return new static($converter);
     }
@@ -40,7 +43,7 @@ class ArrayList extends ArrayBase
      */
     public function getIsValidKey($name)
     {
-        return is_int($name);
+        return is_int($name) && $name>=0;
     }
 
     /**

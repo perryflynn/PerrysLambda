@@ -1,9 +1,14 @@
 <?php
 
-namespace PerrysLambda;
-use \PerrysLambda\Serializer as Ser;
+namespace PerrysLambda\Converter;
 
-class TypeStringConverter extends Converter
+use PerrysLambda\Serializer;
+use PerrysLambda\Converter\ListConverter;
+use PerrysLambda\Exception\InvalidTypeException;
+use PerrysLambda\IArrayable;
+
+
+class TypeStringListConverter extends ListConverter
 {
 
     public function __construct($type)
@@ -12,12 +17,12 @@ class TypeStringConverter extends Converter
 
         if(!class_exists($type))
         {
-            throw new InvalidTypeException();
+            throw new InvalidTypeException("Typ ".$type." not found");
         }
 
         $serializer = function(&$row, &$key)
         {
-            if(is_object($row) && $row instanceof \PerrysLambda\IArrayable)
+            if(is_object($row) && $row instanceof IArrayable)
             {
                 $row = $row->toArray();
             }
@@ -25,7 +30,7 @@ class TypeStringConverter extends Converter
             {
                 throw new \Exception("Row object must implement \\PerrysLambda\\IArrayable");
             }
-            elseif(!is_array())
+            elseif(!is_array($row))
             {
                 $row = array('row'=>$row);
             }
@@ -41,7 +46,7 @@ class TypeStringConverter extends Converter
             return true;
         };
 
-        $this->setRowConverter(new Ser($serializer, $deserializer));
+        $this->setSerializer(new Serializer($serializer, $deserializer));
     }
 
 }

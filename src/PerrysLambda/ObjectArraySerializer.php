@@ -15,7 +15,7 @@ class ObjectArraySerializer extends Ser
         {
             if($row instanceof OA)
             {
-                $row = $row->toArray();
+                $row = $row->serialize();
             }
             return true;
         };
