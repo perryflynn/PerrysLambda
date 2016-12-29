@@ -8,6 +8,7 @@ use PerrysLambda\Exception\InvalidValueException;
 use PerrysLambda\ISerializer;
 use PerrysLambda\IFieldConverter;
 use PerrysLambda\IListConverter;
+use PerrysLambda\Serializer\DummySerializer;
 
 
 class ListConverter implements IListConverter
@@ -54,7 +55,7 @@ class ListConverter implements IListConverter
     
     public function __construct()
     {
-        $this->serializer = null;
+        $this->serializer = new DummySerializer();
         $this->iterator = null;
         $this->iteratorstartindex = 0;
         $this->iteratorendindex = -1;
@@ -80,7 +81,7 @@ class ListConverter implements IListConverter
     
     /**
      * Set the fieldconverter
-     * @param \PerryFlynn\Converter\IFieldConverter $fieldconverter
+     * @param \PerryFlynn\IFieldConverter $fieldconverter
      */
     public function setFieldConverter(IFieldConverter $fieldconverter)
     {
@@ -89,7 +90,7 @@ class ListConverter implements IListConverter
     
     /**
      * Get the fieldconverter
-     * @return \PerrysLambda\Converter\IFieldConverter
+     * @return \PerrysLambda\IFieldConverter
      */
     public function getFieldConverter() 
     {

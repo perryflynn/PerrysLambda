@@ -85,7 +85,7 @@ abstract class ArrayBase extends Property
 
     /**
      * Create a new converter instance
-     * @return \PerrysLambda\Converter\IBaseConverter
+     * @return \PerrysLambda\IBaseConverter
      */
     protected function newConverterInstance()
     {

@@ -2,11 +2,12 @@
 
 namespace PerrysLambda\IO;
 
-use PerrysLambda\Serializer;
+use PerrysLambda\Serializer\Serializer;
 use PerrysLambda\Exception\InvalidTypeException;
+use PerrysLambda\Converter\ListConverter;
 
 
-class DirectoryConverter extends \PerrysLambda\Converter
+class DirectoryConverter extends ListConverter
 {
 
     const ITEMCLASS = '\PerrysLambda\IO\File';
@@ -48,7 +49,7 @@ class DirectoryConverter extends \PerrysLambda\Converter
             return true;
         };
 
-        $this->setRowConverter(new Serializer($serializer, $deserializer));
+        $this->setSerializer(new Serializer($serializer, $deserializer));
     }
 
     public function setPath(File $path)

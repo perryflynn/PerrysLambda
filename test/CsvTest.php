@@ -2,9 +2,9 @@
 
 use PerrysLambda\IO\File;
 use PerrysLambda\IO\CsvParser;
-use PerrysLambda\ObjectArrayConverter;
+use PerrysLambda\Converter\ObjectArrayListConverter;
 use PerrysLambda\ArrayList;
-use PerrysLambda\Converter;
+use PerrysLambda\Converter\ListConverter;
 use PerrysLambda\IO\LineIterator;
 
 class CsvTest extends PHPUnit_Framework_TestCase
@@ -16,7 +16,7 @@ class CsvTest extends PHPUnit_Framework_TestCase
     public function testInvalidParse()
     {
         $file = __DIR__."/../examples/testdata.csv";
-        $conv = new ObjectArrayConverter();
+        $conv = new ObjectArrayListConverter();
 
         $parser = new CsvParser();
         $parser->setValidate(true);
@@ -37,7 +37,7 @@ class CsvTest extends PHPUnit_Framework_TestCase
     public function testCsvParser()
     {
         $file = __DIR__."/../examples/testdata.csv";
-        $conv = new ObjectArrayConverter();
+        $conv = new ObjectArrayListConverter();
 
         $parser = new CsvParser();
         $conv->setIteratorSource($parser->openFile(new File($file)));
@@ -58,15 +58,15 @@ class CsvTest extends PHPUnit_Framework_TestCase
 
         $parser = new CsvParser();
 
-        $allconv = new ObjectArrayConverter();
+        $allconv = new ObjectArrayListConverter();
         $allconv->setIteratorSource($parser->openFile(new File($file)));
         $allrecords = new ArrayList($allconv);
 
-        $conv = new ObjectArrayConverter();
+        $conv = new ObjectArrayListConverter();
         $conv->setIteratorSource($parser->openFile(new File($file)), 2);
         $records = new ArrayList($conv);
 
-        $conv2 = new ObjectArrayConverter();
+        $conv2 = new ObjectArrayListConverter();
         $conv2->setIteratorSource($parser->openFile(new File($file)), 2, 4);
         $records2 = new ArrayList($conv2);
 
@@ -84,13 +84,13 @@ class CsvTest extends PHPUnit_Framework_TestCase
         $iterator = new LineIterator(new File(__DIR__."/../examples/testdata.txt"));
         $c = $iterator->count();
         
-        $conv = new Converter();
+        $conv = new ListConverter();
         $conv->setIteratorSource($iterator, $c-500);
         $list = new ArrayList($conv);
         
         $this->assertSame(500, $list->length());
         
-        $conv2 = new Converter();
+        $conv2 = new ListConverter();
         $conv2->setIteratorSource($iterator, 0, 499);
         $list2 = new ArrayList($conv2);
         
