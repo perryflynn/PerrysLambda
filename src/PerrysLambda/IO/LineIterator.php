@@ -4,7 +4,7 @@ namespace PerrysLambda\IO;
 
 class LineIterator implements \Iterator
 {
-
+    
     protected $filepath;
     protected $file;
     protected $index;

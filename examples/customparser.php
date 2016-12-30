@@ -31,11 +31,12 @@ function columnline(array $columns)
 // Lambda classes
 use PerrysLambda\ObjectArray;
 use PerrysLambda\ArrayList;
-use PerrysLambda\Serializer;
+use PerrysLambda\Serializer\Serializer;
 use PerrysLambda\IO\LineIterator;
-use PerrysLambda\Converter;
+use PerrysLambda\Converter\ListConverter;
+use PerrysLambda\Converter\FieldConverter;
 use PerrysLambda\IO\File;
-use PerrysLambda\FieldSerializer\DateTime as SerDateTime;
+use PerrysLambda\Serializer\DateTimeSerializer as SerDateTime;
 
 // Timer
 $total = new Stopwatch();
@@ -83,11 +84,13 @@ $rowdeser = function(&$row, &$key)
     return true;
 };
 
-$conv = new Converter();
-$conv->setRowConverter(new Serializer($rowser, $rowdeser));
-
 // Field converters (string to number or datetime)
-$conv->setFieldConverter('timestamp', new SerDateTime("Y-m-d\\TH:i:s.uO", new \DateTimeZone("Europe/Berlin")));
+$fconv = new FieldConverter();
+$fconv->setSerializer('timestamp', new SerDateTime("Y-m-d\\TH:i:s.uO", new \DateTimeZone("Europe/Berlin")));
+
+$conv = new ListConverter();
+$conv->setSerializer(new Serializer($rowser, $rowdeser));
+$conv->setFieldConverter($fconv);
 
 // Read testdata line by line
 $iterator = new LineIterator(new File(__DIR__."/testdata.txt"));

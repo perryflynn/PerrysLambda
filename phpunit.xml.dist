@@ -14,7 +14,6 @@
     </filter>
     
 	<testsuites>
-        <!--
 		<testsuite>
 			<file>test/LambdaTest.php</file>
 		</testsuite>
@@ -24,6 +23,8 @@
 		<testsuite>
 			<file>test/CsvTest.php</file>
 		</testsuite>
-        -->
+		<testsuite>
+			<file>test/CustomConverterTest.php</file>
+		</testsuite>
 	</testsuites>
 </phpunit>

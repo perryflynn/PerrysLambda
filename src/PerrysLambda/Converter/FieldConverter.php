@@ -58,38 +58,36 @@ class FieldConverter implements IFieldConverter
 
     public function deserialize(&$row, &$key) 
     {
-        if(!array_key_exists($key, $this->serializers) || !($this->serializers[$key] instanceof ISerializer))
+        if(array_key_exists($key, $this->serializers) && $this->serializers[$key] instanceof ISerializer)
         {
-            throw new SerializerException("No serializer set for ".$key);
+            $deser = $this->serializers[$key]->getDeserializer();
+            $result = $deser($row, $key);
+
+            if($result!==true && $result!==false)
+            {
+                throw new SerializerException("Serializer must return a bool for success indication");
+            }
+
+            return $result;
         }
-        
-        $deser = $this->serializers[$key]->getDeserializer();
-        $result = $deser($row, $key);
-        
-        if($result!==true && $result!==false)
-        {
-            throw new SerializerException("Serializer must return a bool for success indication");
-        }
-        
-        return $result;
+        return true;
     }
 
     public function serialize(&$row, &$key) 
     {
-        if(!array_key_exists($key, $this->serializers) || !($this->serializers[$key] instanceof ISerializer))
+        if(array_key_exists($key, $this->serializers) && $this->serializers[$key] instanceof ISerializer)
         {
-            throw new SerializerException("No serializer set for ".$key);
+            $ser = $this->serializers[$key]->getSerializer();
+            $result = $ser($row, $key);
+
+            if($result!==true && $result!==false)
+            {
+                throw new SerializerException("Serializer must return a bool for success indication");
+            }
+
+            return $result;
         }
-        
-        $ser = $this->serializers[$key]->getSerializer();
-        $result = $ser($row, $key);
-        
-        if($result!==true && $result!==false)
-        {
-            throw new SerializerException("Serializer must return a bool for success indication");
-        }
-        
-        return $result;
+        return true;
     }
 
 }

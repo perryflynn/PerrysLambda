@@ -89,7 +89,7 @@ abstract class ArrayBase extends Property
      */
     protected function newConverterInstance()
     {
-        if($this->__converter instanceof IBaseConverter && $this->__converter instanceof ICloneable)
+        if($this->__converter instanceof IBaseConverter)
         {
             return $this->__converter->newInstance();
         }
@@ -682,11 +682,18 @@ abstract class ArrayBase extends Property
         {
             $result = $this->newInstance();
         }
-
+        
         foreach($this as $record)
         {
             $key = call_user_func($group, $record);
-            $newitemtype = new ArrayList(array());
+            
+            $data = array();
+            if($this->__converter instanceof IListConverter)
+            {
+                $data = $this->newConverterInstance();
+            }
+            $newitemtype = new ArrayList($data);
+            
             $result->get($key, $newitemtype, true)->add($record);
         }
 
