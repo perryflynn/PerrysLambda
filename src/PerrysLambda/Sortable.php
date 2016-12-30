@@ -15,11 +15,12 @@ class Sortable
     /**
      * Create asc order instance
      * @param \PerrysLambda\ArrayList $list
-     * @param callable $order
+     * @param callable|string|null $order
      * @return \PerrysLambda\Sortable
      */
-    public static function startOrder(ArrayList $list, callable $order)
+    public static function startOrder(ArrayList $list, $order)
     {
+        $order = LambdaUtils::toCallable($order);
         $temp = new static($list, $order, self::ORDER_ASC);
         $temp->thenBy($order);
         return $temp;
@@ -28,11 +29,12 @@ class Sortable
     /**
      * Create desc order instance
      * @param \PerrysLambda\ArrayList $list
-     * @param callable $order
+     * @param callable|string|null $order
      * @return \PerrysLambda\Sortable
      */
-    public static function startOrderDesc(ArrayList $list, callable $order)
+    public static function startOrderDesc(ArrayList $list, $order)
     {
+        $order = LambdaUtils::toCallable($order);
         $temp = new static($list, $order, self::ORDER_DESC);
         $temp->thenByDesc($order);
         return $temp;
@@ -47,22 +49,24 @@ class Sortable
 
     /**
      * New asc order rule
-     * @param callable $order
+     * @param callable|string|null $order
      * @return \PerrysLambda\Sortable
      */
-    public function thenBy(callable $order)
+    public function thenBy($order)
     {
+        $order = LambdaUtils::toCallable($order);
         $this->orders[] = array("property" => $order, "direction" => self::ORDER_ASC);
         return $this;
     }
 
     /**
      * New desc order rule
-     * @param callable $order
+     * @param callable|string|null $order
      * @return \PerrysLambda\Sortable
      */
-    public function thenByDesc(callable $order)
+    public function thenByDesc($order)
     {
+        $order = LambdaUtils::toCallable($order);
         $this->orders[] = array("property" => $order, "direction" => self::ORDER_DESC);
         return $this;
     }

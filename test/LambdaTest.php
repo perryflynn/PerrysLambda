@@ -114,6 +114,13 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(2, $basic->skip(1)->take(1)->singleOrDefault(42));
         $this->assertSame(42, $basic->singleOrDefault(42));
         $this->assertEquals(array(8,9), $basic->take(-2)->toArray());
+        
+        // basics as string
+        $this->assertSame(45, $basic->sum());
+        $this->assertSame(1, $basic->min());
+        $this->assertSame(9, $basic->max());
+        $this->assertSame(5, $basic->avg());
+        $this->assertSame('1.2.3.4.5.6.7.8.9', $basic->joinString(null, '.'));
 
         // any / all
         $this->assertSame(true, $basic->any(function($v) { return $v===1; }));
@@ -159,6 +166,40 @@ class LambdaTest extends PHPUnit_Framework_TestCase
     }
 
 
+    public function testLambdaByString()
+    {
+        // lambda functions
+        $testdata = array(
+            array('a' => 2, 'b'=>'foo', 'c'=>'foobar', 'd'=>'barfoo'),
+            array('a' => 3, 'b'=>'bar', 'c'=>'foobar2', 'd'=>'barfoo2'),
+            array('a' => 4, 'b'=>'foo', 'c'=>'3', 'd'=>'4'),
+            array('a' => 5, 'b'=>'foo', 'c'=>'3', 'd'=>'4'),
+        );
+
+        $list = ArrayList::asObjectArray($testdata);
+        
+        $this->assertSame(14, $list->sum('a'));
+        $this->assertSame(2, $list->min('a'));
+        $this->assertSame(5, $list->max('a'));
+        $this->assertSame(3.5, $list->avg('a'));
+        
+        $this->assertSame(3, $list->groupBy('b')->foo->length());
+        $this->assertSame(1, $list->groupBy('b')->bar->length());
+        $this->assertSame(2, $list->groupBy('b')->length());
+        
+        $this->assertSame(2, $list->distinct('b')->length());
+        
+        $this->assertEquals(array(2, 3, 4, 5), $list->select('a'));
+        $this->assertSame('2,3,4,5', $list->joinString('a', ','));
+        
+        $ordertest = $list->order('b')->thenBy('a')->toList()->select('a');
+        $this->assertSame(array(3, 2, 4, 5), $ordertest);
+
+        $ordertestdesc = $list->orderDesc('b')->thenByDesc('a')->toList()->select('a');
+        $this->assertSame(array(5, 4, 2, 3), $ordertestdesc);
+    }
+    
+    
     public function testScalarAccess()
     {
         $named = new ObjectArray(array('foo'=>'bar', 'foo2'=>'bar2', 'foobar'=>'barfoo'));

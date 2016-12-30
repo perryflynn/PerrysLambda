@@ -672,11 +672,13 @@ abstract class ArrayBase extends Property
 
     /**
      * Group fields by condition
-     * @param callable $group
+     * @param callable|string|null $group
      * @return \PerrysLambda\ArrayBase
      */
-    public function groupBy(callable $group)
+    public function groupBy($group=null)
     {
+        $group = LambdaUtils::toCallable($group);
+        
         $result = new ObjectArray(array());
         if($this instanceof ObjectArray)
         {
@@ -702,11 +704,13 @@ abstract class ArrayBase extends Property
 
     /**
      * filter duplicate field by condition
-     * @param callable $distinct
+     * @param callable|string|null $distinct
      * @return \PerrysLambda\ArrayBase
      */
-    public function distinct(callable $distinct)
+    public function distinct($distinct=null)
     {
+        $distinct = LambdaUtils::toCallable($distinct);
+        
         $keys = array();
         $collection = $this->newInstance();
         foreach($this as $record)
@@ -795,11 +799,13 @@ abstract class ArrayBase extends Property
 
     /**
      * Select field
-     * @param callable $select
+     * @param callable|string|null $select
      * @return array
      */
-    public function select(callable $select)
+    public function select($select=null)
     {
+        $select = LambdaUtils::toCallable($select);
+        
         $result = array();
         foreach($this as $key => $record)
         {
@@ -825,57 +831,62 @@ abstract class ArrayBase extends Property
 
     /**
      * Calculates the sum of values from given expression
-     * @param callable $sum
+     * @param callable|string|null $sum
      * @return numeric
      */
-    public function sum(callable $sum)
+    public function sum($sum=null)
     {
+        $sum = LambdaUtils::toCallable($sum);
         $temp = $this->select($sum);
         return array_sum($temp);
     }
 
     /**
      * Find the lowest value from given expression
-     * @param callable $min
+     * @param callable|string|null $min
      * @return numeric
      */
-    public function min(callable $min)
+    public function min($min=null)
     {
+        $min = LambdaUtils::toCallable($min);
         $temp = $this->select($min);
         return min($temp);
     }
 
     /**
      * Find the biggest value from given expression
-     * @param callable $max
+     * @param callable|string|null $max
      * @return numeric
      */
-    public function max(callable $max)
+    public function max($max=null)
     {
+        $max = LambdaUtils::toCallable($max);
         $temp = $this->select($max);
         return max($temp);
     }
 
     /**
      * Find the average of the values from given expression
-     * @param callable $avg
+     * @param callable|string|null $avg
      * @return numeric
      */
-    public function avg(callable $avg)
+    public function avg($avg=null)
     {
+        $avg = LambdaUtils::toCallable($avg);
         return ($this->sum($avg)/$this->length());
     }
 
     /**
      * Join values from expression to one string
-     * @param callable $join
+     * @param callable|string|null $join
      * @param string $glue
      * @return string
      */
-    public function joinString(callable $join, $glue=", ")
+    public function joinString($join=null, $glue=", ")
     {
-       $temp = $this->select($join);
-       return implode($glue, $temp);
+        $join = LambdaUtils::toCallable($join);
+        $temp = $this->select($join);
+        return implode($glue, $temp);
     }
 
     /**
@@ -1023,21 +1034,23 @@ abstract class ArrayBase extends Property
 
     /**
      * Begin order asc
-     * @param callable $order
+     * @param callable|string|null $order
      * @return \PerrysLambda\Sortable
      */
-    public function order(callable $order)
+    public function order($order)
     {
+        $order = LambdaUtils::toCallable($order);
         return Sortable::startOrder($this, $order);
     }
 
     /**
      * Begin order desc
-     * @param \PerrysLambda\callable $order
+     * @param callable|string|null $order
      * @return \PerrysLambda\Sortable
      */
-    public function orderDesc(callable $order)
+    public function orderDesc($order)
     {
+        $order = LambdaUtils::toCallable($order);
         return Sortable::startOrderDesc($this, $order);
     }
 
