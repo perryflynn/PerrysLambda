@@ -134,6 +134,11 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(5, $basic->whereFirstOrDefault(function($v) { return $v>4; }, 42));
         $this->assertSame(42, $basic->whereFirstOrDefault(function($v) { return $v>99; }, 42));
 
+        // countable interface
+        $this->assertSame(9, count($basic));
+        $this->assertSame(9, $basic->count());
+        $this->assertSame(9, $basic->length());
+        
         // sorting
         // array(1,2,3,4,5,6,7,8,9)
         // array(4,3,2,1,9,8,7,6,5)
