@@ -15,7 +15,7 @@ use PerrysLambda\IFieldConverter;
  * Base class for array-like types
  */
 abstract class ArrayBase extends Property 
-        implements \ArrayAccess, \SeekableIterator, IArrayable, ICloneable
+        implements \ArrayAccess, \SeekableIterator, IArrayable, ICloneable, \Countable
 {
 
     /**
@@ -381,7 +381,7 @@ abstract class ArrayBase extends Property
     {
         return count($this->__data);
     }
-
+    
     /**
      * Check for field by its name
      * @param mixed $field
@@ -1160,6 +1160,18 @@ abstract class ArrayBase extends Property
     public function seek($position)
     {
         $this->__iteratorindex = $position;
+    }
+    
+    
+    // Countable ---------------------------------------------------------------
+
+
+    /**
+     * \Countable implementation
+     */
+    public function count() 
+    {
+        return $this->length();
     }
 
 
