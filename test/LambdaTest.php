@@ -412,8 +412,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
 
         $list1 = ArrayList::asObjectArray($test1);
         $list2 = ArrayList::asObjectArray($test2);
-
-        echo "intersect\n\n";
+        
         $this->assertEquals($expectedin, $list1->intersect($list2)->serialize());
         $this->assertEquals($expectedex, $list1->except($list2)->serialize());
     }

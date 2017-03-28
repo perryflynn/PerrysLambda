@@ -14,6 +14,8 @@ use PerrysLambda\Serializer\DummySerializer;
 class ListConverter implements IListConverter
 {
     
+    protected static $dummyserializerinstance;
+    
     const ARRAYBASE='\PerrysLambda\ArrayBase';
     
     /**
@@ -55,7 +57,12 @@ class ListConverter implements IListConverter
     
     public function __construct()
     {
-        $this->serializer = new DummySerializer();
+        if(is_null(self::$dummyserializerinstance))
+        {
+            self::$dummyserializerinstance = new DummySerializer();
+        }
+        
+        $this->serializer = self::$dummyserializerinstance;
         $this->iterator = null;
         $this->iteratorstartindex = 0;
         $this->iteratorendindex = -1;

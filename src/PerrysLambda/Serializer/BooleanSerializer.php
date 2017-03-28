@@ -9,13 +9,19 @@ class BooleanSerializer extends Serializer
     {
         $serializer = function(&$value, &$key)
         {
-            $value = ($value===true ? "true" : "false");
+            if($value!=="true" && $value!=="false")
+            {
+                $value = ($value===true ? "true" : "false");
+            }
             return true;
         };
 
         $deserializer = function(&$value, &$key)
         {
-            $value = ($value==="true" || $value===true || $value===1);
+            if($value!==true && $value!==false)
+            {
+                $value = ($value==="true" || $value===true || $value===1);
+            }
             return true;
         };
 
