@@ -6,7 +6,7 @@ use PerrysLambda\ArrayBase;
 use PerrysLambda\Exception\SerializerException;
 use PerrysLambda\Exception\InvalidValueException;
 use PerrysLambda\ISerializer;
-use PerrysLambda\IFieldConverter;
+use PerrysLambda\IItemConverter;
 use PerrysLambda\IListConverter;
 use PerrysLambda\Serializer\DummySerializer;
 
@@ -26,7 +26,7 @@ class ListConverter implements IListConverter
      * Field converter
      * @var \PerrysLambda\Converter\IFieldConverter
      */
-    protected $fieldconverter;
+    protected $itemconverter;
 
     /**
      * Data iterator
@@ -80,21 +80,26 @@ class ListConverter implements IListConverter
     }
     
     /**
-     * Set the fieldconverter
-     * @param \PerryFlynn\IFieldConverter $fieldconverter
+     * Set the itemconverter
+     * @param \PerryFlynn\IItemConverter $itemconverter
      */
-    public function setFieldConverter(IFieldConverter $fieldconverter)
+    public function setItemConverter(IItemConverter $itemconverter)
     {
-        $this->fieldconverter = $fieldconverter;
+        $this->itemconverter = $itemconverter;
     }
     
     /**
-     * Get the fieldconverter
-     * @return \PerrysLambda\IFieldConverter
+     * Get the itemconverter
+     * @return \PerrysLambda\IItemConverter
      */
-    public function getFieldConverter() 
+    public function getItemConverter() 
     {
-        return $this->fieldconverter;
+        return $this->itemconverter;
+    }
+    
+    public function isItemConverterExist()
+    {
+        return $this->itemconverter instanceof IItemConverter;
     }
 
     /**
@@ -157,12 +162,10 @@ class ListConverter implements IListConverter
                 {
                     $tempkey = $key;
                     $tempvalue = $row;
-                    
-                    $this->deserialize($tempvalue, $tempkey);
-                    
-                    if($tempvalue instanceof ArrayBase && $this->fieldconverter!==null)
+
+                    if($this->isItemConverterExist())
                     {
-                        $tempvalue->applyFieldConverter($this->fieldconverter);
+                        $this->getItemConverter()->deserializeAll($tempvalue, $tempkey);
                     }
                     
                     if($tempvalue!==null && $tempkey!==null)
@@ -184,6 +187,8 @@ class ListConverter implements IListConverter
         $class = get_called_class();
         $instance = new $class();
         $instance->setSerializer($this->serializer);
+        $instance->setItemConverter($this->itemconverter);
+        $instance->setDefaults($this->defaults);
         return $instance;
     }
 
@@ -200,6 +205,19 @@ class ListConverter implements IListConverter
         if($result!==true && $result!==false)
         {
             throw new SerializerException("Serializer must return a bool for success indication");
+        }
+        
+        if($this->isItemConverterExist() && (is_array($row) || $row instanceof \ArrayAccess))
+        {
+            if($this->getItemConverter()->deserializeAll($row, $key)===false)
+            {
+                $result = false;
+            }
+        }
+        
+        if($this->isItemConverterExist() && is_subclass_of($row, self::ARRAYBASE))
+        {
+            $row->setConverter($this->getItemConverter());
         }
 
         if(is_array($this->defaults))
@@ -230,6 +248,14 @@ class ListConverter implements IListConverter
         if($result!==true && $result!==false)
         {
             throw new SerializerException("Serializer must return a bool for success indication");
+        }
+        
+        if($this->isItemConverterExist() && (is_array($row) || $row instanceof \ArrayAccess))
+        {
+            if($this->getItemConverter()->serializeAll($row, $key)===false)
+            {
+                $result = false;
+            }
         }
         
         return $result;

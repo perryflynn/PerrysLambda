@@ -8,7 +8,7 @@ use PerrysLambda\Exception\InvalidValueException;
 use PerrysLambda\IArrayable;
 use PerrysLambda\IBaseConverter;
 use PerrysLambda\IListConverter;
-use PerrysLambda\IFieldConverter;
+use PerrysLambda\Exception\PerrysLambdaException;
 
 
 /**
@@ -142,6 +142,11 @@ abstract class ArrayBase extends Property
         $this->__data = $data;
         $this->invalidateKeycache();
     }
+    
+    public function setConverter(IBaseConverter $conv)
+    {
+        $this->__converter = $conv;
+    }
 
     /**
      * Applies given fields to this object if field does not exist
@@ -156,22 +161,6 @@ abstract class ArrayBase extends Property
                 $this[$dkey] = $dvalue;
             }
         }
-    }
-    
-    public function applyFieldConverter(IFieldConverter $fieldconverter)
-    {
-        $this->__converter = $fieldconverter;
-        $result = array();
-
-        foreach($this as $key => $value)
-        {
-            $tempkey = $key;
-            $tempvalue = $value;
-            $this->__converter->deserialize($tempvalue, $tempkey);
-            $result[$tempkey] = $tempvalue;
-        }
-        
-        $this->setData($result);
     }
 
     /**
@@ -244,6 +233,11 @@ abstract class ArrayBase extends Property
             return $this->__keycacheindex;
         }
         return array();
+    }
+    
+    public function getKeys()
+    {
+        return $this->getNames();
     }
 
     /**
@@ -321,58 +315,16 @@ abstract class ArrayBase extends Property
     {
         return $this->__data;
     }
-
-    /**
-     * Serialize via converter
-     * @return mixed[]
-     */
-    public function serialize()
-    {
-        if($this->__converter instanceof IListConverter)
-        {
-            return $this->__converter->toArray($this);
-        }
-        elseif($this->__converter instanceof IFieldConverter)
-        {
-            $result = array();
-            foreach($this as $key => $value)
-            {
-                $tempkey = $key;
-                $tempvalue = $value;
-                $this->__converter->serialize($tempvalue, $tempkey);
-                $result[$tempkey] = $tempvalue;
-            }
-            
-            return $result;
-        }
-        else
-        {
-            return $this->toArray();
-        }
-    }
-
-    /**
-     * Serialize via converter as generator
-     * @return mixed[]
-     */
+    
+    // TODO: Doku
+    abstract public function serialize();
+    
     public function serializeGenerator()
     {
-        if($this->__converter instanceof IListConverter)
-        {
-            foreach($this->__converter->toGenerator($this) as $index => $row)
-            {
-                yield $index => $row;
-            }
-        }
-        else
-        {
-            foreach($this->toArray() as $index => $row)
-            {
-                yield $index => $row;
-            }
-        }
+        throw new PerrysLambdaException("Not implemented");
     }
 
+    
     /**
      * Get count of fields currently loaded from data source
      * @return int
@@ -507,9 +459,9 @@ abstract class ArrayBase extends Property
         $tempvalue = $value;
 
         $insert = true;
-        if($this->__converter !== null)
+        if($this->__converter !== null && $this->__converter->isItemConverterExist())
         {
-            $insert = $this->__converter->deserialize($tempvalue, $foo);
+            $insert = $this->__converter->getItemConverter()->deserialize($tempvalue, $foo);
         }
 
         if($insert===true)

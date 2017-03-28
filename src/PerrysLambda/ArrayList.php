@@ -55,5 +55,43 @@ class ArrayList extends ArrayBase
     {
         return true;
     }
+    
+    /**
+     * Serialize via converter
+     * @return mixed[]
+     */
+    public function serialize()
+    {
+        if($this->__converter instanceof IListConverter)
+        {
+            return $this->__converter->toArray($this);
+        }
+        else
+        {
+            return $this->toArray();
+        }
+    }
+
+    /**
+     * Serialize via converter as generator
+     * @return mixed[]
+     */
+    public function serializeGenerator()
+    {
+        if($this->__converter instanceof IListConverter)
+        {
+            foreach($this->__converter->toGenerator($this) as $index => $row)
+            {
+                yield $index => $row;
+            }
+        }
+        else
+        {
+            foreach($this->toArray() as $index => $row)
+            {
+                yield $index => $row;
+            }
+        }
+    }
 
 }

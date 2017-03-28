@@ -5,6 +5,7 @@ use PerrysLambda\ArrayList;
 use PerrysLambda\ObjectArray;
 use PerrysLambda\Converter\ObjectArrayListConverter;
 use PerrysLambda\Converter\TypeStringListConverter;
+use PerrysLambda\Converter\ItemConverter;
 
 class LambdaTest extends PHPUnit_Framework_TestCase
 {
@@ -412,6 +413,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $list1 = ArrayList::asObjectArray($test1);
         $list2 = ArrayList::asObjectArray($test2);
 
+        echo "intersect\n\n";
         $this->assertEquals($expectedin, $list1->intersect($list2)->serialize());
         $this->assertEquals($expectedex, $list1->except($list2)->serialize());
     }
@@ -442,15 +444,12 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $conv = new ObjectArrayListConverter();
         $conv->setArraySource($data);
         
-        $fcon = new \PerrysLambda\Converter\FieldConverter();
-        $fcon->setSerializer('date', \PerrysLambda\Serializer\DateTimeSerializer::fromIsoFormat(new \DateTimeZone("Europe/Berlin")));
-        $fcon->setSerializers(array(
+        $conv->getItemConverter()->setFieldSerializer('date', \PerrysLambda\Serializer\DateTimeSerializer::fromIsoFormat(new \DateTimeZone("Europe/Berlin")));
+        $conv->getItemConverter()->setFieldSerializers(array(
             'amount' => new \PerrysLambda\Serializer\NumberSerializer(),
             'important' => new \PerrysLambda\Serializer\BooleanSerializer(),
         ));
         
-        $conv->setFieldConverter($fcon);
-
         $list = new ArrayList($conv);
 
         $this->assertSame(true, $list->first()->date instanceof \DateTime);
@@ -464,7 +463,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(false, $list->getAt(2)->important);
 
         $serialized = $list->serialize();
-
+        
         $this->assertSame('2016-07-08T08:12:20+0200', $serialized[0]['date']);
         $this->assertSame($data[0]['amount'], $serialized[0]['amount']);
         $this->assertSame($data[0]['important'], $serialized[0]['important']);

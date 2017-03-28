@@ -6,6 +6,7 @@ use PerrysLambda\Serializer\Serializer;
 use PerrysLambda\Converter\ListConverter;
 use PerrysLambda\Exception\InvalidTypeException;
 use PerrysLambda\IArrayable;
+use PerrysLambda\Converter\ItemConverter;
 
 
 class TypeStringListConverter extends ListConverter
@@ -45,8 +46,11 @@ class TypeStringListConverter extends ListConverter
             }
             return true;
         };
+        
+        $ic = new ItemConverter();
+        $ic->setSerializer(new Serializer($serializer, $deserializer));
 
-        $this->setSerializer(new Serializer($serializer, $deserializer));
+        $this->setItemConverter($ic);
     }
 
 }

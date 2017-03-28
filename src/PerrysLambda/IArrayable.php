@@ -6,5 +6,6 @@ interface IArrayable
 {
 
     public function toArray();
+    public function getKeys();
 
 }

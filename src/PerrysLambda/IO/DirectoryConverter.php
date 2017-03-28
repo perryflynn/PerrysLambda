@@ -5,6 +5,7 @@ namespace PerrysLambda\IO;
 use PerrysLambda\Serializer\Serializer;
 use PerrysLambda\Exception\InvalidTypeException;
 use PerrysLambda\Converter\ListConverter;
+use PerrysLambda\Converter\ItemConverter;
 
 
 class DirectoryConverter extends ListConverter
@@ -49,7 +50,9 @@ class DirectoryConverter extends ListConverter
             return true;
         };
 
-        $this->setSerializer(new Serializer($serializer, $deserializer));
+        $ic = new ItemConverter();
+        $ic->setSerializer(new Serializer($serializer, $deserializer));
+        $this->setItemConverter($ic);
     }
 
     public function setPath(File $path)

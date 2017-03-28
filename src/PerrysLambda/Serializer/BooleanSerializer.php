@@ -15,7 +15,7 @@ class BooleanSerializer extends Serializer
 
         $deserializer = function(&$value, &$key)
         {
-            $value = ($value=="true");
+            $value = ($value==="true" || $value===true || $value===1);
             return true;
         };
 

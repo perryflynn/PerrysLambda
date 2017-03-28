@@ -2,6 +2,8 @@
 
 namespace PerrysLambda;
 
+use PerrysLambda\IItemConverter;
+
 /**
  * Array-Type with alphanumeric index
  */
@@ -45,6 +47,25 @@ class ObjectArray extends ArrayBase
     public function getIsValidValue($value)
     {
         return true;
+    }
+    
+    /**
+     * Serialize via converter
+     * @return mixed[]
+     */
+    public function serialize()
+    {
+        if($this->__converter instanceof IItemConverter)
+        {
+            $key = null;
+            $value = $this;
+            $this->__converter->serializeAll($value, $key);
+            return $value;
+        }
+        else
+        {
+            return $this->toArray();
+        }
     }
 
     /**

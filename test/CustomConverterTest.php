@@ -6,7 +6,8 @@ use PerrysLambda\ObjectArray;
 use PerrysLambda\Serializer\Serializer;
 use PerrysLambda\IArrayable;
 use PerrysLambda\ArrayBase;
-use PerrysLambda\Converter\FieldConverter;
+use PerrysLambda\Converter\ItemConverter;
+use PerrysLambda\IItemConverter;
 use PerrysLambda\Serializer\DateTimeSerializer;
 use PerrysLambda\Serializer\BooleanSerializer;
 
@@ -60,13 +61,14 @@ class CustomConverterTest extends PHPUnit_Framework_TestCase
         $rawlines = explode("\r\n", $rawstring);
         
         // Parse lines to one array with fields per line
-        $deserializer = function(&$row, &$key)
+        $deserializer = function(&$row, &$key, IItemConverter $converter)
         {
             if(is_string($row))
             {
                 $data = json_decode($row, true);
                 if(is_array($data))
                 {
+                    $converter->deserializeFields($data, $key);
                     $row = new ObjectArray($data);
                 }
                 else
@@ -77,16 +79,15 @@ class CustomConverterTest extends PHPUnit_Framework_TestCase
             return true;
         };
         
-        $serializer = function(&$row, &$key)
+        $serializer = function(&$row, &$key, IItemConverter $converter)
         {
-            if($row instanceof ArrayBase)
-            {
-                $row = $row->serialize();
-            }
-            elseif($row instanceof IArrayable)
+            if($row instanceof IArrayable)
             {
                 $row = $row->toArray();
             }
+            
+            $converter->serializeFields($row, $key);
+            
             if(is_array($row))
             {
                 $row = json_encode($row);
@@ -98,19 +99,17 @@ class CustomConverterTest extends PHPUnit_Framework_TestCase
             return false;
         };
         
-        $lineserializer = new Serializer($serializer, $deserializer);
-        
         // Field serializers
-        $fieldconverter = new FieldConverter();
-        $fieldconverter->setSerializers(array(
+        $fieldconverter = new ItemConverter();
+        $fieldconverter->setSerializer(new Serializer($serializer, $deserializer));
+        $fieldconverter->setFieldSerializers(array(
             "barfoo" => DateTimeSerializer::fromIsoFormat(),
             "foobar" => new BooleanSerializer(),
         ));
         
         // Create converter
         $conv = new ListConverter();
-        $conv->setSerializer($lineserializer);
-        $conv->setFieldConverter($fieldconverter);
+        $conv->setItemConverter($fieldconverter);
         $conv->setArraySource($rawlines);
         
         $list = new ArrayList($conv);
@@ -127,6 +126,8 @@ class CustomConverterTest extends PHPUnit_Framework_TestCase
         $grouping = $list->groupBy(function($r) { return "fake"; });
         $tempgroupser = $grouping->fake->serialize();
         $this->assertSame($firstrow, $tempgroupser[0]);
+        
+        //var_dump($list->first()->serialize());
     }
     
 }
