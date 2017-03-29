@@ -98,6 +98,7 @@ class Sortable
     {
         $func = function($a, $b)
         {
+            $temp = 0;
             $cmpres = null;
             foreach($this->orders as $order)
             {
@@ -120,10 +121,12 @@ class Sortable
                 }
 
                 $temp = (($order['direction'] == self::ORDER_DESC) ? -1 : 1) * $cmpres;
-                if($temp==0) continue;
-                return $temp;
+                if($temp!=0)
+                {
+                    break;
+                }
             }
-            return null;
+            return $temp;
         };
 
         $this->setComparator($func);

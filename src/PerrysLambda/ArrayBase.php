@@ -316,15 +316,20 @@ abstract class ArrayBase extends Property
         return $this->__data;
     }
     
-    // TODO: Doku
+    /**
+     * Serialize object data into array
+     */
     abstract public function serialize();
     
+    /**
+     * Serialize object data into generator
+     * @throws PerrysLambdaException
+     */
     public function serializeGenerator()
     {
         throw new PerrysLambdaException("Not implemented");
     }
 
-    
     /**
      * Get count of fields currently loaded from data source
      * @return int
@@ -394,7 +399,7 @@ abstract class ArrayBase extends Property
         {
             return $this->getScalar($name, $default);
         }
-        return $default;
+        return new ScalarProperty($default);
     }
 
     /**

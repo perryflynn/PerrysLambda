@@ -24,7 +24,7 @@ class CsvParser
         
         if($this->qualifier!==null && strlen($this->qualifier)!=1)
         {
-            throw new CsvParseException("Separator must be one character or NULL");
+            throw new CsvParseException("Qualifier must be one character or NULL");
         }
     }
     

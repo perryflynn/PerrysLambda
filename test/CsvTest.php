@@ -9,6 +9,22 @@ use PerrysLambda\IO\LineIterator;
 
 class CsvTest extends PHPUnit_Framework_TestCase
 {
+    
+    /**
+     * @expectedException \PerrysLambda\IO\CsvParseException
+     */
+    public function testIvalidCsvSettings()
+    {
+        new CsvParser(true, "foo");
+    }
+    
+    /**
+     * @expectedException \PerrysLambda\IO\CsvParseException
+     */
+    public function testIvalidCsvSettings2()
+    {
+        new CsvParser(true, ";", "foo");
+    }
 
     /**
      * @expectedException \PerrysLambda\IO\CsvParseException
@@ -39,17 +55,26 @@ class CsvTest extends PHPUnit_Framework_TestCase
         $file = __DIR__."/../examples/testdata.csv";
         $conv = new ObjectArrayListConverter();
 
+        // default
         $parser = new CsvParser();
         $conv->setIteratorSource($parser->openFile(new File($file)));
 
         $records = new ArrayList($conv);
-        //$records->each(function($r) { var_dump($r->toArray()); });
 
         $this->assertSame(7, $records->length());
         $this->assertSame(2, $records->where(function($v) { return $v->Col1=="Bar"; })->length());
         $this->assertSame(6, $records->max(function($v) { return $v->length(); }));
         
         unset($records);
+        
+        // no header
+        $parser->setHasHeader(false);
+        $convnh = new ObjectArrayListConverter();
+        $convnh->setIteratorSource($parser->openFile(new File($file)));
+        
+        $recordsnh = new ArrayList($convnh);
+        
+        $this->assertEquals(array("Col1", "Col2", "Col3"), $recordsnh->first()->getData());
     }
 
     public function testCsvParserIterSkip()

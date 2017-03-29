@@ -27,7 +27,7 @@ class LambdaUtils
             return function($v) { return $v; };
         }
         // row field from string
-        elseif(is_string($mixed))
+        elseif(is_int($mixed) || is_float($mixed) || is_string($mixed))
         {
             return function($v) use($mixed)
             {

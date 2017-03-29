@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="test/bootstrap.php" colors="true">
-	<logging>
-		<log type="coverage-clover" target="build/logs/clover.xml"/>
+    <logging>
+		<log type="coverage-clover" target="build/logs/clover.xml" />
 	</logging>
     
     <filter>
@@ -25,6 +25,12 @@
 		</testsuite>
 		<testsuite>
 			<file>test/CustomConverterTest.php</file>
+		</testsuite>
+		<testsuite>
+			<file>test/ExceptionTest.php</file>
+		</testsuite>
+		<testsuite>
+			<file>test/PhpCoreTest.php</file>
 		</testsuite>
 	</testsuites>
 </phpunit>
