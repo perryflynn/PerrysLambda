@@ -179,14 +179,29 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         
         $this->assertSame(2, $list->distinct('b')->length());
         
-        $this->assertEquals(array(2, 3, 4, 5), $list->select('a'));
+        $this->assertEquals(array(2, 3, 4, 5), $list->select('a')->toArray());
         $this->assertSame('2,3,4,5', $list->joinString('a', ','));
         
-        $ordertest = $list->order('b')->thenBy('a')->toList()->select('a');
+        $ordertest = $list->order('b')->thenBy('a')->toList()->select('a')->toArray();
         $this->assertSame(array(3, 2, 4, 5), $ordertest);
 
-        $ordertestdesc = $list->orderDesc('b')->thenByDesc('a')->toList()->select('a');
+        $ordertestdesc = $list->orderDesc('b')->thenByDesc('a')->toList()->select('a')->toArray();
         $this->assertSame(array(5, 4, 2, 3), $ordertestdesc);
+    }
+    
+    
+    public function testSelectMany()
+    {
+        $data = array(
+            array('a'=>'foo', 'b'=>array(1,2,3)),
+            array('a'=>'bar', 'b'=>array(3,4,5)),
+            array('a'=>'barfoo', 'b'=>6),
+            array('a'=>'foobar', 'b'=>array(7,8,9)),
+        );
+        
+        $list = ArrayList::asObjectArray($data);
+        
+        $this->assertSame(array(1,2,3,3,4,5,6,7,8,9), $list->selectMany('b')->toArray());
     }
     
     

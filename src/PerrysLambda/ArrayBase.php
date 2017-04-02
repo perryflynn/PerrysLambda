@@ -781,7 +781,30 @@ abstract class ArrayBase extends Property
         {
             $result[] = call_user_func($select, $record, $key);
         }
-        return $result;
+        return new ArrayList($result);
+    }
+    
+    public function selectMany($select=null)
+    {
+        $select = LambdaUtils::toCallable($select);
+        
+        $result = array();
+        foreach($this as $key => $record)
+        {
+            $temp = call_user_func($select, $record, $key);
+            if(is_array($temp) || $temp instanceof \Iterator)
+            {
+                foreach($temp as $tempitem)
+                {
+                    $result[] = $tempitem;
+                }
+            }
+            else
+            {
+                $result[] = $temp;
+            }
+        }
+        return new ArrayList($result);
     }
 
     /**
@@ -807,7 +830,7 @@ abstract class ArrayBase extends Property
     public function sum($sum=null)
     {
         $sum = LambdaUtils::toCallable($sum);
-        $temp = $this->select($sum);
+        $temp = $this->select($sum)->toArray();
         return array_sum($temp);
     }
 
@@ -819,7 +842,7 @@ abstract class ArrayBase extends Property
     public function min($min=null)
     {
         $min = LambdaUtils::toCallable($min);
-        $temp = $this->select($min);
+        $temp = $this->select($min)->toArray();
         return min($temp);
     }
 
@@ -831,7 +854,7 @@ abstract class ArrayBase extends Property
     public function max($max=null)
     {
         $max = LambdaUtils::toCallable($max);
-        $temp = $this->select($max);
+        $temp = $this->select($max)->toArray();
         return max($temp);
     }
 
@@ -855,7 +878,7 @@ abstract class ArrayBase extends Property
     public function joinString($join=null, $glue=", ")
     {
         $join = LambdaUtils::toCallable($join);
-        $temp = $this->select($join);
+        $temp = $this->select($join)->toArray();
         return implode($glue, $temp);
     }
 

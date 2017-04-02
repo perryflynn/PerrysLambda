@@ -91,11 +91,6 @@ class DirectoryConverter extends ListConverter
 
         if(!$path->isDir())
         {
-            throw new IOException("Not a dir");
-        }
-
-        if(!$path->isDir())
-        {
             throw new InvalidTypeException("Not a directory");
         }
 

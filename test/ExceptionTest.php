@@ -117,5 +117,13 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
         \PerrysLambda\LambdaUtils::toCallable(true);
     }
     
+    /**
+     * @expectedException \PerrysLambda\Exception\InvalidTypeException
+     */
+    public function testDirectoryInvalid()
+    {
+        \PerrysLambda\IO\DirectoryConverter::fromPath(new \PerrysLambda\IO\File(__FILE__));
+    }
+    
     
 }
