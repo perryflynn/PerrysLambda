@@ -193,8 +193,8 @@ class ListConverter implements IListConverter
     {
         $class = get_called_class();
         $instance = new $class();
-        $instance->setSerializer($this->serializer);
-        $instance->setItemConverter($this->itemconverter);
+        $instance->setSerializer($this->getSerializer());
+        $instance->setItemConverter($this->getItemConverter()->newInstance());
         $instance->setDefaults($this->defaults);
         return $instance;
     }
@@ -274,6 +274,11 @@ class ListConverter implements IListConverter
         {
             $tempindex = $index;
             $temprow = $row;
+            
+            if($temprow instanceof ArrayBase)
+            {
+                $temprow = $temprow->copy();
+            }
 
             $this->serialize($temprow, $tempindex);
             yield $tempindex => $temprow;

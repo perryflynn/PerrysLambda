@@ -76,7 +76,7 @@ class ItemConverter implements IItemConverter
     {
         $class = get_called_class();
         $instance = new $class();
-        $instance->setFieldSerializers($this->fieldserializers);
+        $instance->setFieldSerializers($this->getFieldSerializers());
 
         if($this->isSerializerExist())
         {
@@ -128,8 +128,8 @@ class ItemConverter implements IItemConverter
     
     public function serializeAll(&$listitem, &$listitemkey)
     {
-        $itemresult = $this->serialize($listitem, $listitemkey);
         $fieldresult = $this->serializeFields($listitem, $listitemkey);
+        $itemresult = $this->serialize($listitem, $listitemkey);
         return $itemresult && $fieldresult;
     }
     

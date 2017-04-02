@@ -68,7 +68,6 @@ class CustomConverterTest extends PHPUnit_Framework_TestCase
                 $data = json_decode($row, true);
                 if(is_array($data))
                 {
-                    $converter->deserializeFields($data, $key);
                     $row = new ObjectArray($data);
                 }
                 else
@@ -85,8 +84,6 @@ class CustomConverterTest extends PHPUnit_Framework_TestCase
             {
                 $row = $row->toArray();
             }
-            
-            $converter->serializeFields($row, $key);
             
             if(is_array($row))
             {
@@ -121,13 +118,14 @@ class CustomConverterTest extends PHPUnit_Framework_TestCase
 
         $firstrow = $rawlines[0];
         $this->assertSame($firstrow, $tempserialized[0]);
-        
+
+        // Serialize single without list
+        $this->assertSame($firstrow, $list->first()->serialize());
+
         // Grouping test
         $grouping = $list->groupBy(function($r) { return "fake"; });
         $tempgroupser = $grouping->fake->serialize();
-        $this->assertSame($firstrow, $tempgroupser[0]);
-        
-        //var_dump($list->first()->serialize());
+        $this->assertSame($firstrow, $tempgroupser[0]);        
     }
     
 }

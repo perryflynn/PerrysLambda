@@ -433,7 +433,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
     public function testFieldConverter()
     {
         $data = array(
-            array("date"=>"2016-07-08T10:12:20+0400", "amount"=>"42", "important"=>"true"),
+            array("date"=>"2016-07-08T08:12:20+0200", "amount"=>"42", "important"=>"true"),
             array("date"=>"2016-07-08T10:20:23+0000", "amount"=>"123.456", "important"=>"false"),
             array("date"=>"2016-07-08T10:22:25+0000", "amount"=>"123", "important"=>"asdf"),
         );
@@ -469,9 +469,12 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $filterserialized = $list
             ->where(function($r) { return $r->amount===42; })
             ->serialize();
-            
+
         $this->assertSame(true, is_array($filterserialized) && count($filterserialized)===1);
+        $this->assertEquals($filterserialized[0], $data[0]);
         $this->assertSame('2016-07-08T08:12:20+0200', $filterserialized[0]['date']);
+
+        $this->assertEquals($list->first()->serialize(), $data[0]);
     }
     
     public function testCustomTypeConverter()

@@ -104,15 +104,28 @@ abstract class ArrayBase extends Property
     public function newInstance()
     {
         $class = $this->getClassName();
-        $data = $this->newConverterInstance();
+        $conv = $this->newConverterInstance();
 
-        if($data===null)
+        $data = array();
+        if($conv instanceof IListConverter)
         {
-            $data = array();
+            $data = $conv;
         }
 
         $o = new $class($data);
+        if($conv instanceof IBaseConverter)
+        {
+            $o->setConverter($conv);
+        }
+        
         return $o;
+    }
+    
+    public function copy()
+    {
+        $temp = $this->newInstance();
+        $temp->setData($this->getData());
+        return $temp;
     }
 
     /**

@@ -4,7 +4,6 @@ namespace PerrysLambda\Serializer;
 
 use PerrysLambda\Serializer\Serializer;
 use \PerrysLambda\ObjectArray as OA;
-use PerrysLambda\IListConverter;
 use PerrysLambda\IItemConverter;
 
 
@@ -18,14 +17,13 @@ class ObjectArraySerializer extends Serializer
             if($row instanceof OA)
             {
                 $row = $row->toArray();
-                return $converter->serializeFields($row, $key);
             }
             return true;
         };
 
         $deserializer = function(&$row, &$key)
         {
-            if(is_array($row) || $row instanceof IListConverter)
+            if(is_array($row) || $row instanceof IItemConverter)
             {
                 $row = new OA($row);
             }
