@@ -12,8 +12,16 @@ use PerrysLambda\Converter\ItemConverter;
 class TypeStringListConverter extends ListConverter
 {
 
+    /**
+     * The target object type
+     * @var string
+     */
+    protected $type;
+
+
     public function __construct($type)
     {
+        $this->type = $type;
         parent::__construct();
 
         if(!class_exists($type))
@@ -46,11 +54,26 @@ class TypeStringListConverter extends ListConverter
             }
             return true;
         };
-        
+
         $ic = new ItemConverter();
         $ic->setSerializer(new Serializer($serializer, $deserializer));
 
         $this->setItemConverter($ic);
+    }
+
+
+    /**
+     * Create a new instance
+     * @return \PerrysLambda\Converter\TypeStringListConverter
+     */
+    public function newInstance()
+    {
+        $class = get_called_class();
+        $instance = new $class($this->type);
+        $instance->setSerializer($this->getSerializer());
+        $instance->setItemConverter($this->getItemConverter()->newInstance());
+        $instance->setDefaults($this->defaults);
+        return $instance;
     }
 
 }

@@ -4,12 +4,12 @@ namespace PerrysLambda;
 
 class StringProperty extends Property
 {
-    
+
     protected static $defaultencoding;
 
     protected $encoding;
-    
-    
+
+
     /**
      * Set global default encoding
      * @param string $encoding
@@ -25,7 +25,7 @@ class StringProperty extends Property
             self::$defaultencoding = null;
         }
     }
-    
+
     /**
      * Get global default encoding
      * @return string
@@ -51,13 +51,24 @@ class StringProperty extends Property
     }
 
     /**
+     * Creates new instance of current class type
+     * @return \PerrysLambda\StringProperty
+     */
+    public function newInstance($value = null)
+    {
+        $class = $this->getClassName();
+        $o = new $class($value, $this->encoding);
+        return $o;
+    }
+
+    /**
      * Check for scalar or null as valid data type
      * @param mixed $val
      * @return boolean
      */
     public function getIsValidData($val)
     {
-        return is_string($val);
+        return is_string($val) || is_null($val);
     }
 
     /**
@@ -113,7 +124,7 @@ class StringProperty extends Property
      */
     public function substr($start, $length=null)
     {
-        return mb_substr($this->toString(), $start, $length, $this->getEncoding());
+        return $this->newInstance(mb_substr($this->toString(), $start, $length, $this->getEncoding()));
     }
 
     /**

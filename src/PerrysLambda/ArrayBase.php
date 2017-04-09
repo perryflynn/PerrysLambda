@@ -14,7 +14,7 @@ use PerrysLambda\Exception\PerrysLambdaException;
 /**
  * Base class for array-like types
  */
-abstract class ArrayBase extends Property 
+abstract class ArrayBase extends Property
         implements \ArrayAccess, \SeekableIterator, IArrayable, ICloneable, \Countable
 {
 
@@ -75,15 +75,6 @@ abstract class ArrayBase extends Property
     }
 
     /**
-     * Get current classname as string
-     * @return string
-     */
-    protected function getClassName()
-    {
-        return get_called_class();
-    }
-
-    /**
      * Create a new converter instance
      * @return \PerrysLambda\IBaseConverter
      */
@@ -101,12 +92,16 @@ abstract class ArrayBase extends Property
      * Expect a subclass of \PerrysLambda\ArrayBase
      * @return \PerrysLambda\ArrayBase
      */
-    public function newInstance()
+    public function newInstance($data=null)
     {
         $class = $this->getClassName();
         $conv = $this->newConverterInstance();
 
-        $data = array();
+        if(is_null($data))
+        {
+            $data = array();
+        }
+
         if($conv instanceof IListConverter)
         {
             $data = $conv;
@@ -117,10 +112,10 @@ abstract class ArrayBase extends Property
         {
             $o->setConverter($conv);
         }
-        
+
         return $o;
     }
-    
+
     public function copy()
     {
         $temp = $this->newInstance();
@@ -155,7 +150,7 @@ abstract class ArrayBase extends Property
         $this->__data = $data;
         $this->invalidateKeycache();
     }
-    
+
     public function setConverter(IBaseConverter $conv)
     {
         $this->__converter = $conv;
@@ -247,7 +242,7 @@ abstract class ArrayBase extends Property
         }
         return array();
     }
-    
+
     public function getKeys()
     {
         return $this->getNames();
@@ -328,12 +323,12 @@ abstract class ArrayBase extends Property
     {
         return $this->__data;
     }
-    
+
     /**
      * Serialize object data into array
      */
     abstract public function serialize();
-    
+
     /**
      * Serialize object data into generator
      * @throws PerrysLambdaException
@@ -351,7 +346,7 @@ abstract class ArrayBase extends Property
     {
         return count($this->__data);
     }
-    
+
     /**
      * Check for field by its name
      * @param mixed $field
@@ -648,24 +643,24 @@ abstract class ArrayBase extends Property
     public function groupBy($group=null)
     {
         $group = LambdaUtils::toCallable($group);
-        
+
         $result = new ObjectArray(array());
         if($this instanceof ObjectArray)
         {
             $result = $this->newInstance();
         }
-        
+
         foreach($this as $record)
         {
             $key = call_user_func($group, $record);
-            
+
             $data = array();
             if($this->__converter instanceof IListConverter)
             {
                 $data = $this->newConverterInstance();
             }
             $newitemtype = new ArrayList($data);
-            
+
             $result->get($key, $newitemtype, true)->add($record);
         }
 
@@ -680,7 +675,7 @@ abstract class ArrayBase extends Property
     public function distinct($distinct=null)
     {
         $distinct = LambdaUtils::toCallable($distinct);
-        
+
         $keys = array();
         $collection = $this->newInstance();
         foreach($this as $record)
@@ -775,7 +770,7 @@ abstract class ArrayBase extends Property
     public function select($select=null)
     {
         $select = LambdaUtils::toCallable($select);
-        
+
         $result = array();
         foreach($this as $key => $record)
         {
@@ -783,11 +778,11 @@ abstract class ArrayBase extends Property
         }
         return new ArrayList($result);
     }
-    
+
     public function selectMany($select=null)
     {
         $select = LambdaUtils::toCallable($select);
-        
+
         $result = array();
         foreach($this as $key => $record)
         {
@@ -1154,15 +1149,15 @@ abstract class ArrayBase extends Property
     {
         $this->__iteratorindex = $position;
     }
-    
-    
+
+
     // Countable ---------------------------------------------------------------
 
 
     /**
      * \Countable implementation
      */
-    public function count() 
+    public function count()
     {
         return $this->length();
     }

@@ -14,7 +14,7 @@ class Property
      */
     protected $__data = null;
 
-    
+
     /**
      * Constructor
      * @param mixed $data
@@ -58,6 +58,26 @@ class Property
     public function getData()
     {
         return $this->__data;
+    }
+
+    /**
+     * Get current classname as string
+     * @return string
+     */
+    protected function getClassName()
+    {
+        return get_called_class();
+    }
+
+    /**
+     * Creates new instance of current class type
+     * @return \PerrysLambda\Property
+     */
+    public function newInstance($value=null)
+    {
+        $class = $this->getClassName();
+        $o = new $class($value);
+        return $o;
     }
 
 }

@@ -16,9 +16,9 @@ class File extends \PerrysLambda\StringProperty
       {
          $this->rootdir = $this;
       }
-      
+
       parent::__construct($file);
-      
+
       if($this->isDir())
       {
           $this->setData(rtrim($this->getData(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR);
@@ -28,6 +28,13 @@ class File extends \PerrysLambda\StringProperty
    public function getDirectoryType()
    {
        return self::DIRTYPE;
+   }
+
+   public function newInstance($value = null)
+   {
+        $class = $this->getClassName();
+        $o = new $class($value, $this->rootdir);
+        return $o;
    }
 
    /**
