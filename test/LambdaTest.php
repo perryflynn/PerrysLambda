@@ -18,7 +18,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
 
     public function testScalar()
     {
-        $s = new ScalarProperty("Zähn € zahme Ziegen zögen zwei Zentner Zücker zum Zoö!", 'UTF-8');
+        $s = new ScalarProperty("Zähn € zahme Ziegen  zögen zwei Zentner Zücker zum Zoö!", 'UTF-8');
 
         $this->assertSame(true, $s->startsWith("Zä"));
         $this->assertSame(false, $s->startsWith("zä"));
@@ -26,18 +26,64 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         $this->assertSame(true, $s->endsWith(' Zoö!'));
         $this->assertSame(false, $s->endsWith(' zoö!'));
         $this->assertSame(true, $s->endsWithI(' zoö!'));
-        $this->assertSame(54, $s->length());
+        $this->assertSame(55, $s->length());
         $this->assertSame(3, count($s->split('ö')));
         $this->assertSame(' Zoö!', $s->substr(-5)->toString());
         $this->assertSame(1, $s->indexOf('ä'));
         $this->assertSame(-1, $s->indexOf('Ä'));
         $this->assertSame(1, $s->indexOfI('Ä'));
-        $this->assertSame(53, $s->lastIndexOf('!'));
-        $this->assertSame(50, $s->lastIndexOfI('zoö!'));
+        $this->assertSame(54, $s->lastIndexOf('!'));
+        $this->assertSame(51, $s->lastIndexOfI('zoö!'));
         $this->assertSame(false, $s->contains('asdf'));
         $this->assertSame(true, $s->contains('zwei'));
         $this->assertSame(false, $s->contains('ZWEI'));
         $this->assertSame(true, $s->containsI('ZWEI'));
+        $this->assertSame(false, $s->isNullOrWhitespace());
+
+        $split = $s->split(' ');
+        $this->assertSame(11, $split->length());
+        $split = $split->where(function($v) { return !$v->isNullOrWhitespace(); });
+        $this->assertSame(10, $split->length());
+        $this->assertSame(true, $split->first() instanceof \PerrysLambda\StringProperty);
+
+        $str = new \PerrysLambda\StringProperty("");
+        $this->assertSame(true, $str->isEmpty());
+        $this->assertSame(false, $str->isNull());
+        $this->assertSame(true, $str->isNullOrEmpty());
+        $this->assertSame(true, $str->isNullOrWhitespace());
+
+        $str->setData(null);
+        $this->assertSame(false, $str->isEmpty());
+        $this->assertSame(true, $str->isNull());
+        $this->assertSame(true, $str->isNullOrEmpty());
+        $this->assertSame(true, $str->isNullOrWhitespace());
+
+        $str->setData("        ");
+        $this->assertSame(true, $str->isNullOrWhitespace());
+        $this->assertSame(true, $str->trim()->isEmpty());
+
+        $str->setData("     a       ");
+        $this->assertSame(true, $str->startsWith(" "));
+        $this->assertSame(true, $str->ltrim()->startsWith("a"));
+        $this->assertSame(8, $str->ltrim()->length());
+        $this->assertSame(true, $str->ltrim()->endsWith(' '));
+        $this->assertSame(true, $str->rtrim()->endsWith("a"));
+        $this->assertSame(6, $str->rtrim()->length());
+        $this->assertSame(true, $str->rtrim()->startsWith(' '));
+        $this->assertNotSame('a', $str->trim()->toUpper()->toString());
+        $this->assertSame('A', $str->trim()->toUpper()->toString());
+
+        $str->setData("       A    ");
+        $this->assertNotSame('A', $str->trim()->toLower()->toString());
+        $this->assertSame('a', $str->trim()->toLower()->toString());
+
+        $str->setData('12');
+        $this->assertSame('   12', $str->padLeft(5)->toString());
+        $this->assertSame('00012', $str->padLeft(5, '0')->toString());
+        $this->assertSame('12   ', $str->padRight(5)->toString());
+        $this->assertSame('12000', $str->padRight(5, '0')->toString());
+        $this->assertSame(' 12  ', $str->padBoth(5)->toString());
+        $this->assertSame('01200', $str->padBoth(5, '0')->toString());
 
         $integer = new ScalarProperty('4211');
         $this->assertSame(4211, $integer->toInt());

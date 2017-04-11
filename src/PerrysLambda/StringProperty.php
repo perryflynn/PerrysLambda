@@ -117,10 +117,91 @@ class StringProperty extends Property
     }
 
     /**
+     * Check for empty string
+     * @return boolean
+     */
+    public function isEmpty()
+    {
+        return $this->getData()==="";
+    }
+
+    /**
+     * Check for null value
+     * @return boolean
+     */
+    public function isNull()
+    {
+        return $this->getData()===null;
+    }
+
+    /**
+     * Check for empty string or null value
+     * @return boolean
+     */
+    public function isNullOrEmpty()
+    {
+        return $this->isEmpty() || $this->isNull();
+    }
+
+    /**
+     * Check string is null, empty or contains only whitespaces
+     * @return boolean
+     */
+    public function isNullOrWhitespace()
+    {
+        return $this->isNull() || mb_strlen(trim($this->toString()), $this->getEncoding())===0;
+    }
+
+    /**
+     * Trim whitespaces
+     * @return \PerrysLambda\StringProperty
+     */
+    public function trim()
+    {
+        return $this->newInstance(trim($this->toString()));
+    }
+
+    /**
+     * Trim whitespaces on the left side
+     * @return \PerrysLambda\StringProperty
+     */
+    public function ltrim()
+    {
+        return $this->newInstance(ltrim($this->toString()));
+    }
+
+    /**
+     * Trim whitespaces on the right side
+     * @return \PerrysLambda\StringProperty
+     */
+    public function rtrim()
+    {
+        return $this->newInstance(rtrim($this->toString()));
+    }
+
+    /**
+     * Convert to lower chars
+     * @return \PerrysLambda\StringProperty
+     */
+    public function toLower()
+    {
+        return $this->newInstance(strtolower($this->toString()));
+    }
+
+    /**
+     * Convert to upper chars
+     * @return \PerrysLambda\StringProperty
+     */
+    public function toUpper()
+    {
+        return $this->newInstance(strtoupper($this->toString()));
+    }
+
+    /**
      * Return a substring of value
      * @param int $start
      * @param int $length
-     * @return string
+     * @return \PerrysLambda\StringProperty
      */
     public function substr($start, $length=null)
     {
@@ -130,11 +211,58 @@ class StringProperty extends Property
     /**
      * Split string by separator
      * @param string $separator
-     * @return array
+     * @return \PerrysLambda\ArrayList
      */
     public function split($separator)
     {
-        return explode($separator, $this->toString());
+        $temp = explode($separator, $this->toString());
+        $list = ArrayList::asType($this->getClassName(), $temp);
+        return $list;
+    }
+
+    /**
+     * Helper function for string padding
+     * @param string $padstr
+     * @param int $length
+     * @param int $type
+     * @return \PerrysLambda\StringProperty
+     */
+    protected function padDynamic($padstr, $length, $type)
+    {
+        return $this->newInstance(str_pad($this->toString(), $length, $padstr, $type));
+    }
+
+    /**
+     * Add a padding to the beginning of the string
+     * @param inr $length
+     * @param string $padstr
+     * @return \PerrysLambda\StringProperty
+     */
+    public function padLeft($length, $padstr=" ")
+    {
+        return $this->padDynamic($padstr, $length, STR_PAD_LEFT);
+    }
+
+    /**
+     * Add a padding to the end of the string
+     * @param int $length
+     * @param string $padstr
+     * @return \PerrysLambda\StringProperty
+     */
+    public function padRight($length, $padstr=" ")
+    {
+        return $this->padDynamic($padstr, $length, STR_PAD_RIGHT);
+    }
+
+    /**
+     * Add a padding to the end and the beginning of the string
+     * @param int $length
+     * @param string $padstr
+     * @return \PerrysLambda\StringProperty
+     */
+    public function padBoth($length, $padstr=" ")
+    {
+        return $this->padDynamic($padstr, $length, STR_PAD_BOTH);
     }
 
     /**

@@ -64,15 +64,6 @@ class ScalarProperty extends StringProperty
     }
 
     /**
-     * Is value null
-     * @return boolean
-     */
-    public function isNull()
-    {
-        return is_null($this->getData());
-    }
-
-    /**
      * Cast to numeric
      * @return numeric
      */
