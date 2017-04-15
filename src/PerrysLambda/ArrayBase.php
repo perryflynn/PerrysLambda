@@ -116,6 +116,10 @@ abstract class ArrayBase extends Property
         return $o;
     }
 
+    /**
+     * Clone this object
+     * @return \PerrysLambda\ArrayBase
+     */
     public function copy()
     {
         $temp = $this->newInstance();
@@ -151,6 +155,10 @@ abstract class ArrayBase extends Property
         $this->invalidateKeycache();
     }
 
+    /**
+     * Set a converter
+     * @param \PerrysLambda\IBaseConverter $conv
+     */
     public function setConverter(IBaseConverter $conv)
     {
         $this->__converter = $conv;
@@ -243,6 +251,10 @@ abstract class ArrayBase extends Property
         return array();
     }
 
+    /**
+     * Get all field names
+     * @return array
+     */
     public function getKeys()
     {
         return $this->getNames();
@@ -765,7 +777,7 @@ abstract class ArrayBase extends Property
     /**
      * Select field
      * @param callable|string|null $select
-     * @return array
+     * @return \PerrysLambda\ArrayList
      */
     public function select($select=null)
     {
@@ -779,6 +791,11 @@ abstract class ArrayBase extends Property
         return new ArrayList($result);
     }
 
+    /**
+     * Select a field and merge all arrays into one
+     * @param callable|string|null $select
+     * @return \PerrysLambda\ArrayList
+     */
     public function selectMany($select=null)
     {
         $select = LambdaUtils::toCallable($select);
