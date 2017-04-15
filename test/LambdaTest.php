@@ -1,6 +1,7 @@
 <?php
 
 use PerrysLambda\ScalarProperty;
+use PerrysLambda\StringProperty;
 use PerrysLambda\ArrayList;
 use PerrysLambda\ObjectArray;
 use PerrysLambda\Converter\ObjectArrayListConverter;
@@ -112,6 +113,27 @@ class LambdaTest extends PHPUnit_Framework_TestCase
 
         $string = new ScalarProperty(50.3);
         $this->assertSame('50.3', $string->toString());
+
+        $this->assertSame(true, (new StringProperty('foo'))->equals("foo"));
+        $this->assertSame(true, (new StringProperty('foo'))->equals(new StringProperty('foo')));
+        $this->assertSame(false, (new StringProperty('foo'))->equals("bar"));
+        $this->assertSame(false, (new StringProperty('foo'))->equals(new StringProperty('bar')));
+
+        $params = new StringProperty("1|2|3|45|321");
+        $this->assertSame(true, $params->isMatch('/^[0-9\|]+$/'));
+        $this->assertSame(false, $params->isMatch('asdf'));
+
+        $this->assertSame(null, $params->match('/foo/'));
+
+        $match = $params->match('/^([0-9]+)\|(?P<sec>[0-9]+)\|([0-9]+)/');
+        $this->assertSame('2', $match->{2});
+        $this->assertSame('2', $match->sec);
+        $this->assertSame('1|2|3', $match[0]);
+
+        $this->assertSame(null, $params->matchAll('/foo/'));
+
+        $matches = $params->matchAll('/\|?(?P<number>[0-9]+)\|?/');
+        $this->assertEquals(array('1', '2', '3', '45', '321'), $matches->select('number')->toArray());
     }
 
 

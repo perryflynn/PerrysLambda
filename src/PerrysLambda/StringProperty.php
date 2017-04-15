@@ -108,6 +108,21 @@ class StringProperty extends Property
     }
 
     /**
+     * Compare values
+     * @param StringProperty|string $stringOrStringProperty
+     * @return boolean
+     */
+    public function equals($stringOrStringProperty)
+    {
+        $temp = $stringOrStringProperty;
+        if($temp instanceof StringProperty)
+        {
+            $temp = $temp->toString();
+        }
+        return $this->toString()===$temp;
+    }
+
+    /**
      * Return the length of a string
      * @return string
      */
@@ -416,6 +431,57 @@ class StringProperty extends Property
     public function endsWithI($needle)
     {
         return $this->endsWithDynamic('mb_stripos', $needle);
+    }
+
+    /**
+     * Is regex valid
+     * @param string $regex
+     * @return boolean
+     */
+    protected function isValidRegex($regex)
+    {
+        return (@preg_match($regex, null))!==false;
+    }
+
+    /**
+     * Check value against regex
+     * @param string $regex
+     * @return boolean
+     */
+    public function isMatch($regex)
+    {
+        return $this->isValidRegex($regex) && preg_match($regex, $this->toString())===1;
+    }
+
+    /**
+     * Match value against regex
+     * @param string $regex
+     * @return \PerrysLambda\ObjectArray
+     */
+    public function match($regex)
+    {
+        $match = array();
+        if($this->isValidRegex($regex) && preg_match($regex, $this->toString(), $match)===1)
+        {
+            return new ObjectArray($match);
+        }
+        return null;
+    }
+
+    /**
+     * Get all matches by regex
+     * @param string $regex
+     * @return \PerrysLambda\ArrayList
+     */
+    public function matchAll($regex)
+    {
+        $matches = array();
+        $result = preg_match_all($regex, $this->toString(), $matches, PREG_SET_ORDER);
+        if($this->isValidRegex($regex) && $result!==false && $result>0)
+        {
+            return ArrayList::asObjectArray($matches);
+        }
+        return null;
     }
 
 }

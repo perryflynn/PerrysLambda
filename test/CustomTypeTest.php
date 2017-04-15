@@ -39,11 +39,9 @@ class MyArrayList extends ArrayList
 
 class MyObjectArray extends ObjectArray
 {
-
     public function isFlower()
     {
         $flowers = new ArrayList(array('anemone', 'crocus', 'daisy', 'hibiscus'));
         return $flowers->any(function($v) { return $v==$this->nameScalar->toLower()->toString(); });
     }
-
 }
