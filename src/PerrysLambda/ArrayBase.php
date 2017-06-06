@@ -1180,4 +1180,27 @@ abstract class ArrayBase extends Property
     }
 
 
+    // String ------------------------------------------------------------------
+
+
+    /**
+     * Convert object content to string (php serialize)
+     * @return string
+     */
+    public function toString()
+    {
+        return serialize($this->getData());
+    }
+
+
+    /**
+     * Convert object content to string
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->toString();
+    }
+
+
 }

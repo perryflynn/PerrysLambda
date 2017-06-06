@@ -229,6 +229,11 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         {
             $this->assertEquals($basicdata[$key], $row);
         }
+
+        // string conversion
+        $expected = 'a:3:{s:3:"foo";s:3:"bar";s:4:"foo2";s:4:"bar2";s:6:"foobar";s:6:"barfoo";}';
+        $this->assertSame($expected, $named->toString());
+        $this->assertSame($expected, "".$named);
     }
 
 
@@ -263,6 +268,10 @@ class LambdaTest extends PHPUnit_Framework_TestCase
 
         $ordertestdesc = $list->orderDesc('b')->thenByDesc('a')->toList()->select('a')->toArray();
         $this->assertSame(array(5, 4, 2, 3), $ordertestdesc);
+
+        // Method call
+        $expected = 'a:4:{s:1:"a";i:3;s:1:"b";s:3:"bar";s:1:"c";s:7:"foobar2";s:1:"d";s:7:"barfoo2";}';
+        $this->assertSame($expected, $list->select('toString')->getAt(1));
     }
 
 

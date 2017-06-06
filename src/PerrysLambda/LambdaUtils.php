@@ -7,7 +7,7 @@ use PerrysLambda\Exception\InvalidException;
 
 class LambdaUtils
 {
-    
+
     /**
      * Converts strings, empty strings and NULL into a callable
      * @param string|callable|null $mixed
@@ -33,6 +33,10 @@ class LambdaUtils
             {
                 if(is_object($v))
                 {
+                    if(method_exists($v, $mixed))
+                    {
+                        return $v->$mixed();
+                    }
                     return $v->$mixed;
                 }
                 else
@@ -41,7 +45,7 @@ class LambdaUtils
                 }
             };
         }
-        
+
         throw new InvalidException("Could not convert expression of type ".gettype($mixed)." into a lambda callable");
     }
 
