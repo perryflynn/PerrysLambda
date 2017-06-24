@@ -8,6 +8,7 @@ use PerrysLambda\Exception\InvalidValueException;
 use PerrysLambda\IArrayable;
 use PerrysLambda\IBaseConverter;
 use PerrysLambda\IListConverter;
+use PerrysLambda\IItemConverter;
 use PerrysLambda\Exception\PerrysLambdaException;
 
 
@@ -439,19 +440,27 @@ abstract class ArrayBase extends Property
      * Set field
      * @param mixed $field
      * @param mixed $value
+     * @param boolean $skipconverter
      * @return \PerrysLambda\ArrayList
      * @throws InvalidKeyException
      * @throws InvalidValueException
      */
-    public function set($field, $value)
+    public function set($field, $value, $skipconverter=false)
     {
         $tempfield = $field;
         $tempvalue = $value;
 
         $insert = true;
-        if($this->__converter !== null)
+        if($skipconverter===false && $this->__converter !== null)
         {
-            $insert = $this->__converter->deserialize($tempvalue, $tempfield);
+            if($this->__converter instanceof IListConverter && $this->__converter->isItemConverterExist())
+            {
+                $insert = $this->__converter->getItemConverter()->deserializeAll($tempvalue, $tempfield);
+            }
+            else if($this->__converter instanceof IItemConverter)
+            {
+                $insert = $this->__converter->deserializeAll($tempvalue, $tempfield);
+            }
         }
 
         if(!$this->getIsValidKey($tempfield))
@@ -476,17 +485,25 @@ abstract class ArrayBase extends Property
     /**
      * Add field
      * @param mixed $value
+     * @param boolean $skipconverter
      * @return \PerrysLambda\ArrayList
      */
-    public function add($value)
+    public function add($value, $skipconverter=false)
     {
         $foo = null;
         $tempvalue = $value;
 
         $insert = true;
-        if($this->__converter !== null && $this->__converter->isItemConverterExist())
+        if($skipconverter===false && $this->__converter !== null)
         {
-            $insert = $this->__converter->getItemConverter()->deserialize($tempvalue, $foo);
+            if($this->__converter instanceof IListConverter && $this->__converter->isItemConverterExist())
+            {
+                $insert = $this->__converter->getItemConverter()->deserializeAll($tempvalue, $foo);
+            }
+            else if($this->__converter instanceof IItemConverter)
+            {
+                $insert = $this->__converter->deserializeAll($tempvalue, $foo);
+            }
         }
 
         if($insert===true)

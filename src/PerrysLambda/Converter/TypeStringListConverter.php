@@ -72,7 +72,6 @@ class TypeStringListConverter extends ListConverter
         $instance = new $class($this->type);
         $instance->setSerializer($this->getSerializer());
         $instance->setItemConverter($this->getItemConverter()->newInstance());
-        $instance->setDefaults($this->defaults);
         return $instance;
     }
 

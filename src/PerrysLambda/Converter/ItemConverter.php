@@ -9,37 +9,45 @@ use PerrysLambda\ArrayBase;
 
 class ItemConverter implements IItemConverter
 {
-    
+
+    const ARRAYBASE='\PerrysLambda\ArrayBase';
+
     protected $itemserializer;
     protected $fieldserializers;
-    
-    
+
+    /**
+     *Default values for one single row
+     * @var array
+     */
+    protected $defaults;
+
+
     public function __construct()
     {
         $this->itemserializer = null;
         $this->fieldserializers = array();
     }
-    
+
     public function setSerializer(ISerializer $serializer)
     {
         $this->itemserializer = $serializer;
     }
-    
+
     public function getSerializer()
     {
         return $this->itemserializer;
     }
-    
+
     public function isSerializerExist()
     {
         return $this->itemserializer instanceof ISerializer;
     }
-    
+
     public function setFieldSerializer($fieldname, ISerializer $serializer)
     {
         $this->fieldserializers[$fieldname] = $serializer;
     }
-    
+
     public function getFieldSerializer($fieldname)
     {
         if(array_key_exists($fieldname, $this->fieldserializers))
@@ -48,7 +56,7 @@ class ItemConverter implements IItemConverter
         }
         return null;
     }
-    
+
     public function setFieldSerializers(array $serializers)
     {
         foreach($serializers as $fieldname => $serializer)
@@ -60,19 +68,19 @@ class ItemConverter implements IItemConverter
             $this->setFieldSerializer($fieldname, $serializer);
         }
     }
-    
+
     public function isFieldSerializerExist($fieldname)
     {
-        return array_key_exists($fieldname, $this->fieldserializers) && 
+        return array_key_exists($fieldname, $this->fieldserializers) &&
                 $this->fieldserializers[$fieldname] instanceof ISerializer;
     }
-    
+
     public function getFieldSerializers()
     {
         return $this->fieldserializers;
     }
 
-    public function newInstance() 
+    public function newInstance()
     {
         $class = get_called_class();
         $instance = new $class();
@@ -82,17 +90,22 @@ class ItemConverter implements IItemConverter
         {
             $instance->setSerializer($this->getSerializer());
         }
-        
+
         return $instance;
     }
-    
+
+    public function setDefaults(array $defaults=null)
+    {
+        $this->defaults = $defaults;
+    }
+
     public function deserializeAll(&$listitem, &$listitemkey)
     {
         $itemresult = $this->deserialize($listitem, $listitemkey);
         $fieldresult = $this->deserializeFields($listitem, $listitemkey);
         return $itemresult && $fieldresult;
     }
-    
+
     public function deserializeFields(&$listitem, &$listitemkey)
     {
         $itemresult = true;
@@ -113,7 +126,7 @@ class ItemConverter implements IItemConverter
                     $itemresult = false;
                 }
             }
-            
+
             if($listitem instanceof ArrayBase)
             {
                 $listitem->setData($result);
@@ -125,14 +138,14 @@ class ItemConverter implements IItemConverter
         }
         return $itemresult;
     }
-    
+
     public function serializeAll(&$listitem, &$listitemkey)
     {
         $fieldresult = $this->serializeFields($listitem, $listitemkey);
         $itemresult = $this->serialize($listitem, $listitemkey);
         return $itemresult && $fieldresult;
     }
-    
+
     public function serializeFields(&$listitem, &$listitemkey)
     {
         $itemresult = true;
@@ -153,7 +166,7 @@ class ItemConverter implements IItemConverter
                     $itemresult = false;
                 }
             }
-            
+
             if($listitem instanceof ArrayBase)
             {
                 $listitem->setData($result);
@@ -165,8 +178,8 @@ class ItemConverter implements IItemConverter
         }
         return $itemresult;
     }
-    
-    public function deserialize(&$row, &$key) 
+
+    public function deserialize(&$row, &$key)
     {
         if($this->isSerializerExist())
         {
@@ -178,12 +191,21 @@ class ItemConverter implements IItemConverter
                 throw new SerializerException("Serializer must return a bool for success indication");
             }
 
+            if(is_subclass_of($row, self::ARRAYBASE))
+            {
+                $row->setConverter($this);
+                if(is_array($this->defaults))
+                {
+                    $row->applyDefaults($this->defaults);
+                }
+            }
+
             return $result;
         }
         return true;
     }
-    
-    public function serialize(&$row, &$key) 
+
+    public function serialize(&$row, &$key)
     {
         if($this->isSerializerExist())
         {
@@ -200,7 +222,7 @@ class ItemConverter implements IItemConverter
         return true;
     }
 
-    public function deserializeField(&$row, &$key) 
+    public function deserializeField(&$row, &$key)
     {
         if($this->isFieldSerializerExist($key))
         {
@@ -217,7 +239,7 @@ class ItemConverter implements IItemConverter
         return true;
     }
 
-    public function serializeField(&$row, &$key) 
+    public function serializeField(&$row, &$key)
     {
         if($this->isFieldSerializerExist($key))
         {

@@ -2,10 +2,7 @@
 
 namespace PerrysLambda;
 
-interface IBaseConverter extends ICloneable
+interface IBaseConverter extends IConverterSerializer, ICloneable
 {
 
-    public function serialize(&$row, &$key);
-    public function deserialize(&$row, &$key);
-    
 }

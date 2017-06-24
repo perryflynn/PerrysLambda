@@ -13,17 +13,17 @@ use PerrysLambda\Serializer\DummySerializer;
 
 class ListConverter implements IListConverter
 {
-    
+
     protected static $dummyserializerinstance;
-    
+
     const ARRAYBASE='\PerrysLambda\ArrayBase';
-    
+
     /**
      * Serializer
      * @var \PerrysLambda\ISerializer
      */
     protected $serializer;
-    
+
     /**
      * Field converter
      * @var \PerrysLambda\Converter\IFieldConverter
@@ -48,26 +48,20 @@ class ListConverter implements IListConverter
      */
     protected $iteratorendindex;
 
-    /**
-     *Default values for one single row
-     * @var array
-     */
-    protected $defaults;
-    
-    
+
     public function __construct()
     {
         if(is_null(self::$dummyserializerinstance))
         {
             self::$dummyserializerinstance = new DummySerializer();
         }
-        
+
         $this->serializer = self::$dummyserializerinstance;
         $this->iterator = null;
         $this->iteratorstartindex = 0;
         $this->iteratorendindex = -1;
     }
-    
+
     /**
      * Set the serializer
      * @param \PerrysLambda\ISerializer $serializer
@@ -76,7 +70,7 @@ class ListConverter implements IListConverter
     {
         $this->serializer = $serializer;
     }
-    
+
     /**
      * Gets the serializer
      * @return \PerrysLambda\ISerializer
@@ -85,7 +79,7 @@ class ListConverter implements IListConverter
     {
         return $this->serializer;
     }
-    
+
     /**
      * Set the itemconverter
      * @param \PerryFlynn\IItemConverter $itemconverter
@@ -94,16 +88,16 @@ class ListConverter implements IListConverter
     {
         $this->itemconverter = $itemconverter;
     }
-    
+
     /**
      * Get the itemconverter
      * @return \PerrysLambda\IItemConverter
      */
-    public function getItemConverter() 
+    public function getItemConverter()
     {
         return $this->itemconverter;
     }
-    
+
     public function isItemConverterExist()
     {
         return $this->itemconverter instanceof IItemConverter;
@@ -125,6 +119,14 @@ class ListConverter implements IListConverter
         }
     }
 
+    public function setDefaults(array $defaults=null)
+    {
+        if($this->isItemConverterExist())
+        {
+            $this->getItemConverter()->setDefaults($defaults);
+        }
+    }
+
     /**
      * Iterator as import source
      * @param \Iterator $iterator
@@ -136,18 +138,6 @@ class ListConverter implements IListConverter
         $this->iteratorstartindex = (int)$start;
         $this->iteratorendindex = (int)$end;
         $this->iterator = $iterator;
-    }
-
-    public function setDefaults($defaults)
-    {
-        if(is_array($defaults))
-        {
-            $this->defaults = $defaults;
-        }
-        else
-        {
-            $this->defaults = null;
-        }
     }
 
     /**
@@ -170,14 +160,16 @@ class ListConverter implements IListConverter
                     $tempkey = $key;
                     $tempvalue = $row;
 
+                    /*
                     if($this->isItemConverterExist())
                     {
                         $this->getItemConverter()->deserializeAll($tempvalue, $tempkey);
                     }
-                    
+                    */
+
                     if($tempvalue!==null && $tempkey!==null)
                     {
-                        $collection->set($tempkey, $tempvalue);
+                        $collection->set($tempkey, $tempvalue);//, true);
                     }
                 }
                 $i++;
@@ -189,74 +181,30 @@ class ListConverter implements IListConverter
      * Creates a new instance of this class
      * @return \PerrysLambda\Converter\ListConverter
      */
-    public function newInstance() 
+    public function newInstance()
     {
         $class = get_called_class();
         $instance = new $class();
         $instance->setSerializer($this->getSerializer());
         $instance->setItemConverter($this->getItemConverter()->newInstance());
-        $instance->setDefaults($this->defaults);
         return $instance;
     }
 
-    public function deserialize(&$row, &$key) 
+    public function serialize(&$row, &$key)
     {
         if(!($this->serializer instanceof ISerializer))
         {
             throw new SerializerException("No serializer set");
         }
-        
-        $deser = $this->serializer->getDeserializer();
-        $result = $deser($row, $key);
-        
-        if($result!==true && $result!==false)
-        {
-            throw new SerializerException("Serializer must return a bool for success indication");
-        }
-        
-        if($this->isItemConverterExist() && (is_array($row) || $row instanceof \ArrayAccess))
-        {
-            if($this->getItemConverter()->deserializeAll($row, $key)===false)
-            {
-                $result = false;
-            }
-        }
-        
-        if($this->isItemConverterExist() && is_subclass_of($row, self::ARRAYBASE))
-        {
-            $row->setConverter($this->getItemConverter());
-        }
 
-        if(is_array($this->defaults))
-        {
-            if(is_subclass_of($row, self::ARRAYBASE))
-            {
-                $row->applyDefaults($this->defaults);
-            }
-            else
-            {
-                throw new InvalidValueException("To apply defaults the row must be a subclass of ".self::ARRAYBASE);
-            }
-        }
-        
-        return $result;
-    }
-
-    public function serialize(&$row, &$key) 
-    {
-        if(!($this->serializer instanceof ISerializer))
-        {
-            throw new SerializerException("No serializer set");
-        }
-        
         $ser = $this->serializer->getSerializer();
         $result = $ser($row, $key);
-        
+
         if($result!==true && $result!==false)
         {
             throw new SerializerException("Serializer must return a bool for success indication");
         }
-        
+
         if($this->isItemConverterExist() && (is_array($row) || $row instanceof \ArrayAccess))
         {
             if($this->getItemConverter()->serializeAll($row, $key)===false)
@@ -264,17 +212,17 @@ class ListConverter implements IListConverter
                 $result = false;
             }
         }
-        
+
         return $result;
     }
-    
-    public function toGenerator(ArrayBase $collection) 
+
+    public function toGenerator(ArrayBase $collection)
     {
         foreach($collection as $index => $row)
         {
             $tempindex = $index;
             $temprow = $row;
-            
+
             if($temprow instanceof ArrayBase)
             {
                 $temprow = $temprow->copy();
@@ -284,8 +232,8 @@ class ListConverter implements IListConverter
             yield $tempindex => $temprow;
         }
     }
-    
-    public function toArray(ArrayBase $collection) 
+
+    public function toArray(ArrayBase $collection)
     {
         $result = array();
         foreach($this->toGenerator($collection) as $index => $row)
@@ -295,5 +243,5 @@ class ListConverter implements IListConverter
         return $result;
     }
 
-    
+
 }
