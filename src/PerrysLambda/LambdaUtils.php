@@ -14,7 +14,7 @@ class LambdaUtils
      * @return callable
      * @throws \PerrysLambda\Exception\InvalidException
      */
-    public static function toCallable($mixed=null)
+    public static function toSelectCallable($mixed=null)
     {
         // callable
         if(is_callable($mixed))
@@ -46,6 +46,54 @@ class LambdaUtils
             };
         }
 
+        throw new InvalidException("Could not convert expression of type ".gettype($mixed)." into a lambda callable");
+    }
+    
+    
+    /**
+     * Convert strings, numbers, booleans and arrays into a callable
+     * @param type $mixed
+     * @return type
+     * @throws InvalidException
+     */
+    public static function toConditionCallable($mixed=null)
+    {
+        // callable
+        if(is_callable($mixed))
+        {
+            return $mixed;
+        }
+        // is bool
+        elseif(is_bool($mixed) || is_string($mixed) || is_numeric($mixed))
+        {
+            return function($v) use($mixed) { return $v===$mixed; };
+        }
+        // conditions from array
+        elseif(is_array($mixed) && count($mixed)>0)
+        {
+            return function($v) use($mixed)
+            {
+                foreach($mixed as $field => $expression)
+                {
+                    if(is_callable($expression))
+                    {
+                        if($expression($v[$field])!==true)
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        if($v[$field]!==$expression)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            };
+        }
+        
         throw new InvalidException("Could not convert expression of type ".gettype($mixed)." into a lambda callable");
     }
 

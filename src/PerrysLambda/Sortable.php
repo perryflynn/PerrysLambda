@@ -20,7 +20,7 @@ class Sortable
      */
     public static function startOrder(ArrayList $list, $order)
     {
-        $order = LambdaUtils::toCallable($order);
+        $order = LambdaUtils::toSelectCallable($order);
         $temp = new static($list, $order, self::ORDER_ASC);
         $temp->thenBy($order);
         return $temp;
@@ -34,7 +34,7 @@ class Sortable
      */
     public static function startOrderDesc(ArrayList $list, $order)
     {
-        $order = LambdaUtils::toCallable($order);
+        $order = LambdaUtils::toSelectCallable($order);
         $temp = new static($list, $order, self::ORDER_DESC);
         $temp->thenByDesc($order);
         return $temp;
@@ -54,7 +54,7 @@ class Sortable
      */
     public function thenBy($order)
     {
-        $order = LambdaUtils::toCallable($order);
+        $order = LambdaUtils::toSelectCallable($order);
         $this->orders[] = array("property" => $order, "direction" => self::ORDER_ASC);
         return $this;
     }
@@ -66,7 +66,7 @@ class Sortable
      */
     public function thenByDesc($order)
     {
-        $order = LambdaUtils::toCallable($order);
+        $order = LambdaUtils::toSelectCallable($order);
         $this->orders[] = array("property" => $order, "direction" => self::ORDER_DESC);
         return $this;
     }

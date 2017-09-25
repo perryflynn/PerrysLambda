@@ -114,7 +114,7 @@ class ExceptionTest extends PHPUnit_Framework_TestCase
      */
     public function testCallableBoolean()
     {
-        \PerrysLambda\LambdaUtils::toCallable(true);
+        \PerrysLambda\LambdaUtils::toSelectCallable(true);
     }
     
     /**

@@ -185,10 +185,15 @@ class LambdaTest extends PHPUnit_Framework_TestCase
 
         // any / all
         $this->assertSame(true, $basic->any(function($v) { return $v===1; }));
+        $this->assertSame(true, $basic->any(1));
         $this->assertSame(false, $basic->all(function($v) { return $v===1; }));
+        $this->assertSame(false, $basic->all(1));
         $this->assertSame(true, $all->all(function($v) { return $v===1; }));
+        $this->assertSame(true, $all->all(1));
         $this->assertSame(true, $all->any(function($v) { return $v===1; }));
+        $this->assertSame(true, $all->any(1));
         $this->assertSame(false, $all->any(function($v) { return $v===2; }));
+        $this->assertSame(false, $all->any(2));
 
         // wherefirst
         $this->assertSame(5, $basic->whereFirst(function($v) { return $v>4; }));
@@ -248,6 +253,11 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         );
 
         $list = ArrayList::asObjectArray($testdata);
+        
+        $this->assertSame(3, $list->where(array('b'=>'bar'))->first()->a);
+        $this->assertSame(3, $list->whereFirst(array('b'=>'bar'))->a);
+        $this->assertSame(3, $list->whereFirstOrDefault(array('b'=>'bar'))->a);
+        $this->assertSame(null, $list->whereFirstOrDefault(array('b'=>'asdf')));
 
         $this->assertSame(14, $list->sum('a'));
         $this->assertSame(2, $list->min('a'));

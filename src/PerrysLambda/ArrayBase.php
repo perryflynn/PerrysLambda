@@ -552,8 +552,8 @@ abstract class ArrayBase extends Property
         if($this->exists($field))
         {
             unset($this->__data[$field]);
+            $this->invalidateKeycache();
         }
-        $this->invalidateKeycache();
         return $this;
     }
 
@@ -612,11 +612,12 @@ abstract class ArrayBase extends Property
 
     /**
      * filter by condition
-     * @param callable $where
+     * @param callable|array $where
      * @return \PerrysLambda\ArrayList
      */
-    public function where(callable $where)
+    public function where($where)
     {
+        $where = LambdaUtils::toConditionCallable($where);
         $collection = $this->newInstance();
         foreach($this as $record)
         {
@@ -630,12 +631,13 @@ abstract class ArrayBase extends Property
 
     /**
      * Get first item matching to callable
-     * @param callable $where
+     * @param callable|array $where
      * @return mixed
      * @throws \OutOfBoundsException
      */
-    public function whereFirst(callable $where)
+    public function whereFirst($where)
     {
+        $where = LambdaUtils::toConditionCallable($where);
         foreach($this as $record)
         {
             if(call_user_func($where, $record))
@@ -648,12 +650,13 @@ abstract class ArrayBase extends Property
 
     /**
      * Get first item matching to callable or default
-     * @param callable $where
+     * @param callable|array $where
      * @param mixed $default
      * @return mixed
      */
-    public function whereFirstOrDefault(callable $where, $default=null)
+    public function whereFirstOrDefault($where, $default=null)
     {
+        $where = LambdaUtils::toConditionCallable($where);
         foreach($this as $record)
         {
             if(call_user_func($where, $record))
@@ -671,7 +674,7 @@ abstract class ArrayBase extends Property
      */
     public function groupBy($group=null)
     {
-        $group = LambdaUtils::toCallable($group);
+        $group = LambdaUtils::toSelectCallable($group);
 
         $result = new ObjectArray(array());
         if($this instanceof ObjectArray)
@@ -703,7 +706,7 @@ abstract class ArrayBase extends Property
      */
     public function distinct($distinct=null)
     {
-        $distinct = LambdaUtils::toCallable($distinct);
+        $distinct = LambdaUtils::toSelectCallable($distinct);
 
         $keys = array();
         $collection = $this->newInstance();
@@ -759,11 +762,12 @@ abstract class ArrayBase extends Property
 
     /**
      * Check for any field by condition
-     * @param callable $where
+     * @param callable|array $where
      * @return bool
      */
-    public function any(callable $where)
+    public function any($where)
     {
+        $where = LambdaUtils::toConditionCallable($where);
         foreach($this as $record)
         {
             if(call_user_func($where, $record))
@@ -776,11 +780,12 @@ abstract class ArrayBase extends Property
 
     /**
      * Check for all fields by condition
-     * @param callable $where
+     * @param callable|array $where
      * @return bool
      */
-    public function all(callable $where)
+    public function all($where)
     {
+        $where = LambdaUtils::toConditionCallable($where);
         foreach($this as $record)
         {
             if(!call_user_func($where, $record))
@@ -798,7 +803,7 @@ abstract class ArrayBase extends Property
      */
     public function select($select=null)
     {
-        $select = LambdaUtils::toCallable($select);
+        $select = LambdaUtils::toSelectCallable($select);
 
         $result = array();
         foreach($this as $key => $record)
@@ -815,7 +820,7 @@ abstract class ArrayBase extends Property
      */
     public function selectMany($select=null)
     {
-        $select = LambdaUtils::toCallable($select);
+        $select = LambdaUtils::toSelectCallable($select);
 
         $result = array();
         foreach($this as $key => $record)
@@ -858,7 +863,7 @@ abstract class ArrayBase extends Property
      */
     public function sum($sum=null)
     {
-        $sum = LambdaUtils::toCallable($sum);
+        $sum = LambdaUtils::toSelectCallable($sum);
         $temp = $this->select($sum)->toArray();
         return array_sum($temp);
     }
@@ -870,7 +875,7 @@ abstract class ArrayBase extends Property
      */
     public function min($min=null)
     {
-        $min = LambdaUtils::toCallable($min);
+        $min = LambdaUtils::toSelectCallable($min);
         $temp = $this->select($min)->toArray();
         return min($temp);
     }
@@ -882,7 +887,7 @@ abstract class ArrayBase extends Property
      */
     public function max($max=null)
     {
-        $max = LambdaUtils::toCallable($max);
+        $max = LambdaUtils::toSelectCallable($max);
         $temp = $this->select($max)->toArray();
         return max($temp);
     }
@@ -894,7 +899,7 @@ abstract class ArrayBase extends Property
      */
     public function avg($avg=null)
     {
-        $avg = LambdaUtils::toCallable($avg);
+        $avg = LambdaUtils::toSelectCallable($avg);
         return ($this->sum($avg)/$this->length());
     }
 
@@ -906,7 +911,7 @@ abstract class ArrayBase extends Property
      */
     public function joinString($join=null, $glue=", ")
     {
-        $join = LambdaUtils::toCallable($join);
+        $join = LambdaUtils::toSelectCallable($join);
         $temp = $this->select($join)->toArray();
         return implode($glue, $temp);
     }
@@ -1061,7 +1066,7 @@ abstract class ArrayBase extends Property
      */
     public function order($order)
     {
-        $order = LambdaUtils::toCallable($order);
+        $order = LambdaUtils::toSelectCallable($order);
         return Sortable::startOrder($this, $order);
     }
 
@@ -1072,7 +1077,7 @@ abstract class ArrayBase extends Property
      */
     public function orderDesc($order)
     {
-        $order = LambdaUtils::toCallable($order);
+        $order = LambdaUtils::toSelectCallable($order);
         return Sortable::startOrderDesc($this, $order);
     }
 
