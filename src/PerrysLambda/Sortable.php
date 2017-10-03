@@ -133,7 +133,7 @@ class Sortable
     }
 
     /**
-     * Sort and get the arraylist
+     * Sort and get the result
      * @return \PerrysLambda\ArrayList
      */
     public function toList()

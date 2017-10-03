@@ -741,7 +741,7 @@ abstract class ArrayBase extends Property
     }
 
     /**
-     * Diffrence to another object
+     * Difference to another object
      * @param \PerrysLambda\ArrayBase $comparedata
      * @return \PerrysLambda\ArrayBase
      */
@@ -1066,7 +1066,6 @@ abstract class ArrayBase extends Property
      */
     public function order($order)
     {
-        $order = LambdaUtils::toSelectCallable($order);
         return Sortable::startOrder($this, $order);
     }
 
@@ -1077,7 +1076,6 @@ abstract class ArrayBase extends Property
      */
     public function orderDesc($order)
     {
-        $order = LambdaUtils::toSelectCallable($order);
         return Sortable::startOrderDesc($this, $order);
     }
 
