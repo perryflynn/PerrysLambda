@@ -562,9 +562,9 @@ abstract class ArrayBase extends Property
      * @param array $data
      * @return boolean
      */
-    public function getIsAllKeysValid($data)
+    public function getIsAllKeysValid(array $data)
     {
-        $keys = $this->getNames();
+        $keys = array_keys($data);
         foreach($keys as $key)
         {
             if(!$this->getIsValidKey($key))
@@ -580,7 +580,7 @@ abstract class ArrayBase extends Property
      * @param array $data
      * @return boolean
      */
-    public function getIsAllValuesValid($data)
+    public function getIsAllValuesValid(array $data)
     {
         foreach($data as $value)
         {
