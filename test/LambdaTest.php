@@ -253,7 +253,7 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         );
 
         $list = ArrayList::asObjectArray($testdata);
-        
+
         $this->assertSame(3, $list->where(array('b'=>'bar'))->first()->a);
         $this->assertSame(3, $list->whereFirst(array('b'=>'bar'))->a);
         $this->assertSame(3, $list->whereFirstOrDefault(array('b'=>'bar'))->a);
@@ -435,6 +435,36 @@ class LambdaTest extends PHPUnit_Framework_TestCase
         unset($unsetlist[0]);
         $this->assertSame(3, $unsetlist->length());
 
+    }
+
+
+    public function testLambdaUtilsSpecials()
+    {
+        // lambda functions
+        $testdata = array(
+            array('a' => 2, 'b'=>'foo', 'c'=>'foobar', 'd'=>'barfoo', 'serialize'=>'bla'),
+            array('a' => 3, 'b'=>'bar', 'c'=>'foobar2', 'd'=>'barfoo2', 'serialize'=>'bla'),
+            array('a' => 4, 'b'=>'foo', 'c'=>'3', 'd'=>'4', 'serialize'=>'bla'),
+            array('a' => 5, 'b'=>'foo', 'c'=>'3', 'd'=>'4', 'serialize'=>'bla'),
+        );
+
+        $list = new ArrayList($testdata);
+        $this->assertSame(array(2,3,4,5), $list->select('a')->toArray());
+        $this->assertSame(array(2,3,4,5), $list->select('a')->select()->toArray());
+        $this->assertSame(2, $list->select('a')->where(2)->single());
+
+        $rows = $list->where(array(
+            'a' => function($v) { return $v % 2 === 0; },
+            'b' => 'foo',
+        ));
+
+        $expected = array(
+            array('a' => 2, 'b'=>'foo', 'c'=>'foobar', 'd'=>'barfoo', 'serialize'=>'bla'),
+            array('a' => 4, 'b'=>'foo', 'c'=>'3', 'd'=>'4', 'serialize'=>'bla'),
+        );
+
+        $this->assertSame($expected, $rows->serialize());
+        $this->assertSame(array('bla', 'bla'), $rows->select('serialize')->toArray());
     }
 
 

@@ -9,6 +9,32 @@ class LambdaUtils
 {
 
     /**
+     * Check the given variable is a closure
+     * @param mixed $var
+     * @return bool
+     */
+    public static function isClosure($var)
+    {
+        return is_object($var) && ($var instanceof \Closure);
+    }
+
+
+    /**
+     * Check the given variable is a callable for a instance method
+     * example: array($obj, "someMethod");
+     * @param mixed $var
+     * @return bool
+     */
+    public static function isInstanceCallable($var)
+    {
+        return is_array($var) && count($var)===2 &&
+            array_key_exists(0, $var) && array_key_exists(1, $var) &&
+            is_object($var[0]) && is_string($var[1]) &&
+            method_exists($var[0], $var[1]);
+    }
+
+
+    /**
      * Converts strings, empty strings and NULL into a callable
      * @param string|callable|null $mixed
      * @return callable
@@ -17,7 +43,7 @@ class LambdaUtils
     public static function toSelectCallable($mixed=null)
     {
         // callable
-        if(is_callable($mixed))
+        if(self::isClosure($mixed) || self::isInstanceCallable($mixed))
         {
             return $mixed;
         }
@@ -37,9 +63,12 @@ class LambdaUtils
                     {
                         return $v->$mixed();
                     }
-                    return $v->$mixed;
+                    else
+                    {
+                        return $v->$mixed;
+                    }
                 }
-                else
+                else if(is_array($v) || ($v instanceof \ArrayAccess))
                 {
                     return $v[$mixed];
                 }
@@ -48,8 +77,8 @@ class LambdaUtils
 
         throw new InvalidException("Could not convert expression of type ".gettype($mixed)." into a lambda callable");
     }
-    
-    
+
+
     /**
      * Convert strings, numbers, booleans and arrays into a callable
      * @param type $mixed
@@ -59,7 +88,7 @@ class LambdaUtils
     public static function toConditionCallable($mixed=null)
     {
         // callable
-        if(is_callable($mixed))
+        if(self::isClosure($mixed) || self::isInstanceCallable($mixed))
         {
             return $mixed;
         }
@@ -75,16 +104,17 @@ class LambdaUtils
             {
                 foreach($mixed as $field => $expression)
                 {
-                    if(is_callable($expression))
+                    if(self::isClosure($expression) || self::isInstanceCallable($expression))
                     {
-                        if($expression($v[$field])!==true)
+                        if(call_user_func($expression, $v[$field])!==true)
                         {
                             return false;
                         }
                     }
                     else
                     {
-                        if($v[$field]!==$expression)
+                        if((is_array($v) || $v instanceof \ArrayAccess) &&
+                           $v[$field]!==$expression)
                         {
                             return false;
                         }
@@ -93,7 +123,7 @@ class LambdaUtils
                 return true;
             };
         }
-        
+
         throw new InvalidException("Could not convert expression of type ".gettype($mixed)." into a lambda callable");
     }
 
